@@ -1,0 +1,14 @@
+# Jekyll settings. GitHub Pages builds the site on every push; nothing is built locally.
+title: Česko v číslech
+lang: cs
+markdown: kramdown
+
+# Not part of the website (chart_data/, geo/ and assets/ are, and are copied as they are)
+exclude: [R, data, run_all.R, README.md]
+
+# Layouts are chosen by folder, so pages only need a title
+defaults:
+  - scope: { path: "" }
+    values: { layout: default }
+  - scope: { path: "articles" }
+    values: { layout: article }

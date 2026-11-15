@@ -1,0 +1,37 @@
+{
+  "id": "nezamestnanost",
+  "data": "nezamestnanost.csv",
+  "type": "line",
+  "title": "Míra nezaměstnanosti v Česku",
+  "subtitle": "Obecná míra nezaměstnanosti osob ve věku 15 a více let, roční průměr",
+  "aes": [
+    {
+      "type": "x",
+      "field": "year",
+      "label": "Rok",
+      "format": "year"
+    },
+    {
+      "type": "y",
+      "field": "rate",
+      "label": "Míra nezaměstnanosti",
+      "unit": "%"
+    },
+    {
+      "type": "colour",
+      "field": "sex",
+      "label": "Pohlaví"
+    }
+  ],
+  "source": [
+    {
+      "name": "ČSÚ",
+      "dataset": "Zaměstnanost a nezaměstnanost (VŠPS)",
+      "url": "https://data.csu.gov.cz/datastat/info/SADA/ZAM01",
+      "retrieved": "2026-11-15"
+    }
+  ],
+  "data_note": "Podle výběrového šetření pracovních sil; liší se od podílu nezaměstnaných osob podle úřadů práce.",
+  "last_updated": "2026-11-15",
+  "rows": 99
+}

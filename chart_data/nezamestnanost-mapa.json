@@ -1,0 +1,32 @@
+{
+  "id": "nezamestnanost-mapa",
+  "data": "nezamestnanost-mapa.csv",
+  "type": "map",
+  "title": "Míra nezaměstnanosti podle krajů, 2025",
+  "subtitle": "Obecná míra nezaměstnanosti osob ve věku 15 a více let",
+  "aes": [
+    {
+      "type": "geometry",
+      "field": "kraj_kod",
+      "labeller": "kraj",
+      "label": "Kraj"
+    },
+    {
+      "type": "fill",
+      "field": "rate",
+      "label": "Míra nezaměstnanosti",
+      "unit": "%"
+    }
+  ],
+  "source": [
+    {
+      "name": "ČSÚ",
+      "dataset": "Zaměstnanost a nezaměstnanost (VŠPS)",
+      "url": "https://data.csu.gov.cz/datastat/info/SADA/ZAM01",
+      "retrieved": "2026-11-15"
+    }
+  ],
+  "data_note": "",
+  "last_updated": "2026-11-15",
+  "rows": 14
+}

@@ -1,11 +1,17 @@
-<!doctype html>
-<html>
-    <head>
-        <title>Česko v datech</title>
-    </head>
-    <body>
-        <h1>Česko v datech</h1>
-        <p>To be written</p>
-    </body>
-</html>
+---
+---
+<h1>{{ site.title }}</h1>
 
+{% comment %} Every page in articles/, grouped by its topic, in the order of `order` {% endcomment %}
+{% assign articles = site.pages | where_exp: "p", "p.path contains 'articles/'" | sort: "order" %}
+{% assign topics = articles | group_by: "topic" %}
+{% for topic in topics %}
+<h2>{{ topic.name | default: "Ostatní" }}</h2>
+<ul class="article-list">
+    {% for article in topic.items %}
+    <li>
+        <a href="{{ article.url | relative_url }}">{{ article.title }}</a>
+    </li>
+    {% endfor %}
+</ul>
+{% endfor %}

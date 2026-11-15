@@ -1,0 +1,34 @@
+{
+  "id": "nezamestnanost-kraje",
+  "data": "nezamestnanost-kraje.csv",
+  "type": "bar",
+  "title": "Míra nezaměstnanosti podle krajů, 2025",
+  "subtitle": "Obecná míra nezaměstnanosti osob ve věku 15 a více let",
+  "aes": [
+    {
+      "type": "x",
+      "field": "kraj",
+      "label": "Kraj"
+    },
+    {
+      "type": "y",
+      "field": "rate",
+      "label": "Míra nezaměstnanosti",
+      "unit": "%"
+    }
+  ],
+  "source": [
+    {
+      "name": "ČSÚ",
+      "dataset": "Zaměstnanost a nezaměstnanost (VŠPS)",
+      "url": "https://data.csu.gov.cz/datastat/info/SADA/ZAM01",
+      "retrieved": "2026-11-15"
+    }
+  ],
+  "data_note": "",
+  "options": {
+    "sort": "desc"
+  },
+  "last_updated": "2026-11-15",
+  "rows": 14
+}

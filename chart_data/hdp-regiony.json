@@ -1,0 +1,33 @@
+{
+  "id": "hdp-regiony",
+  "data": "hdp-regiony.csv",
+  "type": "map",
+  "title": "HDP na obyvatele podle kraje",
+  "subtitle": "Krajský hrubý domácí produkt na obyvatele v roce 2024, [běžné ceny::Bez přepočtu na jednotnou cenovou hladinu pro srovnávání mezi lety nebo měnami]",
+  "aes": [
+    {
+      "type": "geometry",
+      "field": "kraj_kod",
+      "label": "Kraj",
+      "labeller": "kraj_name"
+    },
+    {
+      "type": "fill",
+      "field": "gdp_pc",
+      "label": "HDP na obyvatele",
+      "format": "number",
+      "unit": "Kč"
+    }
+  ],
+  "source": [
+    {
+      "name": "ČSÚ",
+      "dataset": "Národní účty – hlavní souhrnné ukazatele HDP - roční údaje",
+      "url": "https://data.csu.gov.cz/datastat/data/VYBER/NUC06RT01?vSet=2&vSel=1",
+      "retrieved": "2026-11-15"
+    }
+  ],
+  "data_note": "",
+  "last_updated": "2026-11-15",
+  "rows": 14
+}
