@@ -1,0 +1,32 @@
+{
+  "id": "zamestnanost-cr",
+  "data": "zamestnanost-cr.csv",
+  "type": "line",
+  "title": "Míra Zaměstnanosti v ČR od roku 1993",
+  "subtitle": "Podíl všech obyvatel ČR, kteří aktivně pracují - exkluduje nezaměstnané a ekonomicky neaktivní (důchodce, děti)",
+  "aes": [
+    {
+      "type": "x",
+      "field": "year",
+      "label": "Rok",
+      "format": "year"
+    },
+    {
+      "type": "y",
+      "field": "zamestnanost",
+      "label": "Míra zaměstnanosti",
+      "format": "percent"
+    }
+  ],
+  "source": [
+    {
+      "name": "ČSÚ",
+      "dataset": "Zaměstnanost a nezaměstnanost (VŠPS)",
+      "url": "https://data.csu.gov.cz/datastat/info/SADA/ZAM01",
+      "retrieved": "2026-11-16"
+    }
+  ],
+  "data_note": "",
+  "last_updated": "2026-11-16",
+  "rows": 33
+}

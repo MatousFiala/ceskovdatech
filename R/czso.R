@@ -16,7 +16,9 @@ datasets <- c(
   "NUC06R",  # HDP: běžné ceny, reálný růst, na obyvatele, kraje
   "WOBYG",   # obyvatelstvo, dlouhé časové řady (pro HDP na osobu)
   "ZAM01",   # zaměstnanost a nezaměstnanost: roky, čtvrtletí, kraje
-  "ZAMG08"   # průměrná mzda a medián mezd
+  "ZAMG08",  # průměrná mzda a medián mezd
+  "MZDR",    # průměrná mzda a počet zaměstnanců, ročně (odvětví, kraje)
+  "CEN0101H" # míra inflace (pro přepočet mezd na reálné), roční od 1997
 )
 
 walk(datasets, \(id) write_csv(czso_csv(id), str_glue("data/czso_{id}.csv")))
@@ -34,7 +36,8 @@ nu <- "https://apl.czso.cz/pll/rocenka/"
 # Jmenovatel produktivity práce: HDP / osoby, HDP / odpracované hodiny.
 nu_tables <- c(
   "M0131a", # zaměstnanost celkem, osoby
-  "M0131c"  # zaměstnanost celkem, odpracované hodiny (v tisících)
+  "M0131c", # zaměstnanost celkem, odpracované hodiny (v tisících)
+  "M0132a"  # zaměstnanci (bez sebezaměstnaných), osoby
 )
 # The export fails ("Out of range.") for years the database does not have yet,
 # so the last available year is read from the table's selection form.
