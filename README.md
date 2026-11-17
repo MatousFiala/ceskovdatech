@@ -42,6 +42,25 @@ Needs the R packages `tidyverse`, `czso2`, `eurostat` and `WDI`.
 | Produktivita práce, srovnání s EU (PPS) | `R/eurostat.R` | `eurostat_nama_10_lp_ulc.csv` |
 | Srovnání HDP na osobu (PPP) | `R/world.R` | `wdi_gdp_pc_ppp.csv`, `maddison_gdp_pc.csv` |
 | Míra (ne)zaměstnanosti, i podle krajů | `R/czso.R` | `czso_ZAM01.csv` |
+| Míra nezaměstnanosti podle věku | `R/czso.R`, `R/eurostat.R` | `czso_ZAM04.csv`, váhy pro sloučení skupin z `eurostat_lfsa_agan.csv` |
+| Počet obyvatel, přirozený přírůstek, migrace | `R/czso.R` | `czso_WOBYG.csv` |
+| Obyvatelstvo podle krajů a SO ORP | `R/czso.R` | `czso_OBY01B.csv` |
+| Obyvatelstvo podle velikosti obce | `R/czso.R` | `czso_RSO02A01.csv` |
+| Obyvatelé podle věku (pyramida, medián věku, věkové skupiny, index závislosti) | `R/czso.R`, `R/eurostat.R` | `czso_OBY02BHVD.csv` (od 2000), před rokem 2000 `eurostat_demo_pjan.csv`; projekce `czso_OBY02PROJ1A.csv` (střední varianta) |
+| Průměrný věk a věkové složení krajů | `R/czso.R` | `czso_OBY02FHVD.csv` |
+| Úhrnná plodnost, průměrný věk matky při prvním porodu, podíl narozených mimo manželství | `R/czso.R`, `R/eurostat.R` | `czso_OBY03HVD.csv` (od 2000), před rokem 2001 `eurostat_demo_find.csv` |
+| Narození podle věku matky | `R/czso.R`, `R/eurostat.R` | `czso_OBY03B.csv` (od 2001), před rokem 2001 `eurostat_demo_fagec.csv` |
+| Naděje dožití ČR (od 1920), SO ORP (pětiletá období) | `R/czso.R` | `czso_OBY04BCR.csv`, `czso_OBY04BOR.csv` (uložena jen naděje dožití při narození) |
+| Kojenecká úmrtnost | `R/czso.R` | do roku 2000 `czso_pohyb_1919.csv` (tabulka 1919–2023 z publikace ČSÚ, Excel), od 2001 `czso_OBY04H.csv` ÷ živě narození z `czso_OBY03HVD.csv` |
+| Příčiny smrti | `R/czso.R` | `czso_OBY04C.csv` (uložena jen ČR, všechny věky) |
+| Zdraví podle příjmu (EU-SILC) | `R/eurostat.R` | `eurostat_hlth_silc_10.csv` |
+| Mateřská úmrtnost, nadváha, obezita, kouření | `R/world.R` | `who_gho.csv` (WHO Global Health Observatory) |
+| Sebevraždy | `R/world.R` | `owid_suicide_who_mdb.csv` (WHO Mortality Database přes Our World in Data) |
+| Chudoba (relativní, s pevnou hranicí), deprivace, náklady na bydlení, nečekané výdaje, vytápění, jídlo, Gini | `R/eurostat.R` | `eurostat_ilc_li02.csv`, `eurostat_ilc_li22b.csv`, `eurostat_ilc_mdsd11.csv`, `eurostat_ilc_lvho07a.csv`, `eurostat_ilc_mdes04.csv`, `eurostat_ilc_mdes01.csv`, `eurostat_ilc_mdes03.csv`, `eurostat_ilc_di12.csv` (Česko a EU27) |
+| Index sociálního vyloučení (obce, SO ORP) | `R/mmr.R`, `R/czso.R` | `mmr_isv.csv` (MMR); váhy: počet obyvatel obcí `czso_OBY01B01.csv` (uložen jen počet obyvatel k 1. 7., od 2016) |
+| Podíl nejbohatšího 1 % na příjmech a majetku | `R/world.R` | `owid_income-share-top-1-before-tax-wid.csv`, `owid_wealth-share-richest-1-percent.csv` (World Inequality Database přes Our World in Data) ; EU zvlášť `wid_eu.csv` (hromadné stažení WID, 900 MB, uloží se jen EU) |
+| Čisté jmění domácností podle kvintilů (HFCS) | `R/czso.R` | `czso_hfcs_jmeni_kvintily.csv` (tab. 12 publikace Finanční situace domácností, Excel) |
+| Pacienti ambulantní psychiatrie | `R/uzis.R` | `uzis_ambulantni_psychiatrie.csv` (ÚZIS, NZIP) |
 | Srovnání (ne)zaměstnanosti v EU | `R/eurostat.R` | `eurostat_une_rt_a.csv`, `eurostat_lfsi_emp_a.csv` |
 | Průměrná a mediánová mzda | `R/czso.R` | `czso_ZAMG08.csv` |
 | Mediánová mzda podle krajů | `R/czso.R` | `czso_WREG0404.csv` |
@@ -100,6 +119,13 @@ Chart types and their aesthetics (`labeller` = column shown to the reader instea
 | `line` | `x`, `y` | `colour`, `linetype`, `highlight` |
 | `bar` | `x` (category), `y` | `fill` (or `colour`), `highlight` |
 | `map` | `geometry` (region code), `fill` | `highlight` |
+| `pyramid` | `x` (age), `y` (count), `fill` (the two sides, first value on the left), `frame` (year) | `linetype` |
+
+A `pyramid` shows one value of `frame` at a time, chosen with a slider. It starts at `options$frame`, otherwise at the last frame of the first `linetype` value (the last actual year before a projection). Rows whose `linetype` is not the first value are drawn pale and the value is written next to the year, e.g. "2050 · Projekce ČSÚ". `options$reference` draws that frame as an outline over the others, to compare with.
+
+In a line chart with tabs, each tab draws only the rows that have its `y`, so tabs can also use different rows of the CSV (e.g. one `colour` column per tab, left empty in the other tab's rows).
+
+A projection on a line chart is a `linetype` (e.g. `Skutečnost` / `Projekce ČSÚ`): repeat the last actual year in the projection rows so that the dashed line starts where the solid one ends.
 
 Each aesthetic can have a `format` and a `unit`. The unit is shown on the axis ticks and in tooltips (`1 000 mld. Kč`).
 
@@ -125,25 +151,52 @@ In `title` and `subtitle`, and in the text of an article, `[word::tooltip]` unde
 
 `source` is a list of sources, each `list(name, dataset, url, retrieved)`. Sources with the same `name` are shown together, one numbered link per dataset: "Zdroje: ČSÚ (1, 2), Maddison". `data_note` is shown in a tooltip next to the sources.
 
+`tabs` puts a switch into the chart that swaps aesthetics, e.g. between two measures. It is a list of `list(id, label)`; an aesthetic with `tab = "id"` is drawn only in that tab, one without `tab` in every tab. All tabs share `x` (line, bar) or `geometry` (map), so that aesthetic cannot have a `tab`. The first tab is shown first, and the table and CSV keep all columns.
+
+```r
+tabs = list(list(id = "realna", label = "Reálná"), list(id = "nominalni", label = "Nominální")),
+aes = list(
+    list(type = "x", field = "year", label = "Rok", format = "year"),
+    list(type = "y", field = "mzda_realna", label = "Reálná mzda", unit = "Kč", tab = "realna"),
+    list(type = "y", field = "mzda_nominalni", label = "Nominální mzda", unit = "Kč", tab = "nominalni")
+)
+```
+
 `options = list(...)` in `write_chart()`, all optional:
 
 | option | applies to | meaning |
 |---|---|---|
 | `y_zero` | line | start the y axis at zero (default `TRUE`) |
 | `y_log` | line | logarithmic y axis |
-| `y_domain` | line, bar | fixed axis range, e.g. `c(0, 10)` |
+| `y_domain` | line, bar | fixed axis range, e.g. `c(0, 10)`; bars are cut off at its lower end (an axis that does not start at zero) |
 | `highlight` | line, bar | series drawn in colour, the rest in grey |
 | `horizontal` | bar | horizontal bars (default: when there are more than 6 text categories) |
 | `stack` | bar | `FALSE` puts `fill` groups side by side instead of stacking |
 | `sort` | bar | `"desc"` or `"asc"` by value |
 | `timeline` | line, bar | `FALSE` hides the year slider |
+| `frame`, `reference` | pyramid | first frame shown; a frame drawn as an outline over the others |
 | `filter_latest` | all | name of a time column; only its newest period is drawn |
-| `scheme`, `reverse` | map | colour scheme (default `"viridis"`; any Observable Plot scheme, e.g. `"blues"`) and its direction |
+| `scheme`, `reverse` | map | colour scheme (default `"viridis"`; any Observable Plot scheme, e.g. `"blues"`, or a list of colours, e.g. `c("#d6453d", "#ffffff", "#2e9a4f")`) and its direction |
+| `midpoint` | map | two-sided colour scale around this value, e.g. `0` for a change (default scheme `"rdylgn"`) |
+| `fill_domain` | map | fixed range of the colour scale, e.g. `c(-0.15, 0.15)`; values outside get the end colours |
 | `geo`, `geo_key` | map | file in `geo/` (default `kraje.geojson`) and the feature property matched to `geometry` (default `NUTS_ID`) |
 | `projection` | map | default `"mercator"` |
 | `height` | all | chart height in px |
+| `annotations` | line, bar | reference lines, see below |
 
-`Rscript R/geo.R` downloads the kraje boundaries (Eurostat GISCO) into `geo/kraje.geojson`; its `NUTS_ID` equals the ČSÚ kraj code (`CZ010`, …).
+On a map, `scheme`, `reverse`, `midpoint` and `fill_domain` can also be set on a `fill` aesthetic, where they override `options`. That gives each tab its own colour scale, e.g. `list(type = "fill", field = "exekuce", tab = "exekuce", scheme = "oranges")`.
+
+`annotations` draws dashed reference lines with a label along them: `list(x = ...)` is a vertical line at a value of `x` (for bars, one of the categories), `list(y = ...)` a horizontal line at a value of `y`. A vertical line has vertical text, a horizontal one horizontal text above its right end. `dash = FALSE` makes the line solid; `label` is optional. `align` = `"top"` (default), `"centre"` or `"bottom"` places the label along a vertical line; for a horizontal line it puts the label above, on or below the line. Lines outside the years chosen with the slider are not drawn.
+
+```r
+options = list(annotations = list(
+    list(x = 2008, label = "Finanční krize"),
+    list(x = 2020, label = "Covid"),
+    list(y = 0.05, label = "Cíl", dash = FALSE, align = "bottom")
+))
+```
+
+`Rscript R/geo.R` downloads the kraje boundaries (Eurostat GISCO) into `geo/kraje.geojson`; its `NUTS_ID` equals the ČSÚ kraj code (`CZ010`, …). It also writes `geo/orp.geojson` (správní obvody ORP from the `RCzechia` package, simplified; needs `sf`), used with `options = list(geo = "orp.geojson", geo_key = "KOD_ORP")`; `KOD_ORP` equals the ČSÚ ORP code, Praha is `1000`.
 
 ## Drafts
 

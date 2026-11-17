@@ -1,0 +1,44 @@
+{
+  "id": "obyvatele-prirustek",
+  "data": "obyvatele-prirustek.csv",
+  "type": "bar",
+  "title": "Populační růst ČR od roku 1947",
+  "subtitle": "Růst obyvatelstva ČR rozdělený na [přirozený přírůstek::Živě narození - zemřelí] a [čistou migraci::Přistěhovalí - Vystěhovalí], %",
+  "aes": [
+    {
+      "type": "x",
+      "field": "year",
+      "label": "Rok",
+      "format": "year"
+    },
+    {
+      "type": "y",
+      "field": "prirustek",
+      "format": "percent"
+    },
+    {
+      "type": "fill",
+      "field": "slozka",
+      "label": "Složka růstu"
+    }
+  ],
+  "source": [
+    {
+      "name": "ČSÚ",
+      "dataset": "Obyvatelstvo - dlouhodobé časové řady za Českou republiku",
+      "url": "https://data.csu.gov.cz/datastat/data/VYBER/WOBYG",
+      "retrieved": "2026-11-17"
+    }
+  ],
+  "data_note": "",
+  "options": {
+    "annotations": [
+      {
+        "x": 2022,
+        "label": "Začátek války na Ukrajině"
+      }
+    ]
+  },
+  "last_updated": "2026-11-17",
+  "rows": 158
+}

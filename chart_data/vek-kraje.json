@@ -1,0 +1,53 @@
+{
+  "id": "vek-kraje",
+  "data": "vek-kraje.csv",
+  "type": "map",
+  "title": "",
+  "subtitle": "",
+  "tabs": [
+    {
+      "id": "vek",
+      "label": ""
+    },
+    {
+      "id": "zavislost",
+      "label": ""
+    }
+  ],
+  "aes": [
+    {
+      "type": "geometry",
+      "field": "kraj_kod",
+      "label": "",
+      "labeller": "kraj_nazev"
+    },
+    {
+      "type": "fill",
+      "field": "prumerny_vek",
+      "label": "",
+      "unit": "let",
+      "tab": "vek"
+    },
+    {
+      "type": "fill",
+      "field": "zavislost",
+      "label": "",
+      "format": "percent",
+      "tab": "zavislost"
+    }
+  ],
+  "source": [
+    {
+      "name": "ČSÚ",
+      "dataset": "Ukazatele věkového složení k 31. 12.",
+      "url": "https://data.csu.gov.cz/datastat/data/VYBER/OBY02FHVDT01",
+      "retrieved": "2026-11-17"
+    }
+  ],
+  "data_note": "",
+  "options": {
+    "reverse": true
+  },
+  "last_updated": "2026-11-17",
+  "rows": 14
+}

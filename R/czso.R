@@ -16,12 +16,50 @@ datasets <- c(
   "NUC06R",  # HDP: běžné ceny, reálný růst, na obyvatele, kraje
   "WOBYG",   # obyvatelstvo, dlouhé časové řady (pro HDP na osobu)
   "ZAM01",   # zaměstnanost a nezaměstnanost: roky, čtvrtletí, kraje
+  "ZAM04",   # míra nezaměstnanosti podle věku a vzdělání: roky, čtvrtletí
   "ZAMG08",  # průměrná mzda a medián mezd
   "MZDR",    # průměrná mzda a počet zaměstnanců, ročně (odvětví, kraje)
-  "CEN0101H" # míra inflace (pro přepočet mezd na reálné), roční od 1997
+  "CEN0101H", # míra inflace (pro přepočet mezd na reálné), roční od 1997
+  "OBY01B",  # stav a pohyb obyvatel ročně: kraje, okresy, SO ORP (velký soubor)
+  "RSO02A01", # počet obyvatel podle velikostních skupin obcí
+  "OBY02BHVD", # obyvatelé podle pohlaví a jednotek věku k 31. 12., od 2000 (ČR, kraje)
+  "OBY02FHVD", # ukazatele věkového složení k 31. 12. (průměrný věk, medián, indexy závislosti), od 2000
+  "OBY02PROJ1A", # projekce obyvatelstva ČSÚ 2023: obyvatelé podle pohlaví a jednotek věku k 1. 1., 2024–2101
+  "OBY03HVD",  # narození: souhrnné údaje (úhrnná plodnost, podíl mimo manželství), od 2000
+  "OBY03B",    # živě narození podle pořadí, věku a rodinného stavu matky, od 2001
+  "OBY04BCR",  # úmrtnostní tabulky za ČR (naděje dožití), od 1920
+  "OBY04H"     # zemřelí kojenci do 1 roku, od 2001
 )
 
 walk(datasets, \(id) write_csv(czso_csv(id), str_glue("data/czso_{id}.csv")))
+
+# Velké datové sady (stovky MB až 1 GB): ukládají se jen řádky, které grafy potřebují
+czso_csv("OBY04BOR") |> # úmrtnostní tabulky za SO ORP, pětiletá období: jen naděje dožití při narození
+  filter(Ukazatel == "Naděje dožití (ex)", `Věk (roky)` == 0) |>
+  write_csv("data/czso_OBY04BOR.csv")
+czso_csv("OBY01B01") |> # stav a pohyb obyvatel v obcích: jen počet obyvatel obcí k 1. 7., od 2016 (váhy pro ISV)
+  filter(Ukazatel == "Počet obyvatel k 1. 7.", Pohlaví == "Celkem", str_detect(UZ24596C, "^\\d{6}$"), Roky >= 2016) |>
+  write_csv("data/czso_OBY01B01.csv")
+czso_csv("OBY04C") |> # zemřelí podle zkráceného seznamu příčin smrti, od 2000: jen ČR, všechny věky
+  filter(UZ01234B == "CZ", VEK5C == "VEKC") |>
+  write_csv("data/czso_OBY04C.csv")
+
+# Pohyb obyvatel ČR od roku 1919, relativní údaje (kojenecká úmrtnost ad.): tabulka III z publikace
+# "Počet a pohyb obyvatel České republiky v letech 1919–2023". Novější vydání má v adrese jiný rok.
+pohyb_url <- "https://csu.gov.cz/produkty/pocet-a-pohyb-obyvatel-ceske-republiky-v-letech-1919-2023"
+pohyb_xlsx <- read_lines(pohyb_url) |>
+  str_extract("/docs/[^\"]*1300672403\\.xlsx") |>
+  discard(is.na) |>
+  first()
+xlsx <- tempfile(fileext = ".xlsx")
+download.file(str_c("https://csu.gov.cz", pohyb_xlsx), xlsx, mode = "wb", quiet = TRUE)
+readxl::read_excel(xlsx, skip = 7, na = ".", .name_repair = "minimal",
+                   col_names = c("rok", "snatky", "rozvody", "narozeni", "potraty", "zemreli", "podil_mimo_manzelstvi",
+                                 "potraty_na_100_narozenych", "mrtvorozenost", "kojenecka_umrtnost",
+                                 "novorozenecka_umrtnost", "perinatalni_umrtnost")) |>
+  filter(str_detect(rok, "^\\d{4}$")) |>
+  mutate(across(everything(), as.numeric)) |>
+  write_csv("data/czso_pohyb_1919.csv")
 
 # Medián mezd podle krajů exists only as a predefined selection (výběr).
 # format = "CSV" because the default JSON-STAT parsing mixes up the values.
@@ -79,3 +117,20 @@ readxl::excel_sheets(xlsx) |>
   suppressWarnings() |>
   list_rbind(names_to = "sheet") |>
   write_csv("data/czso_produktivita_prace.csv")
+
+# Finanční situace domácností (HFCS): čisté jmění podle kvintilů čistého jmění, tabulka 12 z publikace
+# "Finanční situace domácností 2022 až 2024". Novější vydání má v adrese jiné roky.
+hfcs_url <- "https://csu.gov.cz/produkty/financni-situace-domacnosti-2022-az-2024-"
+hfcs_xlsx <- read_lines(hfcs_url) |>
+  str_extract("/docs/[^\"]*1600772512\\.xlsx") |>
+  discard(is.na) |>
+  first()
+xlsx <- tempfile(fileext = ".xlsx")
+download.file(str_c("https://csu.gov.cz", hfcs_xlsx), xlsx, mode = "wb", quiet = TRUE)
+hfcs <- readxl::read_excel(xlsx, col_names = FALSE, .name_repair = "minimal")
+hfcs_roky <- as.integer(unlist(hfcs[6, 2:7]))
+hfcs[7:12, 1:7] |>
+  set_names("kvintil", str_c(rep(c("prumer", "median"), each = 3), "_", hfcs_roky)) |>
+  pivot_longer(-kvintil, names_to = c("statistika", "rok"), names_sep = "_", values_transform = as.numeric) |>
+  mutate(rok = as.integer(rok)) |>
+  write_csv("data/czso_hfcs_jmeni_kvintily.csv")

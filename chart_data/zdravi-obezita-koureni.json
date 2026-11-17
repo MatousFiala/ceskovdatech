@@ -1,0 +1,49 @@
+{
+  "id": "zdravi-obezita-koureni",
+  "data": "zdravi-obezita-koureni.csv",
+  "type": "line",
+  "title": "",
+  "subtitle": "",
+  "aes": [
+    {
+      "type": "x",
+      "field": "year",
+      "label": "",
+      "format": "year"
+    },
+    {
+      "type": "y",
+      "field": "podil",
+      "label": "",
+      "format": "percent"
+    },
+    {
+      "type": "colour",
+      "field": "ukazatel",
+      "label": ""
+    }
+  ],
+  "source": [
+    {
+      "name": "WHO",
+      "dataset": "Prevalence of overweight among adults, BMI ≥ 25, age-standardized (NCD-RisC)",
+      "url": "https://www.who.int/data/gho/data/indicators/indicator-details/GHO/prevalence-of-overweight-among-adults-bmi-=-25-(age-standardized-estimate)-(-)",
+      "retrieved": "2026-11-17"
+    },
+    {
+      "name": "WHO",
+      "dataset": "Prevalence of obesity among adults, BMI ≥ 30, age-standardized (NCD-RisC)",
+      "url": "https://www.who.int/data/gho/data/indicators/indicator-details/GHO/prevalence-of-obesity-among-adults-bmi-=-30-(age-standardized-estimate)-(-)",
+      "retrieved": "2026-11-17"
+    },
+    {
+      "name": "WHO",
+      "dataset": "Estimate of current tobacco smoking prevalence, age-standardized",
+      "url": "https://www.who.int/data/gho/data/indicators/indicator-details/GHO/gho-tobacco-control-monitor-current-tobaccosmoking-prevalence-ages-15plus-age-standardized",
+      "retrieved": "2026-11-17"
+    }
+  ],
+  "data_note": "",
+  "last_updated": "2026-11-17",
+  "rows": 99
+}

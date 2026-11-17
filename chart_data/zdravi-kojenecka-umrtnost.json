@@ -1,0 +1,44 @@
+{
+  "id": "zdravi-kojenecka-umrtnost",
+  "data": "zdravi-kojenecka-umrtnost.csv",
+  "type": "line",
+  "title": "",
+  "subtitle": "",
+  "aes": [
+    {
+      "type": "x",
+      "field": "year",
+      "label": "",
+      "format": "year"
+    },
+    {
+      "type": "y",
+      "field": "umrtnost",
+      "label": "",
+      "format": "percent"
+    }
+  ],
+  "source": [
+    {
+      "name": "ČSÚ",
+      "dataset": "Pohyb obyvatel České republiky v letech 1919–2023 – relativní údaje",
+      "url": "https://csu.gov.cz/produkty/pocet-a-pohyb-obyvatel-ceske-republiky-v-letech-1919-2023",
+      "retrieved": "2026-11-17"
+    },
+    {
+      "name": "ČSÚ",
+      "dataset": "Zemřelí kojenci do 1 roku",
+      "url": "https://data.csu.gov.cz/datastat/data/VYBER/OBY04HT02",
+      "retrieved": "2026-11-17"
+    },
+    {
+      "name": "ČSÚ",
+      "dataset": "Narození - vybrané souhrnné údaje",
+      "url": "https://data.csu.gov.cz/datastat/data/VYBER/OBY03HVDT01",
+      "retrieved": "2026-11-17"
+    }
+  ],
+  "data_note": "",
+  "last_updated": "2026-11-17",
+  "rows": 107
+}

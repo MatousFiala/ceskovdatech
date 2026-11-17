@@ -1,0 +1,37 @@
+{
+  "id": "zdravi-priciny-smrti",
+  "data": "zdravi-priciny-smrti.csv",
+  "type": "line",
+  "title": "",
+  "subtitle": "",
+  "aes": [
+    {
+      "type": "x",
+      "field": "year",
+      "label": "",
+      "format": "year"
+    },
+    {
+      "type": "y",
+      "field": "podil",
+      "label": "",
+      "format": "percent"
+    },
+    {
+      "type": "colour",
+      "field": "pricina",
+      "label": ""
+    }
+  ],
+  "source": [
+    {
+      "name": "ČSÚ",
+      "dataset": "Zemřelí podle pohlaví, pětiletých věkových skupin a zkráceného seznamu příčin smrti",
+      "url": "https://data.csu.gov.cz/datastat/data/VYBER/OBY04CT01",
+      "retrieved": "2026-11-17"
+    }
+  ],
+  "data_note": "",
+  "last_updated": "2026-11-17",
+  "rows": 150
+}

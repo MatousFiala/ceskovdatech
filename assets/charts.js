@@ -4,7 +4,7 @@ import * as Plot from "https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6.17/+e
 import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7.9.0/+esm";
 
 const ROOT = new URL("..", import.meta.url); // site root, wherever the page lives
-const PALETTE = ["#2a78d6", "#e34948", "#1baf7a", "#eda100", "#e87ba4", "#008300", "#6250d6", "#eb6834"];
+const PALETTE = ["#2a78d6", "#e34948", "#1baf7a", "#eda100", "#e87ba4", "#008300", "#6250d6", "#eb6834", "#8a5a2b", "#5c6670"];
 const MUTED = "#c9c8c2";
 const DASHES = [null, "6 4", "2 3", "10 4 2 4"];
 const FONT = '"DM Sans", "Helvetica Neue", Helvetica, Arial, sans-serif';
@@ -122,6 +122,44 @@ function colourScale(data, a, o) {
   return { domain, range: PALETTE, unknown: MUTED, legend: all.length > 1 && shown(a) };
 }
 
+// ---------- annotations ----------
+// Reference lines from options.annotations, each {x | y, label, dash, align}: `x` is a value of the x aesthetic
+// (a category for bars), `y` a value of y. Dashed unless dash = false; the label runs along the line,
+// so a vertical line has vertical text. align (top | centre | bottom, default top): where the label sits
+// along a vertical line; for a horizontal line, whether it sits above, on or below the line (at its right end). `ch` = which scale x and y values are on (swapped for horizontal bars),
+// `xValue` turns an x value into the one in the data, or null when it is not shown (year slider).
+const annotationValues = (o) => (o.annotations ?? []).filter((a) => a.y != null).map((a) => +a.y);
+function annotationMarks(o, { ch = { x: "x", y: "y" }, xValue = (v) => v } = {}) {
+  return (o.annotations ?? []).flatMap((a) => {
+    const along = a.x != null ? "x" : "y";
+    const v = along === "x" ? xValue(a.x) : +a.y;
+    if (v == null || Number.isNaN(v)) return [];
+    const channel = ch[along];
+    const vertical = channel === "x";
+    const rule = (vertical ? Plot.ruleX : Plot.ruleY)([v], {
+      stroke: "#77756f", strokeWidth: 1, strokeDasharray: a.dash === false ? null : "4 3",
+    });
+    if (!a.label) return [rule];
+    const align = { center: "middle", centre: "middle", middle: "middle", bottom: "bottom" }[a.align] ?? "top";
+    const text = Plot.text([{ v, label: plain(a.label) }], {
+      [channel]: "v", text: "label",
+      fill: "#52514e", fontSize: 12, stroke: "white", strokeWidth: 3, paintOrder: "stroke",
+      ...(vertical
+        ? { // reads upwards, just left of the line
+          rotate: -90, lineAnchor: "bottom", dx: -3, frameAnchor: align,
+          textAnchor: { top: "end", middle: "middle", bottom: "start" }[align],
+          dy: { top: 2, middle: 0, bottom: -2 }[align],
+        }
+        : { // at the right end of the line
+          frameAnchor: "right", textAnchor: "end",
+          lineAnchor: { top: "bottom", middle: "middle", bottom: "top" }[align],
+          dy: { top: -3, middle: 0, bottom: 3 }[align],
+        }),
+    });
+    return [rule, text];
+  });
+}
+
 // ---------- chart types ----------
 // `data` is what the year slider leaves, `all` the whole dataset (keeps colours and dashes stable)
 function lineChart(spec, data, A, o, width, all) {
@@ -146,7 +184,7 @@ function lineChart(spec, data, A, o, width, all) {
 
   return Plot.plot({
     ...base(o, width),
-    marginLeft: axisMargin(A.y, data.map((d) => d[y]), o, zero),
+    marginLeft: axisMargin(A.y, [...data.map((d) => d[y]), ...annotationValues(o)], o, zero),
     x: {
       label: years || !shown(A.x) ? null : A.x.label, tickFormat: tickOf(A.x),
       // whole years only, however short the chosen range is
@@ -166,6 +204,11 @@ function lineChart(spec, data, A, o, width, all) {
           x, y, z: series, stroke, ...weight,
           strokeDasharray: DASHES[i % DASHES.length],
         })),
+      ...annotationMarks(o, { xValue: (v) => {
+        const [lo, hi] = d3.extent(data, (d) => d[x]);
+        if (lo instanceof Date) v = new Date(v);
+        return v >= lo && v <= hi ? v : null; // outside the chosen years: not drawn
+      } }),
       Plot.dot(data, pointer({ x, y, fill: stroke, r: 4, stroke: "white" })),
       Plot.tip(data, pointer({ x, y, title: tipText(spec.aes) })),
     ],
@@ -188,14 +231,15 @@ function barChart(spec, data, A, o, width, all) {
     const total = d3.rollup(data, (v) => d3.sum(v, (d) => d[y]), (d) => d[cat]);
     domain = d3.sort(cats, (c) => (o.sort === "asc" ? total.get(c) : -total.get(c)));
   }
-  const every = Math.ceil(cats.length / 12); // thin out crowded labels (e.g. years)
+  const every = Math.ceil(cats.length / Math.min(12, Math.max(2, Math.floor(width / 60)))); // thin out crowded labels (e.g. years)
   const catScale = {
     label: null, domain,
-    tickFormat: (d, i) => (textual || i % every === 0 ? fmt(A.x, d, { tick: true }) : ""),
+    tickFormat: (d, i) => (textual || horizontal || i % every === 0 ? fmt(A.x, d, { tick: true }) : ""),
   };
   const valScale = { label: shown(A.y) ? A.y.label : null, grid: true, tickFormat: tickOf(A.y), domain: o.y_domain };
   // stacked bars reach the sum of their category
   const tops = grouped ? data.map((d) => d[y]) : d3.rollups(data, (v) => d3.sum(v, (d) => d[y]), (d) => d[cat]).map((r) => r[1]);
+  tops.push(...annotationValues(o));
   const longest = d3.max(cats, (c) => String(c).length);
   const left = horizontal ? Math.min(220, longest * 7.5 + 12) : null;
   const title = tipText(spec.aes);
@@ -217,9 +261,15 @@ function barChart(spec, data, A, o, width, all) {
         [grouped ? facetCh : catCh]: cat,
         ...(grouped ? { [catCh]: fill } : {}),
         [valCh]: y, fill, title, tip: true,
+        clip: o.y_domain ? true : undefined, // a fixed axis range that leaves out zero would let bars spill out
         ...(hi && fillA ? { fillOpacity: (d) => (hi(d) ? 1 : 0.4) } : {}),
       }),
       horizontal ? Plot.ruleX([0]) : Plot.ruleY([0]),
+      ...annotationMarks(o, {
+        ch: { x: catCh, y: valCh },
+        // a category that is shown; none for side-by-side groups, whose categories are facets
+        xValue: (v) => (grouped ? null : domain.find((c) => String(c) === String(v)) ?? null),
+      }),
     ],
   });
 }
@@ -247,6 +297,10 @@ async function mapChart(spec, data, A, o, width) {
   const row = (f) => rows.get(String(f.properties[key]));
   const title = tipText(spec.aes);
   const hi = highlighter(A);
+  // colour settings on the fill aesthetic win over options: each tab can have its own scale
+  const c = { ...o };
+  for (const k of ["scheme", "reverse", "midpoint", "fill_domain"]) if (A.fill[k] != null) c[k] = A.fill[k];
+  const diverging = c.midpoint != null;
   width = Math.min(width, 760);
   const [, [, height]] = d3.geoPath(d3.geoMercator().fitWidth(width, fc)).bounds(fc);
 
@@ -254,9 +308,16 @@ async function mapChart(spec, data, A, o, width) {
     ...base(o, width),
     height: o.height ?? Math.ceil(height),
     projection: { type: o.projection ?? "mercator", domain: fc },
-    color: { type: "linear", scheme: o.scheme ?? "viridis", reverse: o.reverse, unknown: "#eeede8" },
+    color: {
+      // midpoint: two-sided scale around that value (e.g. 0 for a change); scheme: a name, or a list of colours
+      type: diverging ? "diverging" : "linear", pivot: diverging ? c.midpoint : undefined,
+      ...(Array.isArray(c.scheme) ? { interpolate: d3.piecewise(d3.interpolateRgb, c.scheme) } : { scheme: c.scheme ?? (diverging ? "rdylgn" : "viridis") }),
+      domain: c.fill_domain, clamp: c.fill_domain ? true : undefined, // values outside get the end colours
+      reverse: c.reverse, unknown: "#eeede8",
+    },
     marks: [
-      Plot.geo(fc.features, { fill: (f) => row(f)?.[A.fill.field], stroke: "white", strokeWidth: 1 }),
+      // a two-sided scale is pale in the middle, where white borders would vanish
+      Plot.geo(fc.features, { fill: (f) => row(f)?.[A.fill.field], stroke: diverging ? "#a9a8a2" : "white", strokeWidth: diverging ? 0.5 : 1 }),
       // highlight: colour is the data here, so highlighted regions get a dark outline
       // (white under dark, so that the outline shows on both ends of the colour scale)
       hi ? Plot.geo(fc.features.filter((f) => hi(row(f))), { fill: "none", stroke: "white", strokeWidth: 5 }) : null,
@@ -282,7 +343,52 @@ async function mapChart(spec, data, A, o, width) {
   return h("div", {}, legend, plot); // the map stays the last svg (see downloadPng)
 }
 
-const TYPES = { line: lineChart, bar: barChart, map: mapChart };
+// Population pyramid: x = age (vertical axis, one bar per age), y = count, fill = the two sides (first value on
+// the left), frame = the year shown (`data` holds that year only). Rows whose linetype is not its first value
+// (e.g. a projection) are drawn pale. options.reference: a frame drawn as an outline over the others.
+function pyramidChart(spec, data, A, o, width, all) {
+  const age = A.x.field, y = A.y.field, side = label(A.fill), frame = A.frame.field;
+  const sides = [...new Set(all.map((d) => d[side]))];
+  const sign = (d) => (d[side] === sides[0] ? -1 : 1);
+  const max = d3.max(all, (d) => d[y]);
+  const kind = A.linetype && label(A.linetype);
+  const firstKind = kind ? all[0][kind] : null;
+  const pale = kind && data[0]?.[kind] !== firstKind;
+  const now = data[0]?.[frame];
+  // outline of the reference frame: a step line along the ages of each side
+  const ref = o.reference != null && String(o.reference) !== String(now)
+    ? d3.sort(all.filter((d) => String(d[frame]) === String(o.reference)), (d) => d[age])
+      .flatMap((d) => [0, 1].map((k) => ({ s: d[side], x: sign(d) * d[y], y: d[age] + k })))
+    : [];
+  const ages = d3.extent(all, (d) => d[age]);
+  const corner = [fmt(A.frame, now), pale ? data[0][kind] : null].filter(Boolean).join(" · ");
+
+  return Plot.plot({
+    ...base(o, width),
+    height: o.height ?? Math.min(560, Math.max(380, width * 0.75)),
+    marginLeft: 40,
+    x: {
+      domain: [-max, max], nice: true, grid: true, label: shown(A.y) ? withUnit(A.y) : null, labelAnchor: "center",
+      ticks: Math.max(4, Math.floor(width / 90)),
+      tickFormat: (v) => fmt(A.y, Math.abs(v), { tick: true }),
+    },
+    y: { domain: [ages[0], ages[1] + 1], label: shown(A.x) ? A.x.label : null, ticks: d3.range(0, ages[1] + 1, 10), tickFormat: (v) => fmt(A.x, v) },
+    color: colourScale(all, A.fill, o),
+    marks: [
+      Plot.rectX(data, {
+        x1: 0, x2: (d) => sign(d) * d[y], y1: (d) => d[age], y2: (d) => d[age] + 1, inset: 0,
+        fill: side, fillOpacity: pale ? 0.4 : 0.9,
+        title: tipText(spec.aes), tip: { pointer: "y" },
+      }),
+      Plot.ruleX([0], { stroke: "white", strokeWidth: 1 }),
+      ref.length ? Plot.line(ref, { x: "x", y: "y", z: "s", stroke: "#1f1f1e", strokeWidth: 1.2 }) : null,
+      Plot.text([corner], { frameAnchor: "top-right", fontSize: 18, fontWeight: 600, fill: "#1f1f1e", dy: 4 }),
+      ref.length ? Plot.text([`Obrys: ${fmt(A.frame, o.reference)}`], { frameAnchor: "top-right", dy: 28, fill: "#52514e", fontSize: 12 }) : null,
+    ],
+  });
+}
+
+const TYPES = { line: lineChart, bar: barChart, map: mapChart, pyramid: pyramidChart };
 
 // ---------- card: title, tabs, table, footer ----------
 function dashLegend(data, A) {
@@ -364,6 +470,23 @@ function yearSlider(years, gap, onChange) {
   return h("div", { class: "chart-timeline" }, fromLabel, track, toLabel);
 }
 
+// Slider with one handle over `values`, starting at `start`; calls onChange(value)
+function frameSlider(values, start, onChange) {
+  const last = values.length - 1;
+  const input = h("input", { type: "range", min: 0, max: last, step: 1, value: Math.max(0, values.indexOf(start)), "aria-label": "Rok" });
+  const text = h("span", { class: "timeline-year" });
+  const track = h("div", { class: "timeline-track" }, h("div", { class: "timeline-fill" }), input);
+  const sync = (moved) => {
+    const i = +input.value;
+    text.textContent = values[i];
+    track.style.setProperty("--to", last ? i / last : 1);
+    if (moved) onChange(values[i]);
+  };
+  input.addEventListener("input", () => sync(true));
+  sync(false);
+  return h("div", { class: "chart-timeline" }, track, text);
+}
+
 // PNG = title + chart + source drawn on a white canvas (colour legend is not included)
 async function downloadPng(spec, body) {
   const live = [...body.querySelectorAll("svg")].at(-1); // the chart itself; legends come before it
@@ -408,7 +531,16 @@ export async function renderChart(el, id = el.dataset.chart) {
       a.label = plain(a.label); // labels go into the SVG: plain text only
       if (a.type === "highlight") a.show = false; // never in a legend or the tooltip
     }
-    const A = Object.fromEntries(spec.aes.map((a) => [a.type, a]));
+    // Tabs: a switch in the chart; each tab draws the aesthetics with its `tab` plus those without one
+    const tabList = spec.tabs ?? [];
+    let tab = tabList[0]?.id;
+    let aes, A; // aesthetics of the current tab, and the same by type
+    const setTab = (id) => {
+      tab = id;
+      aes = spec.aes.filter((a) => a.tab == null || !tabList.length || a.tab === tab);
+      A = Object.fromEntries(aes.map((a) => [a.type, a]));
+    };
+    setTab(tab);
     if (o.filter_latest) { // keep only the newest period of the given column
       const latest = d3.max(data, (d) => d[o.filter_latest]);
       data = Object.assign(data.filter((d) => +d[o.filter_latest] === +latest), { columns: data.columns });
@@ -416,28 +548,52 @@ export async function renderChart(el, id = el.dataset.chart) {
     if (!TYPES[spec.type]) throw new Error(`neznámý typ grafu „${spec.type}“`);
 
     const body = h("div", { class: "chart-body" });
-    const table = h("div", { class: "chart-table-wrap", hidden: true }, dataTable(spec, data));
+    const subset = (keep) => Object.assign(data.filter(keep), { columns: data.columns });
+
+    // Frame slider (pyramid): one value of the frame column at a time. Starts at options.frame, else at the
+    // last frame of the first linetype value (the last actual year before a projection), else at the last one.
+    const ff = A.frame?.field;
+    const frames = ff ? d3.sort(new Set(data.map((d) => d[ff]))) : [];
+    const kind = A.linetype && label(A.linetype);
+    const start = o.frame ?? (kind ? d3.max(data.filter((d) => d[kind] === data[0][kind]), (d) => d[ff]) : frames.at(-1));
+    let shown = ff ? subset((d) => d[ff] === start) : data, stale = false;
+    const table = h("div", { class: "chart-table-wrap", hidden: true }, dataTable(spec, shown));
 
     // Year slider: any line or bar chart whose x is a year (options.timeline = false turns it off)
-    const xf = A.x?.field;
-    const years = spec.type !== "map" && A.x?.format === "year" && o.timeline !== false
+    const xf = A.x?.field; // tabs share the x column
+    const years = (spec.type === "line" || spec.type === "bar") && A.x?.format === "year" && o.timeline !== false
       ? d3.sort(new Set(data.map((d) => d[xf]).filter(Number.isFinite))) : [];
-    let shown = data, stale = false;
-    const slider = years.length > 2 && yearSlider(years, spec.type === "line" ? 1 : 0, (a, b) => {
-      shown = Object.assign(data.filter((d) => d[xf] >= a && d[xf] <= b), { columns: data.columns });
+    const update = (keep) => {
+      shown = subset(keep);
       stale = true;
       table.replaceChildren(dataTable(spec, shown));
       draw();
-    });
+    };
+    const slider = ff
+      ? frames.length > 1 && frameSlider(frames, start, (v) => update((d) => d[ff] === v))
+      : years.length > 2 && yearSlider(years, spec.type === "line" ? 1 : 0, (a, b) => update((d) => d[xf] >= a && d[xf] <= b));
     const tabs = ["Graf", "Tabulka"].map((name, i) =>
       h("button", {
         class: "chart-tab", type: "button", "aria-pressed": String(i === 0),
         onclick: () => {
           tabs.forEach((t, j) => t.setAttribute("aria-pressed", String(i === j)));
           body.hidden = i !== 0;
+          if (switcher) switcher.hidden = i !== 0;
           table.hidden = i !== 1;
         },
       }, name));
+    const switcher = tabList.length > 1 && h("div", { class: "chart-switch", role: "group", "aria-label": "Zobrazený ukazatel" },
+      tabList.map((t) => h("button", {
+        class: "chart-tab", type: "button", "aria-pressed": String(t.id === tab),
+        onclick: (e) => {
+          for (const b of switcher.children) b.setAttribute("aria-pressed", String(b === e.currentTarget));
+          setTab(t.id);
+          stale = true;
+          draw();
+        },
+      }, plain(t.label))));
+    // the PNG shows the tab on screen, named after the subtitle
+    const pngSpec = () => ({ ...spec, subtitle: [plain(spec.subtitle), tabList.find((t) => t.id === tab)?.label].filter(Boolean).join(" – ") });
 
     el.classList.add("chart-card");
     el.replaceChildren(...[
@@ -446,6 +602,7 @@ export async function renderChart(el, id = el.dataset.chart) {
           h("h3", { class: "chart-title" }, rich(spec.title)),
           spec.subtitle ? h("p", { class: "chart-subtitle" }, rich(spec.subtitle)) : null),
         h("div", { class: "chart-tabs" }, tabs)),
+      switcher,
       body,
       table,
       slider,
@@ -453,7 +610,7 @@ export async function renderChart(el, id = el.dataset.chart) {
         sourceLine(spec),
         h("div", { class: "chart-actions" },
           h("a", { class: "chart-action", href: csvUrl, download: `${id}.csv` }, "Stáhnout data (CSV)"),
-          h("button", { class: "chart-action", type: "button", onclick: () => downloadPng(spec, body) }, "Stáhnout PNG"))),
+          h("button", { class: "chart-action", type: "button", onclick: () => downloadPng(pngSpec(), body) }, "Stáhnout PNG"))),
     ].filter(Boolean));
 
     let drawn = 0;
@@ -462,8 +619,10 @@ export async function renderChart(el, id = el.dataset.chart) {
       if (!width || (width === drawn && !stale)) return; // zero width = the table tab is open
       drawn = width;
       stale = false;
-      const plot = await TYPES[spec.type](spec, shown, A, o, width, data);
-      body.replaceChildren(...[dashLegend(data, A), plot].filter(Boolean));
+      // tabs of a line or bar chart: only the rows that have this tab's y (a tab may use its own rows)
+      const has = tabList.length && A.y ? (d) => d[A.y.field] != null : null;
+      const plot = await TYPES[spec.type]({ ...spec, aes }, has ? shown.filter(has) : shown, A, o, width, has ? data.filter(has) : data);
+      body.replaceChildren(...[spec.type === "line" && dashLegend(data, A), plot].filter(Boolean));
     }
     await draw();
     new ResizeObserver(() => requestAnimationFrame(draw)).observe(body);

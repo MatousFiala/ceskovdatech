@@ -1,0 +1,37 @@
+{
+  "id": "nerovnost-top1",
+  "data": "nerovnost-top1.csv",
+  "type": "line",
+  "title": "",
+  "subtitle": "",
+  "aes": [
+    {
+      "type": "x",
+      "field": "year",
+      "label": "",
+      "format": "year"
+    },
+    {
+      "type": "y",
+      "field": "podil",
+      "label": "",
+      "format": "percent"
+    },
+    {
+      "type": "colour",
+      "field": "ukazatel",
+      "label": ""
+    }
+  ],
+  "source": [
+    {
+      "name": "World Inequality Database",
+      "dataset": "Top 1% income share (pre-tax national income) and wealth share, via Our World in Data",
+      "url": "https://wid.world/country/czech-republic/",
+      "retrieved": "2026-11-17"
+    }
+  ],
+  "data_note": "",
+  "last_updated": "2026-11-17",
+  "rows": 78
+}

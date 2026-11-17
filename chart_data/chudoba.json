@@ -1,0 +1,98 @@
+{
+  "id": "chudoba",
+  "data": "chudoba.csv",
+  "type": "line",
+  "title": "",
+  "subtitle": "",
+  "tabs": [
+    {
+      "id": "miry",
+      "label": ""
+    },
+    {
+      "id": "ukazatele",
+      "label": ""
+    }
+  ],
+  "aes": [
+    {
+      "type": "x",
+      "field": "year",
+      "label": "",
+      "format": "year"
+    },
+    {
+      "type": "y",
+      "field": "chudoba",
+      "label": "",
+      "format": "percent",
+      "tab": "miry"
+    },
+    {
+      "type": "colour",
+      "field": "mira",
+      "label": "",
+      "tab": "miry"
+    },
+    {
+      "type": "y",
+      "field": "podil",
+      "label": "",
+      "format": "percent",
+      "tab": "ukazatele"
+    },
+    {
+      "type": "colour",
+      "field": "ukazatel",
+      "label": "",
+      "tab": "ukazatele"
+    }
+  ],
+  "source": [
+    {
+      "name": "Eurostat",
+      "dataset": "At-risk-of-poverty rate (ilc_li02)",
+      "url": "https://ec.europa.eu/eurostat/databrowser/view/ilc_li02/default/table",
+      "retrieved": "2026-11-17"
+    },
+    {
+      "name": "Eurostat",
+      "dataset": "At-risk-of-poverty rate anchored at a fixed moment in time (2008) (ilc_li22b)",
+      "url": "https://ec.europa.eu/eurostat/databrowser/view/ilc_li22b/default/table",
+      "retrieved": "2026-11-17"
+    },
+    {
+      "name": "Eurostat",
+      "dataset": "Severe material and social deprivation rate (ilc_mdsd11)",
+      "url": "https://ec.europa.eu/eurostat/databrowser/view/ilc_mdsd11/default/table",
+      "retrieved": "2026-11-17"
+    },
+    {
+      "name": "Eurostat",
+      "dataset": "Housing cost overburden rate (ilc_lvho07a)",
+      "url": "https://ec.europa.eu/eurostat/databrowser/view/ilc_lvho07a/default/table",
+      "retrieved": "2026-11-17"
+    },
+    {
+      "name": "Eurostat",
+      "dataset": "Inability to face unexpected financial expenses (ilc_mdes04)",
+      "url": "https://ec.europa.eu/eurostat/databrowser/view/ilc_mdes04/default/table",
+      "retrieved": "2026-11-17"
+    },
+    {
+      "name": "Eurostat",
+      "dataset": "Inability to keep home adequately warm (ilc_mdes01)",
+      "url": "https://ec.europa.eu/eurostat/databrowser/view/ilc_mdes01/default/table",
+      "retrieved": "2026-11-17"
+    },
+    {
+      "name": "Eurostat",
+      "dataset": "Inability to afford a meal with meat, chicken, fish (or vegetarian equivalent) every second day (ilc_mdes03)",
+      "url": "https://ec.europa.eu/eurostat/databrowser/view/ilc_mdes03/default/table",
+      "retrieved": "2026-11-17"
+    }
+  ],
+  "data_note": "",
+  "last_updated": "2026-11-17",
+  "rows": 135
+}

@@ -1,0 +1,34 @@
+{
+  "id": "nerovnost-gini",
+  "data": "nerovnost-gini.csv",
+  "type": "line",
+  "title": "",
+  "subtitle": "",
+  "aes": [
+    {
+      "type": "x",
+      "field": "year",
+      "label": "",
+      "format": "year"
+    },
+    {
+      "type": "y",
+      "field": "gini",
+      "label": ""
+    }
+  ],
+  "source": [
+    {
+      "name": "Eurostat",
+      "dataset": "Gini coefficient of equivalised disposable income (ilc_di12)",
+      "url": "https://ec.europa.eu/eurostat/databrowser/view/ilc_di12/default/table",
+      "retrieved": "2026-11-17"
+    }
+  ],
+  "data_note": "",
+  "options": {
+    "y_zero": false
+  },
+  "last_updated": "2026-11-17",
+  "rows": 21
+}

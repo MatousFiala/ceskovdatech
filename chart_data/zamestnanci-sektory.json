@@ -1,0 +1,37 @@
+{
+  "id": "zamestnanci-sektory",
+  "data": "zamestnanci-sektory.csv",
+  "type": "line",
+  "title": "Zaměstnanci podle sektoru od roku 1993",
+  "subtitle": "Procento zaměstnanců podle sektoru (bez [sebezaměstnaných::Podnikatelé a osoby samostatně výdělečně činné]), %",
+  "aes": [
+    {
+      "type": "x",
+      "field": "year",
+      "label": "Rok",
+      "format": "year"
+    },
+    {
+      "type": "y",
+      "field": "podil",
+      "label": "Podíl zaměstnanců",
+      "format": "percent"
+    },
+    {
+      "type": "colour",
+      "field": "sektor",
+      "label": "Sektor"
+    }
+  ],
+  "source": [
+    {
+      "name": "ČSÚ",
+      "dataset": "Národní účty – zaměstnanci (osoby)",
+      "url": "https://apl.czso.cz/pll/rocenka/rocenkavyber.makroek_pracov",
+      "retrieved": "2026-11-17"
+    }
+  ],
+  "data_note": "Podle sekcí CZ-NACE: průmysl = B–E (těžba, zpracovatelský průmysl, energetika, voda a odpady); obchod, doprava a pohostinství = G–I; veřejná správa, školství a zdravotnictví = O–Q; ostatní služby = J–N a R–T (IT, finance, nemovitosti, odborné a administrativní činnosti, kultura a další).",
+  "last_updated": "2026-11-17",
+  "rows": 198
+}

@@ -123,6 +123,9 @@ main > .lede, main > .breadcrumb { text-align: left; hyphens: manual; }
 }
 .chart-tab + .chart-tab { border-left: 1px solid var(--line); }
 .chart-tab[aria-pressed="true"] { background: var(--bg-2); color: var(--text-primary); font-weight: 600; }
+/* switch between the tabs of a chart (write_chart(tabs = ...)) */
+.chart-switch { display: inline-flex; flex-wrap: wrap; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; margin: 2px 0 10px; }
+.chart-switch[hidden] { display: none; }
 
 .chart-body { min-height: 120px; }
 .chart-body figure { margin: 0; }

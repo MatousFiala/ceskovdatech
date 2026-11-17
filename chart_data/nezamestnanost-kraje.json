@@ -22,11 +22,11 @@
     {
       "name": "ČSÚ",
       "dataset": "Zaměstnanost a nezaměstnanost (VŠPS)",
-      "url": "https://data.csu.gov.cz/datastat/info/SADA/ZAM01",
-      "retrieved": "2026-11-16"
+      "url": "https://data.csu.gov.cz/datastat/data/VYBER/ZAM01T2",
+      "retrieved": "2026-11-17"
     }
   ],
   "data_note": "",
-  "last_updated": "2026-11-16",
+  "last_updated": "2026-11-17",
   "rows": 14
 }

@@ -1,0 +1,37 @@
+{
+  "id": "zdravi-psychiatrie",
+  "data": "zdravi-psychiatrie.csv",
+  "type": "line",
+  "title": "",
+  "subtitle": "",
+  "aes": [
+    {
+      "type": "x",
+      "field": "year",
+      "label": "",
+      "format": "year"
+    },
+    {
+      "type": "y",
+      "field": "pacienti",
+      "label": "",
+      "unit": "tis."
+    },
+    {
+      "type": "colour",
+      "field": "diagnoza",
+      "label": ""
+    }
+  ],
+  "source": [
+    {
+      "name": "ÚZIS",
+      "dataset": "Ambulantní péče v psychiatrii (NRHZS)",
+      "url": "https://www.nzip.cz/data/2058-ambulantni-pece-psychiatrie-otevrena-data",
+      "retrieved": "2026-11-17"
+    }
+  ],
+  "data_note": "",
+  "last_updated": "2026-11-17",
+  "rows": 96
+}

@@ -1,0 +1,104 @@
+{
+  "id": "chudoba-isv-orp",
+  "data": "chudoba-isv-orp.csv",
+  "type": "map",
+  "title": "",
+  "subtitle": "",
+  "tabs": [
+    {
+      "id": "isv",
+      "label": ""
+    },
+    {
+      "id": "exekuce",
+      "label": ""
+    },
+    {
+      "id": "pnz",
+      "label": ""
+    },
+    {
+      "id": "pnb",
+      "label": ""
+    },
+    {
+      "id": "uoz",
+      "label": ""
+    },
+    {
+      "id": "odchody",
+      "label": ""
+    }
+  ],
+  "aes": [
+    {
+      "type": "geometry",
+      "field": "orp_kod",
+      "label": "",
+      "labeller": "orp_nazev"
+    },
+    {
+      "type": "fill",
+      "field": "isv",
+      "label": "",
+      "tab": "isv",
+      "scheme": "reds"
+    },
+    {
+      "type": "fill",
+      "field": "exekuce",
+      "label": "",
+      "tab": "exekuce",
+      "scheme": "oranges"
+    },
+    {
+      "type": "fill",
+      "field": "pnz",
+      "label": "",
+      "tab": "pnz",
+      "scheme": "purples"
+    },
+    {
+      "type": "fill",
+      "field": "pnb",
+      "label": "",
+      "tab": "pnb",
+      "scheme": "blues"
+    },
+    {
+      "type": "fill",
+      "field": "uoz",
+      "label": "",
+      "tab": "uoz",
+      "scheme": "greens"
+    },
+    {
+      "type": "fill",
+      "field": "odchody",
+      "label": "",
+      "tab": "odchody",
+      "scheme": "greys"
+    }
+  ],
+  "source": [
+    {
+      "name": "MMR",
+      "dataset": "Index sociálního vyloučení 2016–2024",
+      "url": "https://mmr.gov.cz/cs/microsites/socialni-zaclenovani/index-socialniho-vylouceni/data-a-mapy",
+      "retrieved": "2026-11-17"
+    },
+    {
+      "name": "ČSÚ",
+      "dataset": "Základní údaje o stavu a pohybu obyvatel podle obcí a měst",
+      "url": "https://data.csu.gov.cz/datastat/data/VYBER/OBY01B01T01",
+      "retrieved": "2026-11-17"
+    }
+  ],
+  "data_note": "",
+  "options": {
+    "geo": "orp.geojson",
+    "geo_key": "KOD_ORP"
+  },
+  "last_updated": "2026-11-17",
+  "rows": 206
+}

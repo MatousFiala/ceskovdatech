@@ -1,0 +1,35 @@
+{
+  "id": "zdravi-nadeje-doziti",
+  "data": "zdravi-nadeje-doziti.csv",
+  "type": "line",
+  "title": "",
+  "subtitle": "",
+  "aes": [
+    {
+      "type": "x",
+      "field": "year",
+      "label": "",
+      "format": "year"
+    },
+    {
+      "type": "y",
+      "field": "nadeje",
+      "label": "",
+      "unit": "let"
+    }
+  ],
+  "source": [
+    {
+      "name": "ČSÚ",
+      "dataset": "Úmrtnostní tabulky za ČR",
+      "url": "https://data.csu.gov.cz/datastat/data/VYBER/OBY04BCRT02",
+      "retrieved": "2026-11-17"
+    }
+  ],
+  "data_note": "",
+  "options": {
+    "y_zero": false
+  },
+  "last_updated": "2026-11-17",
+  "rows": 106
+}

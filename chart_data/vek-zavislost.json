@@ -1,0 +1,54 @@
+{
+  "id": "vek-zavislost",
+  "data": "vek-zavislost.csv",
+  "type": "line",
+  "title": "",
+  "subtitle": "",
+  "aes": [
+    {
+      "type": "x",
+      "field": "year",
+      "label": "",
+      "format": "year"
+    },
+    {
+      "type": "y",
+      "field": "index",
+      "label": "",
+      "format": "percent"
+    },
+    {
+      "type": "colour",
+      "field": "zavislost",
+      "label": ""
+    },
+    {
+      "type": "linetype",
+      "field": "data",
+      "label": ""
+    }
+  ],
+  "source": [
+    {
+      "name": "Eurostat",
+      "dataset": "Population on 1 January by age and sex (demo_pjan)",
+      "url": "https://ec.europa.eu/eurostat/databrowser/view/demo_pjan/default/table",
+      "retrieved": "2026-11-17"
+    },
+    {
+      "name": "ČSÚ",
+      "dataset": "Počet obyvatel podle pohlaví a jednotek věku k 31. 12.",
+      "url": "https://data.csu.gov.cz/datastat/data/VYBER/OBY02BHVDT01",
+      "retrieved": "2026-11-17"
+    },
+    {
+      "name": "ČSÚ",
+      "dataset": "Projektovaný počet obyvatel podle pohlaví a jednotek věku (projekce ČSÚ 2023)",
+      "url": "https://data.csu.gov.cz/datastat/data/VYBER/OBY02PROJ1AT01",
+      "retrieved": "2026-11-17"
+    }
+  ],
+  "data_note": "",
+  "last_updated": "2026-11-17",
+  "rows": 426
+}

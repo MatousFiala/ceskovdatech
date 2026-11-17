@@ -1,0 +1,37 @@
+{
+  "id": "zdravi-silc-prijem",
+  "data": "zdravi-silc-prijem.csv",
+  "type": "line",
+  "title": "",
+  "subtitle": "",
+  "aes": [
+    {
+      "type": "x",
+      "field": "year",
+      "label": "",
+      "format": "year"
+    },
+    {
+      "type": "y",
+      "field": "dobre_zdravi",
+      "label": "",
+      "format": "percent"
+    },
+    {
+      "type": "colour",
+      "field": "kvintil",
+      "label": ""
+    }
+  ],
+  "source": [
+    {
+      "name": "Eurostat",
+      "dataset": "Self-perceived health by sex, age and income quintile (hlth_silc_10)",
+      "url": "https://ec.europa.eu/eurostat/databrowser/view/hlth_silc_10/default/table",
+      "retrieved": "2026-11-17"
+    }
+  ],
+  "data_note": "",
+  "last_updated": "2026-11-17",
+  "rows": 105
+}

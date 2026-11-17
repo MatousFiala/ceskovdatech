@@ -10,3 +10,16 @@ nuts <- fromJSON("https://gisco-services.ec.europa.eu/distribution/v2/nuts/geojs
 nuts$features <- keep(nuts$features, \(f) f$properties$CNTR_CODE == "CZ")
 
 write_json(nuts, "geo/kraje.geojson", auto_unbox = TRUE, digits = 5)
+
+# Správní obvody ORP (balíček RCzechia, podle ČÚZK) -> geo/orp.geojson
+# KOD_ORP matches the ORP codes used by ČSÚ; Praha is one unit with the code 1000.
+# Simplified to about 400 m, which is below one pixel at the size the maps are drawn.
+library(sf)
+
+RCzechia::orp_polygony() |>
+  ungroup() |>
+  select(KOD_ORP, NAZ_ORP) |>
+  st_transform(5514) |>
+  st_simplify(dTolerance = 400) |>
+  st_transform(4326) |>
+  st_write("geo/orp.geojson", delete_dsn = TRUE, quiet = TRUE, layer_options = "COORDINATE_PRECISION=4")

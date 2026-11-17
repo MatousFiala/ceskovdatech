@@ -1,0 +1,40 @@
+{
+  "id": "zdravi-nadeje-vek",
+  "data": "zdravi-nadeje-vek.csv",
+  "type": "line",
+  "title": "",
+  "subtitle": "",
+  "aes": [
+    {
+      "type": "x",
+      "field": "year",
+      "label": "",
+      "format": "year"
+    },
+    {
+      "type": "y",
+      "field": "vek_umrti",
+      "label": "",
+      "unit": "let"
+    },
+    {
+      "type": "colour",
+      "field": "vek",
+      "label": ""
+    }
+  ],
+  "source": [
+    {
+      "name": "ČSÚ",
+      "dataset": "Úmrtnostní tabulky za ČR",
+      "url": "https://data.csu.gov.cz/datastat/data/VYBER/OBY04BCRT02",
+      "retrieved": "2026-11-17"
+    }
+  ],
+  "data_note": "",
+  "options": {
+    "y_zero": false
+  },
+  "last_updated": "2026-11-17",
+  "rows": 636
+}

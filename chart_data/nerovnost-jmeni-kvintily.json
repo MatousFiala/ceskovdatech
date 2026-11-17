@@ -1,0 +1,49 @@
+{
+  "id": "nerovnost-jmeni-kvintily",
+  "data": "nerovnost-jmeni-kvintily.csv",
+  "type": "bar",
+  "title": "",
+  "subtitle": "",
+  "tabs": [
+    {
+      "id": "prumer",
+      "label": ""
+    },
+    {
+      "id": "podil",
+      "label": ""
+    }
+  ],
+  "aes": [
+    {
+      "type": "x",
+      "field": "kvintil",
+      "label": ""
+    },
+    {
+      "type": "y",
+      "field": "prumer",
+      "label": "",
+      "unit": "mil. Kč",
+      "tab": "prumer"
+    },
+    {
+      "type": "y",
+      "field": "podil",
+      "label": "",
+      "format": "percent",
+      "tab": "podil"
+    }
+  ],
+  "source": [
+    {
+      "name": "ČSÚ",
+      "dataset": "Finanční situace domácností 2022 až 2024, tab. 12: Čisté jmění domácností ČR podle kvintilů čistého jmění",
+      "url": "https://csu.gov.cz/produkty/financni-situace-domacnosti-2022-az-2024-",
+      "retrieved": "2026-11-17"
+    }
+  ],
+  "data_note": "",
+  "last_updated": "2026-11-17",
+  "rows": 5
+}

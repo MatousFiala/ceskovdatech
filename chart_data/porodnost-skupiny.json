@@ -1,0 +1,80 @@
+{
+  "id": "porodnost-skupiny",
+  "data": "porodnost-skupiny.csv",
+  "type": "line",
+  "title": "",
+  "subtitle": "",
+  "tabs": [
+    {
+      "id": "vek",
+      "label": ""
+    },
+    {
+      "id": "stav",
+      "label": ""
+    }
+  ],
+  "aes": [
+    {
+      "type": "x",
+      "field": "year",
+      "label": "",
+      "format": "year"
+    },
+    {
+      "type": "y",
+      "field": "podil_vek",
+      "label": "",
+      "format": "percent",
+      "tab": "vek"
+    },
+    {
+      "type": "colour",
+      "field": "skupina",
+      "label": "",
+      "tab": "vek"
+    },
+    {
+      "type": "y",
+      "field": "podil_stav",
+      "label": "",
+      "format": "percent",
+      "tab": "stav"
+    },
+    {
+      "type": "colour",
+      "field": "stav",
+      "label": "",
+      "tab": "stav"
+    }
+  ],
+  "source": [
+    {
+      "name": "Eurostat",
+      "dataset": "Live births by mother's age (demo_fagec)",
+      "url": "https://ec.europa.eu/eurostat/databrowser/view/demo_fagec/default/table",
+      "retrieved": "2026-11-17"
+    },
+    {
+      "name": "Eurostat",
+      "dataset": "Fertility indicators (demo_find)",
+      "url": "https://ec.europa.eu/eurostat/databrowser/view/demo_find/default/table",
+      "retrieved": "2026-11-17"
+    },
+    {
+      "name": "ČSÚ",
+      "dataset": "Živě narození podle pořadí, jednotek věku a rodinného stavu matky",
+      "url": "https://data.csu.gov.cz/datastat/data/VYBER/OBY03BT02",
+      "retrieved": "2026-11-17"
+    },
+    {
+      "name": "ČSÚ",
+      "dataset": "Narození - vybrané souhrnné údaje",
+      "url": "https://data.csu.gov.cz/datastat/data/VYBER/OBY03HVDT01",
+      "retrieved": "2026-11-17"
+    }
+  ],
+  "data_note": "",
+  "last_updated": "2026-11-17",
+  "rows": 462
+}

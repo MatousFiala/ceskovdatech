@@ -1,0 +1,41 @@
+{
+  "id": "obyvatele-cr",
+  "data": "obyvatele-cr.csv",
+  "type": "line",
+  "title": "Počet obyvatel Česka od roku 1785",
+  "subtitle": "Počet obyvatel žijící na území dnešní ČR, miliony",
+  "aes": [
+    {
+      "type": "x",
+      "field": "year",
+      "label": "Rok",
+      "format": "year"
+    },
+    {
+      "type": "y",
+      "field": "obyvatele",
+      "label": "Počet obyvatel",
+      "unit": "mil."
+    }
+  ],
+  "source": [
+    {
+      "name": "ČSÚ",
+      "dataset": "Obyvatelstvo - dlouhodobé časové řady za Českou republiku",
+      "url": "https://data.csu.gov.cz/datastat/data/VYBER/WOBYG",
+      "retrieved": "2026-11-17"
+    }
+  ],
+  "data_note": "",
+  "options": {
+    "annotations": [
+      {
+        "x": 1946,
+        "label": "Deportace českých Němců",
+        "align": "centre"
+      }
+    ]
+  },
+  "last_updated": "2026-11-17",
+  "rows": 241
+}

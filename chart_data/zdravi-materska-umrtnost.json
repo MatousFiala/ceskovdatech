@@ -1,0 +1,31 @@
+{
+  "id": "zdravi-materska-umrtnost",
+  "data": "zdravi-materska-umrtnost.csv",
+  "type": "line",
+  "title": "",
+  "subtitle": "",
+  "aes": [
+    {
+      "type": "x",
+      "field": "year",
+      "label": "",
+      "format": "year"
+    },
+    {
+      "type": "y",
+      "field": "umrtnost",
+      "label": ""
+    }
+  ],
+  "source": [
+    {
+      "name": "WHO",
+      "dataset": "Maternal mortality ratio (per 100 000 live births), UN MMEIG estimates",
+      "url": "https://www.who.int/data/gho/data/indicators/indicator-details/GHO/maternal-mortality-ratio-(per-100-000-live-births)",
+      "retrieved": "2026-11-17"
+    }
+  ],
+  "data_note": "",
+  "last_updated": "2026-11-17",
+  "rows": 39
+}

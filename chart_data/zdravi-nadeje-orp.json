@@ -1,0 +1,36 @@
+{
+  "id": "zdravi-nadeje-orp",
+  "data": "zdravi-nadeje-orp.csv",
+  "type": "map",
+  "title": "",
+  "subtitle": "",
+  "aes": [
+    {
+      "type": "geometry",
+      "field": "orp_kod",
+      "label": "",
+      "labeller": "orp_nazev"
+    },
+    {
+      "type": "fill",
+      "field": "nadeje",
+      "label": "",
+      "unit": "let"
+    }
+  ],
+  "source": [
+    {
+      "name": "ČSÚ",
+      "dataset": "Naděje dožití v SO ORP a Praze",
+      "url": "https://data.csu.gov.cz/datastat/data/VYBER/OBY04BORT01",
+      "retrieved": "2026-11-17"
+    }
+  ],
+  "data_note": "",
+  "options": {
+    "geo": "orp.geojson",
+    "geo_key": "KOD_ORP"
+  },
+  "last_updated": "2026-11-17",
+  "rows": 206
+}
