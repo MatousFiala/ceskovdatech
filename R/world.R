@@ -30,6 +30,12 @@ read_csv("https://ourworldindata.org/grapher/suicide-rate-who-mdb.csv?csvType=fu
          show_col_types = FALSE) |>
   write_csv("data/owid_suicide_who_mdb.csv")
 
+# Znečištění ovzduší: průměrná koncentrace PM2.5 vážená počtem obyvatel, µg/m³ (SatPM, Washington University
+# in St. Louis, satelitní odhady, jak je publikuje Our World in Data), od 1998
+read_csv("https://ourworldindata.org/grapher/pm25-air-pollution.csv?csvType=full",
+         show_col_types = FALSE) |>
+  write_csv("data/owid_pm25_air_pollution.csv")
+
 # Podíl nejbohatšího 1 % na příjmech (před zdaněním) a na majetku (World Inequality Database, jak ji publikuje
 # Our World in Data), všechny země a regiony
 walk(c("income-share-top-1-before-tax-wid", "wealth-share-richest-1-percent"), \(slug) {
@@ -37,13 +43,16 @@ walk(c("income-share-top-1-before-tax-wid", "wealth-share-richest-1-percent"), \
     write_csv(str_glue("data/owid_{slug}.csv"))
 })
 
-# Evropská unie (World Inequality Database): Our World in Data agregát EU nemá, proto z hromadného stažení WID
-# (zip 900 MB, uloží se jen řádky EU). Soubor EU má starší názvy proměnných: sptincj992 = podíl na příjmech
-# před zdaněním, shwealj992 = podíl na majetku; QY-MER = EU agregovaná podle tržních kurzů (jako regiony v OWID).
+# Giniho koeficient disponibilních příjmů (po zdanění a transferech, World Inequality Database) pro vybrané země,
+# EU a svět, z hromadného stažení WID (zip 900 MB, uloží se jen tyto řádky). Země mají proměnnou gdiinc992j,
+# EU (QY-MER, agregát podle tržních kurzů) a svět (WO) starší název gdiincj992.
 options(timeout = 3600)
 wid_zip <- tempfile(fileext = ".zip")
 download.file("https://wid.world/bulk_download/wid_all_data.zip", wid_zip, mode = "wb", quiet = TRUE)
-read_delim(unz(wid_zip, "WID_data_QY-MER.csv"), delim = ";", show_col_types = FALSE) |>
-  filter(variable %in% c("sptincj992", "shwealj992"), percentile == "p99p100") |>
-  write_csv("data/wid_eu.csv")
+c("CZ", "SK", "PL", "HU", "SI", "DE", "SE", "US", "BR", "QY-MER", "WO") |>
+  map(\(kod) read_delim(unz(wid_zip, str_glue("WID_data_{kod}.csv")), delim = ";",
+                        col_types = cols(.default = "c"))) |>
+  list_rbind() |>
+  filter(variable %in% c("gdiinc992j", "gdiincj992"), percentile == "p0p100") |>
+  write_csv("data/wid_gini.csv")
 unlink(wid_zip)

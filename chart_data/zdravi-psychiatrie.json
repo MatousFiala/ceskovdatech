@@ -2,25 +2,25 @@
   "id": "zdravi-psychiatrie",
   "data": "zdravi-psychiatrie.csv",
   "type": "line",
-  "title": "",
-  "subtitle": "",
+  "title": "Výskyt duševních poruch v ČR",
+  "subtitle": "Počet pacientů v [ambulantní::docházející za doktorem, tedy ne hospitalizovaní] péči psychiatra podle diagnózy, vlastní kategorizace",
   "aes": [
     {
       "type": "x",
       "field": "year",
-      "label": "",
+      "label": "Rok",
       "format": "year"
     },
     {
       "type": "y",
       "field": "pacienti",
-      "label": "",
+      "label": "Počet pacientů",
       "unit": "tis."
     },
     {
       "type": "colour",
       "field": "diagnoza",
-      "label": ""
+      "label": "Diagnóza"
     }
   ],
   "source": [
@@ -28,10 +28,10 @@
       "name": "ÚZIS",
       "dataset": "Ambulantní péče v psychiatrii (NRHZS)",
       "url": "https://www.nzip.cz/data/2058-ambulantni-pece-psychiatrie-otevrena-data",
-      "retrieved": "2026-11-17"
+      "retrieved": "2026-11-18"
     }
   ],
-  "data_note": "",
-  "last_updated": "2026-11-17",
+  "data_note": "Počet pacientů ambulantní psychiatrické péče hrazené z veřejného zdravotního pojištění podle základní diagnózy (MKN-10): Poruchy nálady F30–F39, úzkostné poruchy F40–F49, demence F00–F03 a Alzheimerova nemoc G30, závislosti F10–F19, poruchy s nástupem v dětství a dospívání F70–F99 (mentální retardace, poruchy psychického vývoje včetně autismu, ADHD a poruchy chování a emocí se začátkem v dětství a dospívání). Ostatní: hlavně schizofrenie, bipolární porucha, poruchy příjmu potravy a osobnosti.",
+  "last_updated": "2026-11-18",
   "rows": 96
 }

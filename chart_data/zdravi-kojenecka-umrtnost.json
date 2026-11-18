@@ -2,19 +2,19 @@
   "id": "zdravi-kojenecka-umrtnost",
   "data": "zdravi-kojenecka-umrtnost.csv",
   "type": "line",
-  "title": "",
-  "subtitle": "",
+  "title": "Kojenecká úmrtnost v ČR od roku 1919",
+  "subtitle": "Procento živě narozených dětí, které zemřelo do jednoho roku věku",
   "aes": [
     {
       "type": "x",
       "field": "year",
-      "label": "",
+      "label": "Rok",
       "format": "year"
     },
     {
       "type": "y",
       "field": "umrtnost",
-      "label": "",
+      "label": "Kojenecká úmrtnost",
       "format": "percent"
     }
   ],
@@ -23,22 +23,22 @@
       "name": "ČSÚ",
       "dataset": "Pohyb obyvatel České republiky v letech 1919–2023 – relativní údaje",
       "url": "https://csu.gov.cz/produkty/pocet-a-pohyb-obyvatel-ceske-republiky-v-letech-1919-2023",
-      "retrieved": "2026-11-17"
+      "retrieved": "2026-11-18"
     },
     {
       "name": "ČSÚ",
       "dataset": "Zemřelí kojenci do 1 roku",
       "url": "https://data.csu.gov.cz/datastat/data/VYBER/OBY04HT02",
-      "retrieved": "2026-11-17"
+      "retrieved": "2026-11-18"
     },
     {
       "name": "ČSÚ",
       "dataset": "Narození - vybrané souhrnné údaje",
       "url": "https://data.csu.gov.cz/datastat/data/VYBER/OBY03HVDT01",
-      "retrieved": "2026-11-17"
+      "retrieved": "2026-11-18"
     }
   ],
   "data_note": "",
-  "last_updated": "2026-11-17",
+  "last_updated": "2026-11-18",
   "rows": 107
 }

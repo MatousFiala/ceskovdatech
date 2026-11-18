@@ -2,19 +2,19 @@
   "id": "zdravi-nadeje-doziti",
   "data": "zdravi-nadeje-doziti.csv",
   "type": "line",
-  "title": "",
-  "subtitle": "",
+  "title": "Naděje dožití v ČR od roku 1920",
+  "subtitle": "[Naděje dožití při narození::Kolik let by v průměru prožil novorozenec, kdyby po celý život platila úmrtnost daného roku]",
   "aes": [
     {
       "type": "x",
       "field": "year",
-      "label": "",
+      "label": "Rok",
       "format": "year"
     },
     {
       "type": "y",
       "field": "nadeje",
-      "label": "",
+      "label": "Naděje dožití",
       "unit": "let"
     }
   ],
@@ -23,13 +23,13 @@
       "name": "ČSÚ",
       "dataset": "Úmrtnostní tabulky za ČR",
       "url": "https://data.csu.gov.cz/datastat/data/VYBER/OBY04BCRT02",
-      "retrieved": "2026-11-17"
+      "retrieved": "2026-11-18"
     }
   ],
-  "data_note": "",
+  "data_note": "Vážený průměr mužů a žen na základě poměru pohlaví -- 1028 chlapců na 1000 dívek. ČSÚ publikuje údaje jen odděleně.",
   "options": {
     "y_zero": false
   },
-  "last_updated": "2026-11-17",
+  "last_updated": "2026-11-18",
   "rows": 106
 }

@@ -12,7 +12,7 @@ eurostat_source <- function(id, dataset) {
 other_source <- function(name, dataset, url) list(name = name, dataset = dataset, url = url, retrieved = format(Sys.Date()))
 eurostat <- function(id) read_csv(str_glue("./data/eurostat_{id}.csv")) |> filter(!is.na(values))
 
-# ---------- (1) Chudoba: míry chudoby (tab 1) a ukazatele nedostatku (tab 2) ----------
+# ---------- (1) Chudoba: míry příjmové chudoby (1a) a ukazatele nedostatku (1b) ----------
 miry <- bind_rows(
     eurostat("ilc_li02") |>
         filter(geo == "CZ", unit == "PC", sex == "T", age == "TOTAL", statinfo == "MED_EI", rskpovth == "B_60") |>
@@ -38,33 +38,44 @@ ukazatele <- bind_rows(
         transmute(year = time, ukazatel = "Náklady na bydlení nad 40 % příjmu", podil = values),
     nedostatek("ilc_mdes04", "Nezvládne nečekaný výdaj"),
     nedostatek("ilc_mdes01", "Nemůže dostatečně vytápět byt"),
-    nedostatek("ilc_mdes03", "Nemůže si dovolit maso nebo rybu ob den")
+    nedostatek("ilc_mdes03", "Nemůže si dovolit bílkovinu ob den")
 ) |>
     mutate(podil = podil / 100, ukazatel = fct_inorder(ukazatel)) |>
     arrange(ukazatel, year)
 
 write_chart(
-    df = bind_rows(miry, ukazatele),
+    df = miry,
     id = "chudoba",
     type = "line",
-    title = "",
-    subtitle = "",
-    tabs = list(list(id = "miry", label = ""), list(id = "ukazatele", label = "")),
+    title = "Míra chudoby v ČR",
+    subtitle = "Procento domácností ohroženo chudobou na základě jejich příjmů",
     aes = list(
-        list(type = "x", field = "year", label = "", format = "year"),
-        list(type = "y", field = "chudoba", label = "", format = "percent", tab = "miry"),
-        list(type = "colour", field = "mira", label = "", tab = "miry"),
-        list(type = "y", field = "podil", label = "", format = "percent", tab = "ukazatele"),
-        list(type = "colour", field = "ukazatel", label = "", tab = "ukazatele")
+        list(type = "x", field = "year", label = "Rok", format = "year"),
+        list(type = "y", field = "chudoba", label = "Procento domácností", format = "percent"),
+        list(type = "colour", field = "mira", label = "Definice chudoby")
     ),
     source = list(eurostat_source("ilc_li02", "At-risk-of-poverty rate"),
-                  eurostat_source("ilc_li22b", "At-risk-of-poverty rate anchored at a fixed moment in time (2008)"),
-                  eurostat_source("ilc_mdsd11", "Severe material and social deprivation rate"),
+                  eurostat_source("ilc_li22b", "At-risk-of-poverty rate anchored at a fixed moment in time (2008)")),
+    data_note = "Pevná hranice nezávisí na příjmu zbytku společnosti -- jedná se o příjem mezní domácnosti ohrožené chudobou v roce 2008. V budoucích letech byla tato hranice pouze očištěna od inflace." # "Podíl lidí v domácnostech s ekvivalizovaným disponibilním příjmem pod 60 % mediánu; relativní hranice z mediánu daného roku, pevná hranice z roku 2008 upravená jen o inflaci. Šetření EU-SILC; rok šetření, příjmy jsou za předchozí rok."
+)
+
+write_chart(
+    df = ukazatele,
+    id = "chudoba-ukazatele",
+    type = "line",
+    title = "Materiální indikátory chudoby v ČR",
+    subtitle = "Procento dotázaných domácností, které souhlasí s uvedeným trvzením",
+    aes = list(
+        list(type = "x", field = "year", label = "Rok", format = "year"),
+        list(type = "y", field = "podil", label = "Procento domácností", format = "percent"),
+        list(type = "colour", field = "ukazatel", label = "Indikátor")
+    ),
+    source = list(eurostat_source("ilc_mdsd11", "Severe material and social deprivation rate"),
                   eurostat_source("ilc_lvho07a", "Housing cost overburden rate"),
                   eurostat_source("ilc_mdes04", "Inability to face unexpected financial expenses"),
                   eurostat_source("ilc_mdes01", "Inability to keep home adequately warm"),
                   eurostat_source("ilc_mdes03", "Inability to afford a meal with meat, chicken, fish (or vegetarian equivalent) every second day")),
-    data_note = "" # "Míry chudoby: podíl lidí v domácnostech s ekvivalizovaným disponibilním příjmem pod 60 % mediánu; relativní hranice z mediánu daného roku, pevná hranice z roku 2008 upravená jen o inflaci. Závažná deprivace: domácnost si nemůže dovolit aspoň 7 z 13 běžných položek (od 2015). Náklady na bydlení: domácnosti, které na bydlení vydávají víc než 40 % disponibilního příjmu. Nečekaný výdaj ve výši měsíční hranice chudoby. Šetření EU-SILC; rok šetření, příjmy jsou za předchozí rok."
+    data_note = "Závažná deprivace: domácnost si nemůže dovolit aspoň 7 z 13 běžných položek (od 2015). Náklady na bydlení: domácnosti, které na bydlení vydávají víc než 40 % disponibilního příjmu. Nečekaný výdaj: částka zhruba ve výši měsíční hranice chudoby pro jednotlivce (v šetření 2025 16 800 Kč), kterou domácnost nezvládne zaplatit z vlastních zdrojů. Bílkovina: domácnosti, které nedokážou koupit maso, rybu či rostlinnou alternativu alespoň ob den."
 )
 
 # ---------- Index sociálního vyloučení ----------
@@ -72,6 +83,7 @@ write_chart(
 # Stejně se zde počítá celostátní hodnota a dimenze za ORP. Každá z pěti dimenzí má 0–6 bodů, index je jejich součet (0–30).
 dimenze <- c(exekuce = "Exekuce", pnz = "Příspěvek na živobytí", pnb = "Příspěvek na bydlení",
              uoz = "Dlouhodobá nezaměstnanost", odchody = "Předčasné odchody ze vzdělávání")
+dimenze_zkr <- c(exekuce = "Exekuce", pnz = "P. na živobytí", pnb = "P. na bydlení", uoz = "Dlouhod. nezam.", odchody = "Předč. odchody ze vzdělávání")
 barvy <- c(isv = "reds", exekuce = "oranges", pnz = "purples", pnb = "blues", uoz = "greens", odchody = "greys") # mapa: každý tab jinou barvou
 isv_obce <- read_csv("./data/mmr_isv.csv") |>
     select(kod_obce = `Kód obce`, nazev_obce = `Název obce`, kod_orp = `Kód ORP`, matches("\\(rok \\d{4}\\)")) |>
@@ -100,14 +112,14 @@ write_chart(
     df = isv_cr |> transmute(year = rok, isv),
     id = "chudoba-isv",
     type = "line",
-    title = "",
-    subtitle = "",
+    title = "Index sociálního vyloučení v ČR",
+    subtitle = "Průměrná hodnota indexu ve všech obcí v ČR. Větší = horší",
     aes = list(
-        list(type = "x", field = "year", label = "", format = "year"),
-        list(type = "y", field = "isv", label = "")
+        list(type = "x", field = "year", label = "Rok", format = "year"),
+        list(type = "y", field = "isv", label = "Index sociálního vyloučení")
     ),
     source = list(isv_source, obyvatele_source),
-    data_note = "" # "Index sociálního vyloučení (MMR) sčítá body za pět dimenzí, každá 0–6 bodů: podíl lidí v exekuci, příjemců příspěvku na živobytí a na bydlení, dlouhodobě nezaměstnaných a mladých s předčasným odchodem ze vzdělávání (0–30 bodů). Hodnota za Česko je průměr obcí vážený počtem obyvatel."
+    data_note = "Index sociálního vyloučení (MMR) sčítá body za pět dimenzí, každá 0–6 bodů: podíl lidí v exekuci, příjemců příspěvku na živobytí a na bydlení, dlouhodobě nezaměstnaných a mladých s předčasným odchodem ze vzdělávání (0–30 bodů). Hodnota za Česko je průměr obcí vážený počtem obyvatel."
 )
 
 isv_dimenze <- isv_cr |>
@@ -120,12 +132,12 @@ write_chart(
     df = isv_dimenze,
     id = "chudoba-isv-dimenze",
     type = "line",
-    title = "",
-    subtitle = "",
+    title = "Dimenze indexu sociálního vyloučení",
+    subtitle = "Průměrná hodnota dimenze sociálního vyloučení. Větší = horší",
     aes = list(
-        list(type = "x", field = "year", label = "", format = "year"),
-        list(type = "y", field = "body", label = ""),
-        list(type = "colour", field = "dimenze", label = "")
+        list(type = "x", field = "year", label = "Rok", format = "year"),
+        list(type = "y", field = "body", label = "Počet bodů"),
+        list(type = "colour", field = "dimenze", label = "Dimenze indexu")
     ),
     source = list(isv_source, obyvatele_source),
     data_note = "" # "Body za jednotlivé dimenze indexu sociálního vyloučení (MMR), každá 0–6 bodů podle podílu lidí v exekuci, příjemců příspěvku na živobytí a na bydlení, dlouhodobě nezaměstnaných a mladých s předčasným odchodem ze vzdělávání. Hodnota za Česko je průměr obcí vážený počtem obyvatel."
@@ -144,17 +156,17 @@ write_chart(
     df = isv_orp,
     id = "chudoba-isv-orp",
     type = "map",
-    title = "",
-    subtitle = "",
-    tabs = c(list(list(id = "isv", label = "")), map(names(dimenze), \(d) list(id = d, label = ""))),
+    title = "Sociální vyloučení v SO ORP",
+    subtitle = str_glue("Hodnota indexu sociálního vyloučení (ISV) a jeho dimenzí v roce {max(isv_orp$year)}. Vyšší = horší"),
+    tabs = c(list(list(id = "isv", label = "ISV")), map(names(dimenze), \(d) list(id = d, label = dimenze_zkr[d]))),
     aes = c(
-        list(list(type = "geometry", field = "orp_kod", label = "", labeller = "orp_nazev"),
-             list(type = "fill", field = "isv", label = "", tab = "isv", scheme = barvy[["isv"]])),
-        map(names(dimenze), \(d) list(type = "fill", field = d, label = "", tab = d, scheme = barvy[[d]]))
+        list(list(type = "geometry", field = "orp_kod", label = "ORP", labeller = "orp_nazev"),
+             list(type = "fill", field = "isv", label = "ISV", tab = "isv", scheme = barvy[["isv"]])),
+        map(names(dimenze), \(d) list(type = "fill", field = d, label = dimenze[d], tab = d, scheme = barvy[[d]]))
     ),
     source = list(isv_source, obyvatele_source),
     options = list(geo = "orp.geojson", geo_key = "KOD_ORP"),
-    data_note = "" # "Index sociálního vyloučení za SO ORP v roce {max(isv_orp$year)} (MMR) a body za jeho jednotlivé dimenze (0–6), průměr obcí vážený počtem obyvatel."
+    data_note = "Dimenze hodnoceny na bodové škále 0-6, průměr SO ORP je vážený průměr obcí podle počtu obyvatel" # "Index sociálního vyloučení za SO ORP v roce {max(isv_orp$year)} (MMR) a body za jeho jednotlivé dimenze (0–6), průměr obcí vážený počtem obyvatel."
 )
 
 # ---------- (5) Giniho koeficient ----------
@@ -167,11 +179,11 @@ write_chart(
     df = gini,
     id = "nerovnost-gini",
     type = "line",
-    title = "",
-    subtitle = "",
+    title = "Giniho koeficient nerovnosti v ČR",
+    subtitle = "Giniho koeficient [ekvivalizovaného::Se zohledněním počtu členů domácnosti] [disponibilního::Po odečtení daní a přičtení dávek, důchodů a jiných transferů] příjmu. 0 = všichni mají stejně, 100 = vše vlastní jeden",
     aes = list(
-        list(type = "x", field = "year", label = "", format = "year"),
-        list(type = "y", field = "gini", label = "")
+        list(type = "x", field = "year", label = "Rok", format = "year"),
+        list(type = "y", field = "gini", label = "Gini")
     ),
     source = eurostat_source("ilc_di12", "Gini coefficient of equivalised disposable income"),
     options = list(y_zero = FALSE),
@@ -196,53 +208,41 @@ write_chart(
     df = top1_cr,
     id = "nerovnost-top1",
     type = "line",
-    title = "",
-    subtitle = "",
+    title = "Příjem a majetek nejbohatšího 1 %",
+    subtitle = "Pofíl ns příjmech a na majetku, který vlastní nejbohatší 1 % obyvatel",
     aes = list(
-        list(type = "x", field = "year", label = "", format = "year"),
-        list(type = "y", field = "podil", label = "", format = "percent"),
-        list(type = "colour", field = "ukazatel", label = "")
+        list(type = "x", field = "year", label = "Rok", format = "year"),
+        list(type = "y", field = "podil", label = "Podíl",  format = "percent"),
+        list(type = "colour", field = "ukazatel", label = "Ukazatel")
     ),
     source = wid_source,
-    data_note = "" # "Podíl nejbohatšího 1 % dospělých na národním důchodu před zdaněním a na čistém majetku domácností. Odhady World Inequality Database z daňových dat, šetření a národních účtů."
+    data_note = "Příjem před zdaněním; čistý majetek (tj. po odečtení dluhů). Před rokem 1989 se jedná o relativně hrubé odhady." # "Podíl nejbohatšího 1 % dospělých na národním důchodu před zdaněním a na čistém majetku domácností. Odhady World Inequality Database z daňových dat, šetření a národních účtů."
 )
 
-# ---------- (7) Srovnání zemí: nejbohatší 1 % (taby příjmy / majetek) ----------
-zeme <- c(CZE = "Česko", SVK = "Slovensko", POL = "Polsko", HUN = "Maďarsko", SVN = "Slovinsko", DEU = "Německo",
-          SWE = "Švédsko", USA = "USA", BRA = "Brazílie", EU = "EU", OWID_WRL = "Svět")
-rok_prijem <- 2022 # poslední rok, za který mají příjmy všechny vybrané země
-rok_majetek <- 2023 # poslední rok, za který má majetek EU
-# EU je jen ve WID (Our World in Data ji nemá): agregát podle tržních kurzů, stejné ukazatele jako u zemí
-eu <- read_csv("./data/wid_eu.csv") |>
-    transmute(zeme = "EU", kod = "EU", year, podil = value * 100,
-              variable = if_else(variable == "sptincj992", "prijem", "majetek"))
-srovnani_top1 <- full_join(
-    bind_rows(top1_prijem, filter(eu, variable == "prijem")) |>
-        filter(year == rok_prijem) |> transmute(klic = coalesce(kod, zeme), prijem = podil / 100),
-    bind_rows(top1_majetek, filter(eu, variable == "majetek")) |>
-        filter(year == rok_majetek) |> transmute(klic = coalesce(kod, zeme), majetek = podil / 100),
-    by = "klic"
-) |>
-    filter(klic %in% names(zeme)) |>
-    transmute(zeme = zeme[klic], prijem, majetek, cesko = klic == "CZE")
+# ---------- (7) Srovnání zemí: Giniho koeficient disponibilních příjmů ----------
+rok_gini <- 2023 # poslední rok, za který mají údaje EU a svět
+zeme <- c(CZ = "Česko", SK = "Slovensko", PL = "Polsko", HU = "Maďarsko", SI = "Slovinsko", DE = "Německo",
+          SE = "Švédsko", US = "USA", BR = "Brazílie", `QY-MER` = "EU", WO = "Svět")
+srovnani_gini <- read_csv("./data/wid_gini.csv") |>
+    filter(year == rok_gini) |>
+    transmute(zeme = zeme[country], gini = round(value * 100, 1), cesko = country == "CZ")
+stopifnot(nrow(srovnani_gini) == length(zeme), !anyNA(srovnani_gini))
 
 write_chart(
-    df = srovnani_top1,
-    id = "nerovnost-top1-srovnani",
+    df = srovnani_gini,
+    id = "nerovnost-gini-srovnani",
     type = "bar",
-    title = "",
-    subtitle = "",
-    tabs = list(list(id = "prijem", label = ""), list(id = "majetek", label = "")),
+    title = "", # "Srovnání příjmové nerovnosti"
+    subtitle = "", # str_glue("Giniho koeficient disponibilních příjmů v roce {rok_gini}. 0 = všichni mají stejně, 100 = vše má jeden")
     aes = list(
-        list(type = "x", field = "zeme", label = ""),
-        list(type = "y", field = "prijem", label = "", format = "percent", tab = "prijem"),
-        list(type = "y", field = "majetek", label = "", format = "percent", tab = "majetek"),
+        list(type = "x", field = "zeme", label = ""), # "Země"
+        list(type = "y", field = "gini", label = ""), # "Gini"
         list(type = "highlight", field = "cesko")
     ),
-    source = list(wid_source, other_source("World Inequality Database", "European Union (QY-MER): top 1% income and wealth share, bulk download",
-                                           "https://wid.world/data/")),
+    source = other_source("World Inequality Database", "Gini coefficient of post-tax disposable income, bulk download",
+                          "https://wid.world/data/"),
     options = list(horizontal = TRUE, sort = "desc"),
-    data_note = "" # "Podíl nejbohatšího 1 % dospělých na národním důchodu před zdaněním (rok {rok_prijem}) a na čistém majetku domácností (rok {rok_majetek}). World Inequality Database."
+    data_note = "" # str_glue("Giniho koeficient disponibilních příjmů dospělých (po zdanění a sociálních dávkách) v roce {rok_gini}, odhady World Inequality Database. WID počítá příjmy jinak než EU-SILC, proto se hodnota pro Česko liší od grafu výše. EU a svět jsou počítány jako jeden celek, takže zahrnují i rozdíly mezi zeměmi a vycházejí výš než většina jednotlivých států.")
 )
 
 # ---------- (8) Čisté jmění domácností podle kvintilů jmění (HFCS) ----------
@@ -262,15 +262,15 @@ write_chart(
     df = jmeni,
     id = "nerovnost-jmeni-kvintily",
     type = "bar",
-    title = "",
-    subtitle = "",
-    tabs = list(list(id = "prumer", label = ""), list(id = "podil", label = "")),
+    title = "Nerovnost v majetku českých domácností",
+    subtitle = str_glue("Majetek podle [kvintilu::Domácnosti seřazené od nejchudší po nejbohatší a rozdělené do pěti stejně velkých skupin] majetku domácnosti v roce {max(jmeni$year)}"),
+    tabs = list(list(id = "prumer", label = "Průměrný majetek"), list(id = "podil", label = "Procento majetku v čr")),
     aes = list(
-        list(type = "x", field = "kvintil", label = ""),
-        list(type = "y", field = "prumer", label = "", unit = "mil. Kč", tab = "prumer"),
-        list(type = "y", field = "podil", label = "", format = "percent", tab = "podil")
+        list(type = "x", field = "kvintil", label = "Kvintil"),
+        list(type = "y", field = "prumer", label = "Průměrný majetek", unit = "mil. Kč", tab = "prumer"),
+        list(type = "y", field = "podil", label = "Procento majektu v ČR", format = "percent", tab = "podil")
     ),
     source = other_source("ČSÚ", "Finanční situace domácností 2022 až 2024, tab. 12: Čisté jmění domácností ČR podle kvintilů čistého jmění",
                           "https://csu.gov.cz/produkty/financni-situace-domacnosti-2022-az-2024-"),
-    data_note = "" # "Domácnosti seřazené podle čistého jmění (majetek minus dluhy) a rozdělené na pět stejně početných skupin. Šetření Finanční situace domácností (HFCS) {max(hfcs$rok)}. Podíl na celkovém jmění všech domácností spočten z průměrů."
+    data_note = "Čistý majetek (tj. po odečtení dluhů). Podíl na celkovém jmění všech domácností spočten z průměrů."
 )

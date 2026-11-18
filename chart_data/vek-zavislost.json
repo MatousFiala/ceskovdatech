@@ -2,30 +2,30 @@
   "id": "vek-zavislost",
   "data": "vek-zavislost.csv",
   "type": "line",
-  "title": "",
-  "subtitle": "",
+  "title": "Index závislosti v ČR od roku 1960 s projekcí do roku 2100",
+  "subtitle": "Počet [dětí::0-14 let] a [seniorů::nad 65 let] na 100 lidí v [produktivním věku::15-64 let], skutečnost a projece ČSÚ",
   "aes": [
     {
       "type": "x",
       "field": "year",
-      "label": "",
+      "label": "Rok",
       "format": "year"
     },
     {
       "type": "y",
       "field": "index",
-      "label": "",
+      "label": "Index závislosti",
       "format": "percent"
     },
     {
       "type": "colour",
       "field": "zavislost",
-      "label": ""
+      "label": "Skupina"
     },
     {
       "type": "linetype",
       "field": "data",
-      "label": ""
+      "label": "Údaj"
     }
   ],
   "source": [
@@ -33,22 +33,22 @@
       "name": "Eurostat",
       "dataset": "Population on 1 January by age and sex (demo_pjan)",
       "url": "https://ec.europa.eu/eurostat/databrowser/view/demo_pjan/default/table",
-      "retrieved": "2026-11-17"
+      "retrieved": "2026-11-18"
     },
     {
       "name": "ČSÚ",
       "dataset": "Počet obyvatel podle pohlaví a jednotek věku k 31. 12.",
       "url": "https://data.csu.gov.cz/datastat/data/VYBER/OBY02BHVDT01",
-      "retrieved": "2026-11-17"
+      "retrieved": "2026-11-18"
     },
     {
       "name": "ČSÚ",
       "dataset": "Projektovaný počet obyvatel podle pohlaví a jednotek věku (projekce ČSÚ 2023)",
       "url": "https://data.csu.gov.cz/datastat/data/VYBER/OBY02PROJ1AT01",
-      "retrieved": "2026-11-17"
+      "retrieved": "2026-11-18"
     }
   ],
-  "data_note": "",
-  "last_updated": "2026-11-17",
+  "data_note": "Před rokem 2000 použita data Eurostatu, předtím ČSÚ. Budoucí údaje jsou střední varianta projekce  ČSÚ z roku 2023.",
+  "last_updated": "2026-11-18",
   "rows": 426
 }

@@ -1,0 +1,38 @@
+{
+  "id": "nerovnost-gini-srovnani",
+  "data": "nerovnost-gini-srovnani.csv",
+  "type": "bar",
+  "title": "",
+  "subtitle": "",
+  "aes": [
+    {
+      "type": "x",
+      "field": "zeme",
+      "label": ""
+    },
+    {
+      "type": "y",
+      "field": "gini",
+      "label": ""
+    },
+    {
+      "type": "highlight",
+      "field": "cesko"
+    }
+  ],
+  "source": [
+    {
+      "name": "World Inequality Database",
+      "dataset": "Gini coefficient of post-tax disposable income, bulk download",
+      "url": "https://wid.world/data/",
+      "retrieved": "2026-11-19"
+    }
+  ],
+  "data_note": "",
+  "options": {
+    "horizontal": true,
+    "sort": "desc"
+  },
+  "last_updated": "2026-11-19",
+  "rows": 11
+}

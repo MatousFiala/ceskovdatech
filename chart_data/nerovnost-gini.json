@@ -2,19 +2,19 @@
   "id": "nerovnost-gini",
   "data": "nerovnost-gini.csv",
   "type": "line",
-  "title": "",
-  "subtitle": "",
+  "title": "Giniho koeficient nerovnosti v ČR",
+  "subtitle": "Giniho koeficient [ekvivalizovaného::Se zohledněním počtu členů domácnosti] [disponibilního::Po odečtení daní a přičtení dávek, důchodů a jiných transferů] příjmu. 0 = všichni mají stejně, 100 = vše vlastní jeden",
   "aes": [
     {
       "type": "x",
       "field": "year",
-      "label": "",
+      "label": "Rok",
       "format": "year"
     },
     {
       "type": "y",
       "field": "gini",
-      "label": ""
+      "label": "Gini"
     }
   ],
   "source": [
@@ -22,13 +22,13 @@
       "name": "Eurostat",
       "dataset": "Gini coefficient of equivalised disposable income (ilc_di12)",
       "url": "https://ec.europa.eu/eurostat/databrowser/view/ilc_di12/default/table",
-      "retrieved": "2026-11-17"
+      "retrieved": "2026-11-19"
     }
   ],
   "data_note": "",
   "options": {
     "y_zero": false
   },
-  "last_updated": "2026-11-17",
+  "last_updated": "2026-11-19",
   "rows": 21
 }

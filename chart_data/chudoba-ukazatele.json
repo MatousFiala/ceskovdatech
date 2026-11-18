@@ -1,0 +1,61 @@
+{
+  "id": "chudoba-ukazatele",
+  "data": "chudoba-ukazatele.csv",
+  "type": "line",
+  "title": "Materiální indikátory chudoby v ČR",
+  "subtitle": "Procento dotázaných domácností, které souhlasí s uvedeným trvzením",
+  "aes": [
+    {
+      "type": "x",
+      "field": "year",
+      "label": "Rok",
+      "format": "year"
+    },
+    {
+      "type": "y",
+      "field": "podil",
+      "label": "Procento domácností",
+      "format": "percent"
+    },
+    {
+      "type": "colour",
+      "field": "ukazatel",
+      "label": "Indikátor"
+    }
+  ],
+  "source": [
+    {
+      "name": "Eurostat",
+      "dataset": "Severe material and social deprivation rate (ilc_mdsd11)",
+      "url": "https://ec.europa.eu/eurostat/databrowser/view/ilc_mdsd11/default/table",
+      "retrieved": "2026-11-19"
+    },
+    {
+      "name": "Eurostat",
+      "dataset": "Housing cost overburden rate (ilc_lvho07a)",
+      "url": "https://ec.europa.eu/eurostat/databrowser/view/ilc_lvho07a/default/table",
+      "retrieved": "2026-11-19"
+    },
+    {
+      "name": "Eurostat",
+      "dataset": "Inability to face unexpected financial expenses (ilc_mdes04)",
+      "url": "https://ec.europa.eu/eurostat/databrowser/view/ilc_mdes04/default/table",
+      "retrieved": "2026-11-19"
+    },
+    {
+      "name": "Eurostat",
+      "dataset": "Inability to keep home adequately warm (ilc_mdes01)",
+      "url": "https://ec.europa.eu/eurostat/databrowser/view/ilc_mdes01/default/table",
+      "retrieved": "2026-11-19"
+    },
+    {
+      "name": "Eurostat",
+      "dataset": "Inability to afford a meal with meat, chicken, fish (or vegetarian equivalent) every second day (ilc_mdes03)",
+      "url": "https://ec.europa.eu/eurostat/databrowser/view/ilc_mdes03/default/table",
+      "retrieved": "2026-11-19"
+    }
+  ],
+  "data_note": "Závažná deprivace: domácnost si nemůže dovolit aspoň 7 z 13 běžných položek (od 2015). Náklady na bydlení: domácnosti, které na bydlení vydávají víc než 40 % disponibilního příjmu. Nečekaný výdaj: částka zhruba ve výši měsíční hranice chudoby pro jednotlivce (v šetření 2025 16 800 Kč), kterou domácnost nezvládne zaplatit z vlastních zdrojů. Bílkovina: domácnosti, které nedokážou koupit maso, rybu či rostlinnou alternativu alespoň ob den.",
+  "last_updated": "2026-11-19",
+  "rows": 95
+}

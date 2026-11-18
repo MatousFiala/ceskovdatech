@@ -56,9 +56,12 @@ Needs the R packages `tidyverse`, `czso2`, `eurostat` and `WDI`.
 | Zdraví podle příjmu (EU-SILC) | `R/eurostat.R` | `eurostat_hlth_silc_10.csv` |
 | Mateřská úmrtnost, nadváha, obezita, kouření | `R/world.R` | `who_gho.csv` (WHO Global Health Observatory) |
 | Sebevraždy | `R/world.R` | `owid_suicide_who_mdb.csv` (WHO Mortality Database přes Our World in Data) |
+| Znečištění ovzduší (PM2.5) | `R/world.R` | `owid_pm25_air_pollution.csv` (SatPM, Washington University in St. Louis, přes Our World in Data) |
+| Úmrtí a DALY podle rizikových faktorů | ručně z [GBD Results tool](https://vizhub.healthdata.org/gbd-results/) | `IHME-GBD_2023_DATA-1bb22f58-1.zip` (GBD 2023: Česko, obě pohlaví, všechny věky, všechny příčiny, rizikové faktory 2. úrovně, 2023) |
 | Chudoba (relativní, s pevnou hranicí), deprivace, náklady na bydlení, nečekané výdaje, vytápění, jídlo, Gini | `R/eurostat.R` | `eurostat_ilc_li02.csv`, `eurostat_ilc_li22b.csv`, `eurostat_ilc_mdsd11.csv`, `eurostat_ilc_lvho07a.csv`, `eurostat_ilc_mdes04.csv`, `eurostat_ilc_mdes01.csv`, `eurostat_ilc_mdes03.csv`, `eurostat_ilc_di12.csv` (Česko a EU27) |
 | Index sociálního vyloučení (obce, SO ORP) | `R/mmr.R`, `R/czso.R` | `mmr_isv.csv` (MMR); váhy: počet obyvatel obcí `czso_OBY01B01.csv` (uložen jen počet obyvatel k 1. 7., od 2016) |
-| Podíl nejbohatšího 1 % na příjmech a majetku | `R/world.R` | `owid_income-share-top-1-before-tax-wid.csv`, `owid_wealth-share-richest-1-percent.csv` (World Inequality Database přes Our World in Data) ; EU zvlášť `wid_eu.csv` (hromadné stažení WID, 900 MB, uloží se jen EU) |
+| Podíl nejbohatšího 1 % na příjmech a majetku | `R/world.R` | `owid_income-share-top-1-before-tax-wid.csv`, `owid_wealth-share-richest-1-percent.csv` (World Inequality Database přes Our World in Data) |
+| Giniho koeficient disponibilních příjmů, srovnání zemí | `R/world.R` | `wid_gini.csv` (hromadné stažení WID, 900 MB, uloží se jen vybrané země, EU a svět) |
 | Čisté jmění domácností podle kvintilů (HFCS) | `R/czso.R` | `czso_hfcs_jmeni_kvintily.csv` (tab. 12 publikace Finanční situace domácností, Excel) |
 | Pacienti ambulantní psychiatrie | `R/uzis.R` | `uzis_ambulantni_psychiatrie.csv` (ÚZIS, NZIP) |
 | Srovnání (ne)zaměstnanosti v EU | `R/eurostat.R` | `eurostat_une_rt_a.csv`, `eurostat_lfsi_emp_a.csv` |

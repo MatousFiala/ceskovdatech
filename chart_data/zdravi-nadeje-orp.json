@@ -2,19 +2,19 @@
   "id": "zdravi-nadeje-orp",
   "data": "zdravi-nadeje-orp.csv",
   "type": "map",
-  "title": "",
-  "subtitle": "",
+  "title": "Naděje dožití podle SO ORP",
+  "subtitle": "Naděje dožití při narození v obdobi 2021-2025",
   "aes": [
     {
       "type": "geometry",
       "field": "orp_kod",
-      "label": "",
+      "label": "ORP",
       "labeller": "orp_nazev"
     },
     {
       "type": "fill",
       "field": "nadeje",
-      "label": "",
+      "label": "Naděje dožití",
       "unit": "let"
     }
   ],
@@ -23,14 +23,14 @@
       "name": "ČSÚ",
       "dataset": "Naděje dožití v SO ORP a Praze",
       "url": "https://data.csu.gov.cz/datastat/data/VYBER/OBY04BORT01",
-      "retrieved": "2026-11-17"
+      "retrieved": "2026-11-18"
     }
   ],
-  "data_note": "",
+  "data_note": "Data udávaná za delší období pro zmírnění statistického šumu. Vážený průměr mužů a žen na základě poměru pohlaví -- 1028 chlapců na 1000 dívek. ČSÚ publikuje údaje jen odděleně.",
   "options": {
     "geo": "orp.geojson",
     "geo_key": "KOD_ORP"
   },
-  "last_updated": "2026-11-17",
+  "last_updated": "2026-11-18",
   "rows": 206
 }

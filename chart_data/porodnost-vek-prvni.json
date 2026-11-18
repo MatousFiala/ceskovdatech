@@ -2,8 +2,8 @@
   "id": "porodnost-vek-prvni",
   "data": "porodnost-vek-prvni.csv",
   "type": "line",
-  "title": "",
-  "subtitle": "",
+  "title": "Průměrný věk prvorodiček v ČR od roku 1995",
+  "subtitle": "Průměr věku, ve které má matka své první dítě",
   "aes": [
     {
       "type": "x",
@@ -23,19 +23,19 @@
       "name": "Eurostat",
       "dataset": "Fertility indicators (demo_find)",
       "url": "https://ec.europa.eu/eurostat/databrowser/view/demo_find/default/table",
-      "retrieved": "2026-11-17"
+      "retrieved": "2026-11-18"
     },
     {
       "name": "ČSÚ",
       "dataset": "Narození - vybrané souhrnné údaje",
       "url": "https://data.csu.gov.cz/datastat/data/VYBER/OBY03HVDT01",
-      "retrieved": "2026-11-17"
+      "retrieved": "2026-11-18"
     }
   ],
-  "data_note": "",
+  "data_note": "Do roku 2000 data Eurostatu, poté ČSÚ",
   "options": {
     "y_zero": false
   },
-  "last_updated": "2026-11-17",
+  "last_updated": "2026-11-18",
   "rows": 31
 }

@@ -2,25 +2,25 @@
   "id": "vek-median",
   "data": "vek-median.csv",
   "type": "line",
-  "title": "",
-  "subtitle": "",
+  "title": "Mediánový věk v ČR od roku 1960 s projekcí do roku 2100",
+  "subtitle": "[Medián::Polovina obyvatel je mladší, než tento věk; polivina startší] věku obyvatel, skutečnost a projekce ČSÚ",
   "aes": [
     {
       "type": "x",
       "field": "year",
-      "label": "",
+      "label": "Rok",
       "format": "year"
     },
     {
       "type": "y",
       "field": "median",
-      "label": "",
+      "label": "Medián věku",
       "unit": "let"
     },
     {
       "type": "linetype",
       "field": "data",
-      "label": ""
+      "label": "Údaj"
     }
   ],
   "source": [
@@ -28,25 +28,25 @@
       "name": "Eurostat",
       "dataset": "Population on 1 January by age and sex (demo_pjan)",
       "url": "https://ec.europa.eu/eurostat/databrowser/view/demo_pjan/default/table",
-      "retrieved": "2026-11-17"
+      "retrieved": "2026-11-18"
     },
     {
       "name": "ČSÚ",
       "dataset": "Počet obyvatel podle pohlaví a jednotek věku k 31. 12.",
       "url": "https://data.csu.gov.cz/datastat/data/VYBER/OBY02BHVDT01",
-      "retrieved": "2026-11-17"
+      "retrieved": "2026-11-18"
     },
     {
       "name": "ČSÚ",
       "dataset": "Projektovaný počet obyvatel podle pohlaví a jednotek věku (projekce ČSÚ 2023)",
       "url": "https://data.csu.gov.cz/datastat/data/VYBER/OBY02PROJ1AT01",
-      "retrieved": "2026-11-17"
+      "retrieved": "2026-11-18"
     }
   ],
-  "data_note": "",
+  "data_note": "Před rokem 2000 použita data Eurostatu, předtím ČSÚ. Budoucí údaje jsou střední varianta projekce  ČSÚ z roku 2023.",
   "options": {
     "y_zero": false
   },
-  "last_updated": "2026-11-17",
+  "last_updated": "2026-11-18",
   "rows": 142
 }

@@ -2,19 +2,19 @@
   "id": "zdravi-sebevrazdy",
   "data": "zdravi-sebevrazdy.csv",
   "type": "line",
-  "title": "",
-  "subtitle": "",
+  "title": "Míra sebevražd v ČR od roku 1986",
+  "subtitle": "Počet sebevražd na 100 000 obyvatel",
   "aes": [
     {
       "type": "x",
       "field": "year",
-      "label": "",
+      "label": "Rok",
       "format": "year"
     },
     {
       "type": "y",
       "field": "sebevrazdy",
-      "label": ""
+      "label": "Sebevražd na 100 000 obyvatel"
     }
   ],
   "source": [
@@ -22,10 +22,10 @@
       "name": "WHO",
       "dataset": "Age-standardized suicide rate per 100 000 (WHO Mortality Database, via Our World in Data)",
       "url": "https://ourworldindata.org/grapher/suicide-rate-who-mdb",
-      "retrieved": "2026-11-17"
+      "retrieved": "2026-11-18"
     }
   ],
-  "data_note": "",
-  "last_updated": "2026-11-17",
+  "data_note": "Pro mezinárodní srovnatelnost standardizováno podle věku",
+  "last_updated": "2026-11-18",
   "rows": 38
 }
