@@ -1,0 +1,72 @@
+{
+  "id": "dane-vyber",
+  "data": "dane-vyber.csv",
+  "type": "bar",
+  "title": "",
+  "subtitle": "",
+  "tabs": [
+    {
+      "id": "nominalni",
+      "label": ""
+    },
+    {
+      "id": "realne",
+      "label": ""
+    },
+    {
+      "id": "podil",
+      "label": ""
+    }
+  ],
+  "aes": [
+    {
+      "type": "x",
+      "field": "year",
+      "label": "Rok",
+      "format": "year"
+    },
+    {
+      "type": "y",
+      "field": "mld",
+      "label": "",
+      "unit": "mld. Kč",
+      "tab": "nominalni"
+    },
+    {
+      "type": "y",
+      "field": "mld_2020",
+      "label": "",
+      "unit": "mld. Kč",
+      "tab": "realne"
+    },
+    {
+      "type": "y",
+      "field": "podil",
+      "label": "",
+      "format": "percent",
+      "tab": "podil"
+    },
+    {
+      "type": "fill",
+      "field": "dan",
+      "label": ""
+    }
+  ],
+  "source": [
+    {
+      "name": "OECD",
+      "dataset": "Global Revenue Statistics Database (DF_RSGLOBAL)",
+      "url": "https://www.oecd.org/en/data/datasets/global-revenue-statistics-database.html",
+      "retrieved": "2026-11-20"
+    },
+    {
+      "name": "ČSÚ",
+      "dataset": "Míra inflace (CEN0101H)",
+      "url": "https://data.csu.gov.cz/datastat/data/VYBER/CEN0101HT01",
+      "retrieved": "2026-11-20"
+    }
+  ],
+  "data_note": "",
+  "last_updated": "2026-11-20",
+  "rows": 224
+}

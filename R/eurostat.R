@@ -43,3 +43,12 @@ walk(c("ilc_li02", "ilc_li22b", "ilc_mdsd11", "ilc_lvho07a", "ilc_mdes04", "ilc_
   get_eurostat(id, filters = list(geo = c("CZ", "EU27_2020")), time_format = "num", cache = FALSE) |>
     write_csv(str_glue("data/eurostat_{id}.csv"))
 })
+
+# Veřejné finance, sektor vládních institucí (S13), všechny země: celkové výdaje a příjmy (% HDP),
+# hrubý dluh (% HDP a mil. národní měny)
+get_eurostat("gov_10a_main", filters = list(sector = "S13", na_item = c("TE", "TR"), unit = "PC_GDP"),
+             time_format = "num", cache = FALSE) |>
+  write_csv("data/eurostat_gov_10a_main.csv")
+get_eurostat("gov_10dd_edpt1", filters = list(sector = "S13", na_item = "GD", unit = c("PC_GDP", "MIO_NAC")),
+             time_format = "num", cache = FALSE) |>
+  write_csv("data/eurostat_gov_10dd_edpt1.csv")

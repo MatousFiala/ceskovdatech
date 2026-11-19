@@ -1,0 +1,61 @@
+{
+  "id": "rozpocet-prijmy",
+  "data": "rozpocet-prijmy.csv",
+  "type": "bar",
+  "title": "",
+  "subtitle": "",
+  "tabs": [
+    {
+      "id": "nominalni",
+      "label": ""
+    },
+    {
+      "id": "realne",
+      "label": ""
+    }
+  ],
+  "aes": [
+    {
+      "type": "x",
+      "field": "year",
+      "label": "Rok",
+      "format": "year"
+    },
+    {
+      "type": "y",
+      "field": "mld",
+      "label": "",
+      "unit": "mld. Kč",
+      "tab": "nominalni"
+    },
+    {
+      "type": "y",
+      "field": "mld_2020",
+      "label": "",
+      "unit": "mld. Kč",
+      "tab": "realne"
+    },
+    {
+      "type": "fill",
+      "field": "kategorie",
+      "label": ""
+    }
+  ],
+  "source": [
+    {
+      "name": "Monitor státní pokladny (MF ČR)",
+      "dataset": "Plnění rozpočtu ústředně řízených organizací, kapitoly státního rozpočtu",
+      "url": "https://monitor.statnipokladna.gov.cz/",
+      "retrieved": "2026-11-20"
+    },
+    {
+      "name": "ČSÚ",
+      "dataset": "Míra inflace (CEN0101H)",
+      "url": "https://data.csu.gov.cz/datastat/data/VYBER/CEN0101HT01",
+      "retrieved": "2026-11-20"
+    }
+  ],
+  "data_note": "",
+  "last_updated": "2026-11-20",
+  "rows": 64
+}

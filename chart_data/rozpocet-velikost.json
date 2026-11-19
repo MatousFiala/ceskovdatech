@@ -1,0 +1,40 @@
+{
+  "id": "rozpocet-velikost",
+  "data": "rozpocet-velikost.csv",
+  "type": "line",
+  "title": "",
+  "subtitle": "",
+  "aes": [
+    {
+      "type": "x",
+      "field": "year",
+      "label": "Rok",
+      "format": "year"
+    },
+    {
+      "type": "y",
+      "field": "podil",
+      "label": "",
+      "format": "percent"
+    },
+    {
+      "type": "colour",
+      "field": "ukazatel",
+      "label": ""
+    }
+  ],
+  "source": [
+    {
+      "name": "Eurostat",
+      "dataset": "Government revenue, expenditure and main aggregates (gov_10a_main)",
+      "url": "https://ec.europa.eu/eurostat/databrowser/view/gov_10a_main/default/table",
+      "retrieved": "2026-11-20"
+    }
+  ],
+  "data_note": "",
+  "options": {
+    "y_zero": false
+  },
+  "last_updated": "2026-11-20",
+  "rows": 60
+}

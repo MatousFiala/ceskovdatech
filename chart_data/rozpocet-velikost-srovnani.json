@@ -1,0 +1,45 @@
+{
+  "id": "rozpocet-velikost-srovnani",
+  "data": "rozpocet-velikost-srovnani.csv",
+  "type": "bar",
+  "title": "",
+  "subtitle": "",
+  "aes": [
+    {
+      "type": "x",
+      "field": "zeme",
+      "label": ""
+    },
+    {
+      "type": "y",
+      "field": "vydaje",
+      "label": "",
+      "format": "percent"
+    },
+    {
+      "type": "highlight",
+      "field": "cesko"
+    }
+  ],
+  "source": [
+    {
+      "name": "Eurostat",
+      "dataset": "Government revenue, expenditure and main aggregates (gov_10a_main)",
+      "url": "https://ec.europa.eu/eurostat/databrowser/view/gov_10a_main/default/table",
+      "retrieved": "2026-11-20"
+    },
+    {
+      "name": "MMF",
+      "dataset": "Fiscal Monitor a World Economic Outlook (DataMapper)",
+      "url": "https://www.imf.org/external/datamapper/",
+      "retrieved": "2026-11-20"
+    }
+  ],
+  "data_note": "",
+  "options": {
+    "horizontal": true,
+    "sort": "desc"
+  },
+  "last_updated": "2026-11-20",
+  "rows": 14
+}

@@ -1,0 +1,39 @@
+{
+  "id": "dane-skladba-srovnani",
+  "data": "dane-skladba-srovnani.csv",
+  "type": "bar",
+  "title": "",
+  "subtitle": "",
+  "aes": [
+    {
+      "type": "x",
+      "field": "zeme",
+      "label": ""
+    },
+    {
+      "type": "y",
+      "field": "podil",
+      "label": "",
+      "format": "percent"
+    },
+    {
+      "type": "fill",
+      "field": "dan",
+      "label": ""
+    }
+  ],
+  "source": [
+    {
+      "name": "OECD",
+      "dataset": "Global Revenue Statistics Database (DF_RSGLOBAL)",
+      "url": "https://www.oecd.org/en/data/datasets/global-revenue-statistics-database.html",
+      "retrieved": "2026-11-20"
+    }
+  ],
+  "data_note": "",
+  "options": {
+    "horizontal": true
+  },
+  "last_updated": "2026-11-20",
+  "rows": 91
+}

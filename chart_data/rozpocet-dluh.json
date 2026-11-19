@@ -1,0 +1,61 @@
+{
+  "id": "rozpocet-dluh",
+  "data": "rozpocet-dluh.csv",
+  "type": "line",
+  "title": "",
+  "subtitle": "",
+  "tabs": [
+    {
+      "id": "podil",
+      "label": ""
+    },
+    {
+      "id": "kc",
+      "label": ""
+    }
+  ],
+  "aes": [
+    {
+      "type": "x",
+      "field": "year",
+      "label": "Rok",
+      "format": "year"
+    },
+    {
+      "type": "y",
+      "field": "podil",
+      "label": "",
+      "format": "percent",
+      "tab": "podil"
+    },
+    {
+      "type": "y",
+      "field": "mld",
+      "label": "",
+      "unit": "mld. Kč",
+      "tab": "kc"
+    },
+    {
+      "type": "linetype",
+      "field": "data",
+      "label": ""
+    }
+  ],
+  "source": [
+    {
+      "name": "Eurostat",
+      "dataset": "Government deficit/surplus, debt and associated data (gov_10dd_edpt1)",
+      "url": "https://ec.europa.eu/eurostat/databrowser/view/gov_10dd_edpt1/default/table",
+      "retrieved": "2026-11-20"
+    },
+    {
+      "name": "MMF",
+      "dataset": "World Economic Outlook, October 2026 (SDMX API)",
+      "url": "https://data.imf.org/",
+      "retrieved": "2026-11-20"
+    }
+  ],
+  "data_note": "",
+  "last_updated": "2026-11-20",
+  "rows": 38
+}

@@ -29,7 +29,7 @@ Exekuce
 ## Data
 `Rscript run_all.R` (from the project root) downloads the newest data into `data/`, one CSV per source dataset. Each script in `R/` can also be run on its own. Data is saved raw; derived series (e.g. real GDP per capita) are computed later, at the chart stage.
 
-Needs the R packages `tidyverse`, `czso2`, `eurostat` and `WDI`.
+Needs the R packages `tidyverse`, `czso2`, `eurostat`, `WDI` and `statnipokladna`.
 
 | Chart | Script | File in `data/` |
 |---|---|---|
@@ -68,6 +68,10 @@ Needs the R packages `tidyverse`, `czso2`, `eurostat` and `WDI`.
 | Průměrná a mediánová mzda | `R/czso.R` | `czso_ZAMG08.csv` |
 | Mediánová mzda podle krajů | `R/czso.R` | `czso_WREG0404.csv` |
 | Distribuce mezd | — | TODO: no machine-readable source found yet |
+| Výdaje a příjmy vládního sektoru (% HDP), srovnání zemí | `R/eurostat.R`, `R/world.R` | `eurostat_gov_10a_main.csv` (všechny země); USA, Spojené království a svět z `imf_datamapper.csv` (MMF Fiscal Monitor; svět = průměr vážený HDP v USD, `NGDPD`) |
+| Příjmy, výdaje a schodek státního rozpočtu, kategorie příjmů a výdajů | `R/monitor.R` | `monitor_sr.csv` (Monitor státní pokladny, 2010+, jen kapitoly státního rozpočtu, součty podle seskupení položek a skupin paragrafů) |
+| Dluh vládního sektoru (Kč, % HDP), projekce, srovnání zemí | `R/eurostat.R`, `R/world.R` | `eurostat_gov_10dd_edpt1.csv`; projekce `imf_weo_cze_dluh.csv` (MMF WEO, SDMX API); země mimo EU a Norsko z `imf_datamapper.csv` (`GGXWDG_NGDP`) |
+| Výběr daní podle druhu, skladba daní ve srovnání zemí | `R/world.R` | `oecd_revenue_statistics.csv` (OECD Global Revenue Statistics, SDMX API; vybrané druhy daní, Česko, srovnávané země a průměr OECD) |
 
 Notes:
 - `czso2` workarounds: `czso_download_dataset()` currently saves metadata instead of data, so full datasets are read straight from `data.csu.gov.cz/opendata/sady/{ID}/distribuce/csv`; `czso_get_table()` is only reliable with `format = "CSV"`.
@@ -76,6 +80,7 @@ Notes:
 - The World Bank API is slow: `R/world.R` can take several minutes.
 - Maddison ends in 2022 and is in 2011 international dollars; Czechia starts in 1970, Czechoslovakia in 1820.
 - Median wages exist only from 2011 (by region from 2015).
+- Monitor (`statnipokladna` package): the table up to 2014 (`budget-central-old`) is cumulative and also contains state funds (kapitoly 05xx); the table from 2015 (`budget-central`) has monthly values that are summed. `R/monitor.R` keeps only kapitoly 03xx (the state budget); the yearly balance then matches the official state budget result (e.g. −271.4 bn Kč in 2024). The download takes a few minutes.
 
 ## Website
 The site is built by Jekyll; GitHub Pages does that on every push (Settings → Pages → "Deploy from a branch"), so nothing is built or committed locally.

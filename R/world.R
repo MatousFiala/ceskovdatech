@@ -36,6 +36,38 @@ read_csv("https://ourworldindata.org/grapher/pm25-air-pollution.csv?csvType=full
          show_col_types = FALSE) |>
   write_csv("data/owid_pm25_air_pollution.csv")
 
+# MMF (DataMapper API), všechny země: výdaje vládního sektoru (% HDP, Fiscal Monitor), hrubý dluh vládního
+# sektoru (% HDP, World Economic Outlook, i agregáty jako svět) a HDP v USD (váhy pro světový průměr výdajů).
+# Roky po posledním skutečném jsou odhady a projekce MMF.
+c("G_X_G01_GDP_PT", "GGXWDG_NGDP", "NGDPD") |>
+  map(\(ind) {
+    jsonlite::fromJSON(str_glue("https://www.imf.org/external/datamapper/api/v1/{ind}"))$values[[ind]] |>
+      imap(\(roky, kod) tibble(ukazatel = ind, kod = kod, rok = as.integer(names(roky)), hodnota = unlist(roky))) |>
+      list_rbind()
+  }) |>
+  list_rbind() |>
+  write_csv("data/imf_datamapper.csv")
+
+# MMF World Economic Outlook (SDMX API), Česko: hrubý dluh vládního sektoru v Kč a % HDP včetně projekce
+weo_csv <- tempfile(fileext = ".csv")
+download.file("https://api.imf.org/external/sdmx/3.0/data/dataflow/IMF.RES/WEO/+/CZE.GGXWDG+GGXWDG_NGDP.A", weo_csv,
+              headers = c(Accept = "application/vnd.sdmx.data+csv;version=1.0.0"), quiet = TRUE)
+read_csv(weo_csv, show_col_types = FALSE) |>
+  transmute(kod = COUNTRY, ukazatel = INDICATOR, rok = as.integer(TIME_PERIOD), hodnota = OBS_VALUE) |>
+  write_csv("data/imf_weo_cze_dluh.csv")
+unlink(weo_csv)
+
+# OECD Global Revenue Statistics (SDMX API): daňové příjmy vládního sektoru podle druhu daně (DPFO 1100, DPPO 1200,
+# majetkové 4000, DPH 5111, spotřební 5121, pojistné 2000, celkem _T) v národní měně (mld.), % HDP a % všech daní;
+# Česko a srovnávané země, průměr OECD
+oecd_url <- str_c("https://sdmx.oecd.org/public/rest/data/OECD.CTP.TPS,DSD_REV_COMP_GLOBAL@DF_RSGLOBAL,/",
+                  "CZE+DEU+AUT+SVK+POL+FRA+GBR+SWE+DNK+FIN+NOR+USA+OECD_REP.TAX_REV.S13.",
+                  "T_1100+T_1200+T_4000+T_5111+T_5121+T_2000+_T._T.XDC+PT_B1GQ+PT_OTR_SECTOR.A?format=csvfile")
+read_csv(oecd_url, show_col_types = FALSE) |>
+  transmute(kod = REF_AREA, dan = STANDARD_REVENUE, jednotka = UNIT_MEASURE, rok = TIME_PERIOD, hodnota = OBS_VALUE) |>
+  filter(!is.na(hodnota)) |>
+  write_csv("data/oecd_revenue_statistics.csv")
+
 # Podíl nejbohatšího 1 % na příjmech (před zdaněním) a na majetku (World Inequality Database, jak ji publikuje
 # Our World in Data), všechny země a regiony
 walk(c("income-share-top-1-before-tax-wid", "wealth-share-richest-1-percent"), \(slug) {
