@@ -2,7 +2,7 @@
   "id": "hdp-srovnani-cross-section",
   "data": "hdp-srovnani-cross-section.csv",
   "type": "bar",
-  "title": "HDP na osobu ve srovnání s jinými zeměmi",
+  "title": "HDP na osobu ve srovnání s vybranými zeměmi",
   "subtitle": "HDP [PPP::Parita kupní síly: Ukazatel zohledňující, že si za stejný obnos lze v různých zemích pořídit rozdílné množství zboží] na osobu v roce 2025 v českých cenách z roku 2020",
   "aes": [
     {
@@ -27,10 +27,10 @@
       "name": "World Bank",
       "dataset": "World Development Indicators",
       "url": "https://databank.worldbank.org/source/world-development-indicators",
-      "retrieved": "2026-11-15"
+      "retrieved": "2026-11-21"
     }
   ],
   "data_note": "Pro přiblížení přepočteno z mezinárodních dolarů na Koruny v poměru $1 = 12,07 Kč",
-  "last_updated": "2026-11-15",
+  "last_updated": "2026-11-21",
   "rows": 20
 }

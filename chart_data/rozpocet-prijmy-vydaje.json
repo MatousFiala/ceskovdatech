@@ -6,12 +6,12 @@
   "subtitle": "Výdaje a jejich krytí příjmy a schodkem, nominální i očištěné od inflace, miliardy Kč",
   "tabs": [
     {
-      "id": "nominalni",
-      "label": "Nominální"
+      "id": "realne",
+      "label": "Reálné (ceny z roku 2020)"
     },
     {
-      "id": "realne",
-      "label": "Reálné"
+      "id": "nominalni",
+      "label": "Nominální"
     }
   ],
   "aes": [

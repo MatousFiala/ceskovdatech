@@ -234,7 +234,7 @@ write_chart(
     df = srovnani_gini,
     id = "nerovnost-gini-srovnani",
     type = "bar",
-    title = "Srovnání příjmové nerovnosti", # "Srovnání příjmové nerovnosti"
+    title = "Srovnání příjmové nerovnosti s vybranými zeměmi", # "Srovnání příjmové nerovnosti"
     subtitle = str_glue("Giniho koeficient [ekvivalizovaného::Se zohledněním počtu členů domácnosti] [disponibilního::Po odečtení daní a přičtení dávek, důchodů a jiných transferů] příjmu v roce {max(srovnani_gini$year)}. 0 = všichni mají stejně, 100 = vše vlastní jeden "), # str_glue("Giniho koeficient disponibilních příjmů v roce {rok_gini}. 0 = všichni mají stejně, 100 = vše má jeden")
     aes = list(
         list(type = "x", field = "zeme", label = "Země"),

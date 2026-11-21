@@ -1,0 +1,71 @@
+{
+  "id": "dane-klin-vyvoj",
+  "data": "dane-klin-vyvoj.csv",
+  "type": "line",
+  "title": "Vývoj zdanění práce",
+  "subtitle": "Daně a odvody jako podíl na [nákladech práce::Vše, co zaměstanavat platí za změstnance. Mzda + Odvody], daňové sazby v různých násobcích průměrné mzdy",
+  "tabs": [
+    {
+      "id": "klin",
+      "label": "Celkové sazby"
+    },
+    {
+      "id": "rozdil",
+      "label": "Rozdíl v sazbě pro 67 % a 167 % průměrné mzdy"
+    }
+  ],
+  "aes": [
+    {
+      "type": "x",
+      "field": "year",
+      "label": "Rok",
+      "format": "year"
+    },
+    {
+      "type": "y",
+      "field": "klin",
+      "label": "Celková sazba",
+      "format": "percent",
+      "tab": "klin"
+    },
+    {
+      "type": "y",
+      "field": "rozdil",
+      "label": "Rozdíl v sazbě",
+      "format": "percent",
+      "unit": "p. b.",
+      "tab": "rozdil"
+    },
+    {
+      "type": "colour",
+      "field": "mzda",
+      "label": "Mzda (% průměrné mzdy)",
+      "tab": "klin"
+    }
+  ],
+  "source": [
+    {
+      "name": "OECD",
+      "dataset": "Taxing Wages",
+      "url": "https://www.oecd.org/en/topics/sub-issues/tax-policy/taxing-wages.html",
+      "retrieved": "2026-11-21"
+    }
+  ],
+  "data_note": "Náklady práce = hrubá mzda + odvody placené zaměstnavatelem. Počítá se se svobodným pracovníkem bez dětí.",
+  "options": {
+    "y_zero": false,
+    "colour_scheme": "blues",
+    "annotations": [
+      {
+        "x": 2006,
+        "label": "Zavedení slevy na poplatníka"
+      },
+      {
+        "x": 2020,
+        "label": "Zrušení superhrubé mzdy"
+      }
+    ]
+  },
+  "last_updated": "2026-11-21",
+  "rows": 130
+}

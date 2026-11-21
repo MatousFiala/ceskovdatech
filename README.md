@@ -70,9 +70,11 @@ Needs the R packages `tidyverse`, `czso2`, `eurostat`, `WDI` and `statnipokladna
 | Distribuce mezd | — | TODO: no machine-readable source found yet |
 | Výdaje a příjmy vládního sektoru (% HDP), srovnání zemí | `R/eurostat.R`, `R/world.R` | `eurostat_gov_10a_main.csv` (všechny země); USA, Spojené království a svět z `imf_datamapper.csv` (MMF Fiscal Monitor; svět = průměr vážený HDP v USD, `NGDPD`) |
 | Příjmy, výdaje a schodek státního rozpočtu, kategorie příjmů a výdajů | `R/monitor.R` | `monitor_sr.csv` (Monitor státní pokladny, 2010+, jen kapitoly státního rozpočtu, součty podle seskupení položek a skupin paragrafů) |
-| Saldo státního rozpočtu (mld. Kč, % HDP) | `R/monitor.R`, `R/eurostat.R` | `monitor_sr.csv`; nominální HDP z `eurostat_gov_10dd_edpt1_cz.csv` (notifikace EDP, `B1GQ`) |
-| Dluh vládního sektoru (Kč, % HDP), projekce, srovnání zemí | `R/eurostat.R`, `R/world.R` | `eurostat_gov_10dd_edpt1.csv`; projekce `imf_weo_cze_dluh.csv` (MMF WEO, SDMX API); země mimo EU a Norsko z `imf_datamapper.csv` (`GGXWDG_NGDP`) |
+| Saldo státního rozpočtu (% HDP) | `R/monitor.R`, `R/eurostat.R` | `monitor_sr.csv`; nominální HDP z `eurostat_gov_10dd_edpt1_cz.csv` (`B1GQ`) |
+| Dluh vládního sektoru (Kč, % HDP), projekce, srovnání zemí | `R/eurostat.R`, `R/world.R` | `eurostat_gov_10dd_edpt1.csv`; projekce `imf_weo_cze.csv` (MMF WEO, SDMX API; i inflace `PCPIPCH` pro reálný dluh v letech projekce); země mimo EU a Norsko z `imf_datamapper.csv` (`GGXWDG_NGDP`) |
 | Výběr daní podle druhu, skladba daní ve srovnání zemí | `R/world.R` | `oecd_revenue_statistics.csv` (OECD Global Revenue Statistics, SDMX API; vybrané druhy daní, Česko, srovnávané země a průměr OECD) |
+| Skladba výdajů vládního sektoru ve srovnání zemí | `R/world.R` | `oecd_cofog.csv` (OECD National Accounts, Table 11: výdaje podle funkcí COFOG, oddíly a celkem), `oecd_hdp.csv` (nominální HDP); všechny členské země OECD (pro průměr OECD) a EU27 |
+| Zdanění práce podle výše mzdy, ve srovnání zemí a od roku 2000 | `R/world.R` | `oecd_taxing_wages.csv` (OECD Taxing Wages, rozklad daňového klínu, poslední rok: 50–250 % průměrné mzdy, svobodný bez dětí, země jako daně a průměr OECD), `oecd_taxing_wages_cz.csv` (Česko od 2000, svobodný bez dětí, 67–167 % průměrné mzdy) |
 | Inflace před rokem 1997 (ceny roku 2020 u daní) | `R/world.R` | `wdi_inflace_cz.csv` (Světová banka, FP.CPI.TOTL.ZG); od 1997 `czso_CEN0101H.csv` |
 
 Notes:
@@ -128,12 +130,13 @@ Chart types and their aesthetics (`labeller` = column shown to the reader instea
 |---|---|---|
 | `line` | `x`, `y` | `colour`, `linetype`, `highlight` |
 | `bar` | `x` (category), `y` | `fill` (or `colour`), `highlight` |
+| `dot` | `x` (category: one row each, in data order, first on top), `y` | `colour` (one point per series, joined by a grey line), `highlight` |
 | `map` | `geometry` (region code), `fill` | `highlight` |
 | `pyramid` | `x` (age), `y` (count), `fill` (the two sides, first value on the left), `frame` (year) | `linetype` |
 
 A `pyramid` shows one value of `frame` at a time, chosen with a slider. It starts at `options$frame`, otherwise at the last frame of the first `linetype` value (the last actual year before a projection). Rows whose `linetype` is not the first value are drawn pale and the value is written next to the year, e.g. "2050 · Projekce ČSÚ". `options$reference` draws that frame as an outline over the others, to compare with.
 
-In a line chart with tabs, each tab draws only the rows that have its `y`, so tabs can also use different rows of the CSV (e.g. one `colour` column per tab, left empty in the other tab's rows).
+In a line, bar or dot chart with tabs, each tab draws only the rows that have its `y`, so tabs can also use different rows of the CSV (e.g. one `colour` column per tab, left empty in the other tab's rows).
 
 A projection on a line chart is a `linetype` (e.g. `Skutečnost` / `Projekce ČSÚ`): repeat the last actual year in the projection rows so that the dashed line starts where the solid one ends.
 
@@ -151,6 +154,7 @@ Each aesthetic can have a `format` and a `unit`. The unit is shown on the axis t
 |---|---|---|
 | `line` | highlighted line in colour, the rest grey | highlighted line thicker, the rest thin and paler |
 | `bar` | highlighted bar in colour, the rest grey | bold category label (also in facet panels) |
+| `dot` | highlighted points in colour, the rest grey | bold category label |
 | `map` | — | dark outline around highlighted regions |
 
 For a line chart without `colour`, lines are told apart by `linetype` and `highlight` only, so several countries need a `colour` aesthetic too.
@@ -161,7 +165,7 @@ In `title` and `subtitle`, and in the text of an article, `[word::tooltip]` unde
 
 `source` is a list of sources, each `list(name, dataset, url, retrieved)`. Sources with the same `name` are shown together, one numbered link per dataset: "Zdroje: ČSÚ (1, 2), Maddison". `data_note` is shown in a tooltip next to the sources.
 
-`tabs` puts a switch into the chart that swaps aesthetics, e.g. between two measures. It is a list of `list(id, label)`; an aesthetic with `tab = "id"` is drawn only in that tab, one without `tab` in every tab. All tabs share `x` (line, bar) or `geometry` (map), so that aesthetic cannot have a `tab`. The first tab is shown first, and the table and CSV keep all columns.
+`tabs` puts a switch into the chart that swaps aesthetics, e.g. between two measures. It is a list of `list(id, label)`; an aesthetic with `tab = "id"` is drawn only in that tab, one without `tab` in every tab. All tabs share `x` (line, bar) or `geometry` (map), so that aesthetic cannot have a `tab`. The first tab is shown first, and the table and CSV keep all columns. A tab of a line, bar or dot chart can draw as another of these types: `list(id = "progrese", label = "Progrese", type = "bar")`.
 
 ```r
 tabs = list(list(id = "realna", label = "Reálná"), list(id = "nominalni", label = "Nominální")),
@@ -176,14 +180,18 @@ aes = list(
 
 | option | applies to | meaning |
 |---|---|---|
-| `y_zero` | line | start the y axis at zero (default `TRUE`) |
+| `y_zero` | line, dot | start the value axis at zero (default `TRUE` on line, `FALSE` on dot) |
 | `y_log` | line | logarithmic y axis |
-| `y_domain` | line, bar | fixed axis range, e.g. `c(0, 10)`; bars are cut off at its lower end (an axis that does not start at zero) |
+| `y_domain` | line, bar, dot | fixed axis range, e.g. `c(0, 10)`; bars are cut off at its lower end (an axis that does not start at zero) |
 | `highlight` | line, bar | series drawn in colour, the rest in grey |
+| `colour_scheme` | line, bar, dot | ordered series (e.g. wage levels) in shades of one colour, light to dark in data order: any d3 scheme with one hue, e.g. `"blues"`, `"greens"`, `"purples"` |
 | `horizontal` | bar | horizontal bars (default: when there are more than 6 text categories) |
 | `stack` | bar | `FALSE` puts `fill` groups side by side instead of stacking |
+| `totals` | bar | stacked bars: a dark tick at each bar's net total (negative parts subtracted) |
 | `sort` | bar | `"desc"` or `"asc"` by value |
-| `sort_last` | bar | categories kept at the end of a sorted chart (and of each facet panel), e.g. `"Ostatní"` |
+| `sort_last` | bar, dot | categories kept at the end of a sorted chart (and of each facet panel), e.g. `"Ostatní"` |
+| `sort_by` | dot | a value of the `colour` column: rows ordered by that series (lowest on top; highest with `sort = "desc"`), again in each tab |
+| `range` | dot | `c(from, point, to)`, three values of the `colour` column: each row (each year, when `x` is a year) becomes a line from `from` to `to` with end caps and a point at `point`; highlighted rows in colour, the rest grey; the tooltip lists every series |
 | `timeline` | line, bar | `FALSE` hides the year slider |
 | `frame`, `reference` | pyramid | first frame shown; a frame drawn as an outline over the others |
 | `filter_latest` | all | name of a time column; only its newest period is drawn |
@@ -192,11 +200,11 @@ aes = list(
 | `fill_domain` | map | fixed range of the colour scale, e.g. `c(-0.15, 0.15)`; values outside get the end colours |
 | `geo`, `geo_key` | map | file in `geo/` (default `kraje.geojson`) and the feature property matched to `geometry` (default `NUTS_ID`) |
 | `projection` | map | default `"mercator"` |
-| `facet` | line, bar | `TRUE` adds a toggle that splits the chart into one small chart per series (by `colour` on a line chart, by `fill` on a bar chart), three across; each panel's title shows its latest value. Bars over categories (e.g. countries) become horizontal bars in each panel, sorted highest first |
-| `facet_columns` | line, bar | at most this many panels across (default 3) |
-| `facet_scale` | line, bar | `"independent"` (default): each panel its own y axis, to show each series' trend; `"shared"`: every panel on the same axis, so sizes can be compared |
+| `facet` | line, bar, dot | `TRUE` adds a toggle that splits the chart into one small chart per series (by `colour` on a line or dot chart, by `fill` on a bar chart), three across; each panel's title shows its latest value. Bars over categories (e.g. countries) and dot charts become horizontal bars in each panel, sorted highest first |
+| `facet_columns` | line, bar, dot | at most this many panels across (default 3) |
+| `facet_scale` | line, bar, dot | `"independent"` (default): each panel its own y axis, to show each series' trend; `"shared"`: every panel on the same axis, so sizes can be compared |
 | `height` | all | chart height in px |
-| `annotations` | line, bar | reference lines, see below |
+| `annotations` | line, bar, dot | reference lines, see below |
 
 On a map, `scheme`, `reverse`, `midpoint` and `fill_domain` can also be set on a `fill` aesthetic, where they override `options`. That gives each tab its own colour scale, e.g. `list(type = "fill", field = "exekuce", tab = "exekuce", scheme = "oranges")`.
 

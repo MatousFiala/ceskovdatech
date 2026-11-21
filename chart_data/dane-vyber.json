@@ -6,12 +6,12 @@
   "subtitle": "Daňové příjmy veřejného sektoru podle druhu daně",
   "tabs": [
     {
-      "id": "nominalni",
-      "label": "Nominální"
+      "id": "realne",
+      "label": "Reálné (ceny z roku 2020)"
     },
     {
-      "id": "realne",
-      "label": "Reálné"
+      "id": "nominalni",
+      "label": "Nominální"
     },
     {
       "id": "podil",

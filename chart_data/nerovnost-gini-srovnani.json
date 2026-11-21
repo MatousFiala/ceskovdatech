@@ -2,7 +2,7 @@
   "id": "nerovnost-gini-srovnani",
   "data": "nerovnost-gini-srovnani.csv",
   "type": "bar",
-  "title": "Srovnání příjmové nerovnosti",
+  "title": "Srovnání příjmové nerovnosti s vybranými zeměmi",
   "subtitle": "Giniho koeficient [ekvivalizovaného::Se zohledněním počtu členů domácnosti] [disponibilního::Po odečtení daní a přičtení dávek, důchodů a jiných transferů] příjmu v roce 2023. 0 = všichni mají stejně, 100 = vše vlastní jeden ",
   "aes": [
     {

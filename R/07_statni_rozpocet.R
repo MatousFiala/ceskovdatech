@@ -70,7 +70,7 @@ write_chart(
     df = srovnani_vydaje,
     id = "rozpocet-velikost-srovnani",
     type = "bar",
-    title = "Srovnání velikosti veřejného sektoru", # str_glue("Velikost veřejného sektoru ve srovnání se světem v roce {rok_srovnani}")
+    title = "Srovnání velikosti veřejného sektoru s vybranými zeměmi", # str_glue("Velikost veřejného sektoru ve srovnání se světem v roce {rok_srovnani}")
     subtitle = str_glue("Výdaje státu, samospráv a jiných státních organizací v roce {max(srovnani_vydaje$year)}"), # "Výdaje vládního sektoru jako podíl na HDP"
     aes = list(
         list(type = "x", field = "zeme", label = "Země"),
@@ -86,10 +86,18 @@ write_chart(
 monitor <- read_csv("./data/monitor_sr.csv", col_types = cols(pododdil = "c")) |>
     mutate(mld = mil_kc / 1e3, skupina = as.integer(str_sub(pododdil, 1, 1)), druh = case_when(seskupeni < 50 ~ "prijmy", seskupeni < 80 ~ "vydaje", .default = "financovani"))
 
-# Přepočet na ceny roku 2020 podle průměrné roční míry inflace (ČSÚ), jako u reálných mezd
-ceny <- read_csv("./data/czso_CEN0101H.csv") |>
+# Přepočet na ceny roku 2020 podle průměrné roční míry inflace (ČSÚ, od 1997), jako u reálných mezd; dřív Světová
+# banka (stejný index spotřebitelských cen), v letech projekce dluhu inflace podle MMF (World Economic Outlook)
+inflace_czso <- read_csv("./data/czso_CEN0101H.csv") |>
     filter(Ukazatel == "Průměrná roční míra inflace", !str_detect(CASRMX, "-")) |>
-    transmute(year = as.integer(CASRMX), inflace = Hodnota) |>
+    transmute(year = as.integer(CASRMX), inflace = Hodnota)
+inflace_wb <- read_csv("./data/wdi_inflace_cz.csv") |>
+    filter(!is.na(inflace), year < min(inflace_czso$year)) |>
+    transmute(year = as.integer(year), inflace)
+inflace_imf <- read_csv("./data/imf_weo_cze.csv") |>
+    filter(ukazatel == "PCPIPCH", rok > max(inflace_czso$year)) |>
+    transmute(year = as.integer(rok), inflace = hodnota)
+ceny <- bind_rows(inflace_wb, inflace_czso, inflace_imf) |>
     arrange(year) |>
     mutate(ceny_2020 = cumprod(1 + inflace / 100),
            ceny_2020 = ceny_2020 / ceny_2020[year == 2020])
@@ -99,8 +107,10 @@ realne <- function(df) {
     stopifnot("Chybí inflace za některý rok" = !anyNA(out$mld_2020))
     out
 }
-tabs_ceny <- list(list(id = "nominalni", label = "Nominální"), list(id = "realne", label = "Reálné"))
+tabs_ceny <- list(list(id = "realne", label = "Reálné (ceny z roku 2020)"), list(id = "nominalni", label = "Nominální"))
 inflace_source <- other_source("ČSÚ", "Míra inflace (CEN0101H)", "https://data.csu.gov.cz/datastat/data/VYBER/CEN0101HT01")
+inflace_wb_source <- other_source("Světová banka", "Inflation, consumer prices (FP.CPI.TOTL.ZG)",
+                                  "https://data.worldbank.org/indicator/FP.CPI.TOTL.ZG?locations=CZ")
 
 # (3) Příjmy a výdaje: výdaje nad osou, pod osou příjmy a schodek (kolik si stát půjčil), takže obě strany jsou stejně
 # velké. V přebytkovém roce je přebytek nad osou s výdaji.
@@ -137,12 +147,15 @@ write_chart(
     data_note = "Reálné částky jsou přepočtené na ceny v roce 2020. Příjmy a schodek jsou účetnicky pod osou -- z příjmových a dluhových účtů 'odchází' peníze pro financování výdajů" # "Skutečné příjmy a výdaje kapitol státního rozpočtu (bez státních fondů, krajů, obcí a zdravotních pojišťoven), v běžných cenách nebo přepočtené na ceny roku 2020 podle míry inflace. Příjmy a schodek jsou pod osou, aby bylo vidět, že dohromady pokrývají výdaje."
 )
 
-# (3b) Saldo státního rozpočtu (Monitor) v mld. Kč a v % nominálního HDP (Eurostat). Schodek je pod nulou.
-hdp <- read_csv("./data/eurostat_gov_10dd_edpt1_cz.csv") |> transmute(year = time, B1GQ = values)
-schodek <- transmute(saldo, year = rok, saldo_mld = round(saldo, 1)) |>
+# (3b) Saldo státního rozpočtu (Monitor) v mld. Kč (běžné ceny a ceny roku 2020) a v % nominálního HDP (Eurostat).
+# Schodek je pod nulou.
+hdp <- read_csv("./data/eurostat_gov_10dd_edpt1_cz.csv") |> transmute(year = time, hdp_mld = values / 1e3)
+schodek <- transmute(saldo, year = rok, mld = round(saldo, 1)) |>
     left_join(hdp, by = "year") |>
-    transmute(year, saldo_mld, saldo_hdp = round(saldo_mld * 1e3 / B1GQ, 4)) |>
-    arrange(year)
+    mutate(podil = round(mld / hdp_mld, 4)) |>
+    select(-hdp_mld) |>
+    arrange(year) |>
+    realne()
 stopifnot("Chybí HDP za některý rok Monitoru" = !anyNA(schodek))
 
 write_chart(
@@ -150,15 +163,16 @@ write_chart(
     id = "rozpocet-schodek",
     type = "bar",
     title = "Schodek státního rozpočtu", # "Schodek státního rozpočtu"
-    subtitle = "Rozdíl mezi příjmy a výdaji státního rozpočtu", # "Saldo státního rozpočtu v miliardách Kč a jako podíl na HDP"
-    tabs = list(list(id = "nominalni", label = "Nominální"), list(id = "hdp", label = "% HDP")),
+    subtitle = "Rozdíl mezi příjmy a výdaji státního rozpočtu", # "Saldo státního rozpočtu v miliardách Kč"
+    tabs = c(tabs_ceny, list(list(id = "hdp", label = "% HDP"))),
     aes = list(
         list(type = "x", field = "year", label = "Rok", format = "year"),
-        list(type = "y", field = "saldo_mld", label = "Schodek", unit = "mld. Kč", tab = "nominalni"),
-        list(type = "y", field = "saldo_hdp", label = "Schodek (% HDP)", format = "percent", tab = "hdp")
+        list(type = "y", field = "mld_2020", label = "Schodek v cenách roku 2020", unit = "mld. Kč", tab = "realne"),
+        list(type = "y", field = "mld", label = "Schodek", unit = "mld. Kč", tab = "nominalni"),
+        list(type = "y", field = "podil", label = "Schodek (% HDP)", format = "percent", tab = "hdp")
     ),
-    source = list(monitor_source, eurostat_source("gov_10dd_edpt1", "Government deficit/surplus, debt and associated data")),
-    data_note = "Nominální schodek z dat MSP, podíl na HDP z dat Eurostatu" # "Saldo = příjmy − výdaje; schodek je pod nulou. Státní rozpočet: kapitoly státního rozpočtu podle Monitoru státní pokladny, od roku 2010; podíl na nominálním HDP (Eurostat)."
+    source = list(monitor_source, inflace_source, eurostat_source("gov_10dd_edpt1", "Government deficit/surplus, debt and associated data")),
+    data_note = "Schodek z dat MSP, podíl na HDP z dat Eurostatu. Reálné částky jsou přepočtené na ceny v roce 2020." # "Saldo = příjmy − výdaje; schodek je pod nulou. Státní rozpočet: kapitoly státního rozpočtu podle Monitoru státní pokladny, od roku 2010, v běžných cenách nebo přepočtené na ceny roku 2020 podle míry inflace; podíl na nominálním HDP (Eurostat)."
 )
 
 # (4) Hrubé kategorie příjmů podle druhového třídění: daně (seskupení 11–15, 17), pojistné (16), přijaté transfery (41–42,
@@ -203,6 +217,7 @@ kategorie_vydaju <- monitor |>
     summarise(mld = round(sum(mld), 1), .by = c(rok, skupina)) |>
     transmute(year = rok, skupina = factor(skupina, c("Důchody a sociální transfery", "Služby", "Hospodářství a infrastruktura",
                                                       "Bezpečnost státu", "Veřejná správa")), mld) |>
+    mutate(podil = round(mld / sum(mld), 4), .by = year) |>
     arrange(year, skupina) |>
     realne()
 stopifnot(!anyNA(kategorie_vydaju))
@@ -217,10 +232,11 @@ write_chart(
         list(type = "x", field = "year", label = "Rok", format = "year"),
         list(type = "y", field = "mld", label = "Nominální výdaje", unit = "mld. Kč", tab = "nominalni"),
         list(type = "y", field = "mld_2020", label = "Reálné výdaje", unit = "mld. Kč", tab = "realne"),
+        list(type = "y", field = "podil", label = "Podíl na výdajích", format = "percent", tab = "podil"),
         list(type = "fill", field = "skupina", label = "Kategorie")
     ),
     source = list(monitor_source, inflace_source),
-    tabs = tabs_ceny,
+    tabs = c(tabs_ceny, list(list(id = "podil", label = "% výdajů"))),
     options = list(facet = TRUE),
     data_note = "Reálné častky jsou přepočteny na ceny v roce 2020. Důchody a sociální transfery: veškeré důchody, sociální dávky a příspěvky. Služby: vzdělávání, zdravotnictví, kultura, bydlení, životní prostředí. Hospodářství: doprava, zemědělství, průmysl, energetika, výzkum. Bezpečnost: obrana, bezpečnostní složky. Veřejná správa: státní a místní správa, obsluha dluhu, transfery samosprávám." # "V běžných cenách nebo přepočtené na ceny roku 2020 podle míry inflace. Odvětvové třídění rozpočtové skladby. Důchody a sociální transfery: důchody, dávky, podpora v nezaměstnanosti, politika zaměstnanosti. Služby: vzdělávání (včetně platů učitelů placených přes kraje), zdravotnictví (včetně plateb za státní pojištěnce), kultura, bydlení, životní prostředí. Hospodářství a infrastruktura: doprava, zemědělství, průmysl, energetika, výzkum. Bezpečnost: obrana, policie, hasiči, soudy, vězeňství. Veřejná správa: státní a místní správa, úroky ze státního dluhu, transfery obcím a krajům."
 )
@@ -280,6 +296,61 @@ write_chart(
     data_note = str_glue("Ostatní: ostatní činnosti veřejné správy a oblasti, které mají každá méně než 0,5 % výdajů ({str_flatten_comma(str_to_lower(setdiff(ostatni_vydaje, 'Ostatní činnosti')))}). Vzdělávání zahrnuje i platy učitelů v regionálním školství, které stát posílá přes kraje. Zdravotnictví zahrnuje i platbu státu do zdravotního pojištění za státní pojištěnce (děti, studenty, důchodce a další). Příspěvek na péči zahrnuje i státní příspěvky na penzijní spoření a další drobné dávky sociálního zabezpečení.") # str_glue("Výdaje kapitol státního rozpočtu v roce {rok_vydaje} podle oddílů odvětvového třídění rozpočtové skladby; sociální dávky podle pododdílů. Vzdělávání zahrnuje platy učitelů, které stát posílá přes kraje. Zdravotnictví zahrnuje platbu za státní pojištěnce (děti, důchodce aj.). Úroky z dluhu a finanční operace: hlavně úroky ze státního dluhu. Státní sociální podpora zahrnuje i dávky pěstounské péče. Výsluhy: zvláštní sociální dávky vojáků, policistů a dalších sborů. Příspěvek na péči aj.: příspěvek na péči a ostatní dávky sociálního zabezpečení.")
 )
 
+# (5c) Mezinárodní srovnání skladby výdajů celého vládního sektoru podle funkcí (COFOG), % výdajů a % HDP; obdoba srovnání
+# skladby daní (08_dane.R), stejné země, navíc EU27 a průměr OECD. Kategorie zhruba odpovídají skupinám v (5)
+oblasti_cofog <- c(GF10 = "Důchody a sociální transfery", GF07 = "Zdravotnictví", GF09 = "Vzdělávání", GF04 = "Hospodářství a doprava",
+            GF01 = "Veřejná správa", GF02 = "Obrana a bezpečnost", GF03 = "Obrana a bezpečnost",
+            GF05 = "Ostatní", GF06 = "Ostatní", GF08 = "Ostatní")
+zeme_vydaje <- c(CZE = "Česko", DEU = "Německo", AUT = "Rakousko", SVK = "Slovensko", POL = "Polsko", FRA = "Francie",
+                 GBR = "Spojené království", SWE = "Švédsko", DNK = "Dánsko", FIN = "Finsko", NOR = "Norsko", USA = "USA",
+                 EST = "Estonsko", EU27_2020 = "EU", OECD = "Průměr OECD")
+cofog <- read_csv("./data/oecd_cofog.csv")
+rok_cofog <- cofog |> filter(funkce == "_T", kod %in% names(zeme_vydaje)) |> summarise(rok = max(rok), .by = kod) |>
+    pull(rok) |> min() # poslední rok se všemi zobrazenými zeměmi
+# podíly všech zemí v data/oecd_cofog.csv (členové OECD a EU27) v daném roce
+vydaje_zemi <- cofog |>
+    filter(rok == rok_cofog) |>
+    mutate(celkem = hodnota[funkce == "_T"], .by = kod) |>
+    filter(funkce != "_T") |>
+    left_join(read_csv("./data/oecd_hdp.csv"), by = c("kod", "rok")) |>
+    mutate(oblast = oblasti_cofog[funkce]) |>
+    summarise(podil = sum(hodnota / celkem), hdp = sum(hodnota / hdp), .by = c(rok, kod, oblast))
+# průměr OECD: nevážený průměr členských zemí, které mají data za daný rok (jako průměr OECD u daní)
+clenove_oecd <- setdiff(unique(vydaje_zemi$kod), "EU27_2020")
+skladba_vydaju <- vydaje_zemi |>
+    filter(kod %in% clenove_oecd) |>
+    summarise(podil = mean(podil), hdp = mean(hdp), .by = c(rok, oblast)) |>
+    mutate(kod = "OECD") |>
+    bind_rows(filter(vydaje_zemi, kod %in% names(zeme_vydaje)), x = _) |>
+    transmute(year = rok, zeme = zeme_vydaje[kod], oblast = factor(oblast, unique(oblasti_cofog)),
+              podil = round(podil, 4), hdp = round(hdp, 4), cesko = kod == "CZE") |>
+    # země seřazené podle podílu důchodů a sociálních transferů (sociální ochrany) na výdajích, nejvyšší nahoře
+    mutate(zeme = fct_reorder(zeme, if_else(oblast == "Důchody a sociální transfery", -podil, NA), .fun = \(v) min(v, na.rm = TRUE))) |>
+    arrange(zeme, oblast)
+stopifnot(n_distinct(skladba_vydaju$zeme) == length(zeme_vydaje), !anyNA(skladba_vydaju))
+
+write_chart(
+    df = skladba_vydaju,
+    id = "rozpocet-vydaje-srovnani",
+    type = "bar",
+    title = "Srovnání skladby výdajů s vybranými zeměmi OECD", # str_glue("Na co státy utrácejí, rok {rok_cofog}")
+    subtitle = str_glue("Výdaje vládního sektoru podle oblasti v roce {max(skladba_vydaju$year)}"), # "Podíl jednotlivých oblastí na výdajích státu, krajů, obcí a zdravotních pojišťoven"
+    aes = list(
+        list(type = "x", field = "zeme", label = "Země"),
+        list(type = "y", field = "podil", label = "% výdajů", format = "percent", tab = "podil"),
+        list(type = "y", field = "hdp", label = "% HDP", format = "percent", tab = "hdp"),
+        list(type = "fill", field = "oblast", label = "Oblast"),
+        list(type = "highlight", field = "cesko")
+    ),
+    tabs = list(list(id = "podil", label = "% výdajů"), list(id = "hdp", label = "% HDP")),
+    source = list(other_source("OECD", "Annual government expenditure by function (COFOG), Table 11",
+                               "https://data-explorer.oecd.org/?df[ds]=dsDisseminateFinalDMZ&df[id]=DSD_NASEC10%40DF_TABLE11&df[ag]=OECD.SDD.NAD"),
+                  other_source("OECD", "Gross domestic product (Table 1)",
+                               "https://data-explorer.oecd.org/?df[ds]=dsDisseminateFinalDMZ&df[id]=DSD_NAMAIN10%40DF_TABLE1_EXPENDITURE&df[ag]=OECD.SDD.NAD")),
+    options = list(horizontal = TRUE, facet = TRUE),
+    data_note = str_glue("Výdaje celého vládního sektoru (stát, kraje, obce, zdravotní pojišťovny a další) podle mezinárodní klasifikace funkcí vlády (COFOG), proto se skladba liší od státního rozpočtu. Důchody a sociální transfery odpovídají oblasti sociální ochrany v COFOG: oproti stejnojmenné kategorii státního rozpočtu zahrnují i sociální služby a dávky placené kraji a obcemi (domovy pro seniory, pečovatelská služba), nejen výdaje státu. Veřejná správa zahrnuje i úroky z dluhu. Obrana a bezpečnost: armáda, policie, hasiči, soudy, vězeňství. Ostatní: životní prostředí, bydlení, kultura a sport. EU: souhrn 27 členských zemí. Průměr OECD: nevážený průměr {length(clenove_oecd)} z 38 členských zemí OECD, které mají data za rok {rok_cofog}.") # návrh
+)
+
 # ---------- (6) Dluh vládního sektoru: Kč a % HDP, s projekcí MMF ----------
 dluh_eu <- read_csv("./data/eurostat_gov_10dd_edpt1.csv") |> filter(!is.na(values))
 dluh_skutecnost <- dluh_eu |>
@@ -287,8 +358,8 @@ dluh_skutecnost <- dluh_eu |>
     pivot_wider(names_from = unit, values_from = values) |>
     transmute(year = time, data = "Skutečnost", mld = MIO_NAC / 1e3, podil = PC_GDP / 100)
 rok_dluh <- max(dluh_skutecnost$year)
-dluh_projekce <- read_csv("./data/imf_weo_cze_dluh.csv") |>
-    filter(rok > rok_dluh) |>
+dluh_projekce <- read_csv("./data/imf_weo_cze.csv") |>
+    filter(rok > rok_dluh, ukazatel != "PCPIPCH") |>
     pivot_wider(names_from = ukazatel, values_from = hodnota) |>
     transmute(year = rok, data = "Projekce MMF", mld = GGXWDG / 1e9, podil = GGXWDG_NGDP / 100)
 dluh <- bind_rows(
@@ -297,7 +368,8 @@ dluh <- bind_rows(
     dluh_projekce
 ) |>
     mutate(data = fct_inorder(data), mld = round(mld, 1)) |>
-    arrange(data, year)
+    arrange(data, year) |>
+    realne()
 
 write_chart(
     df = dluh,
@@ -305,17 +377,21 @@ write_chart(
     type = "line",
     title = "Veřejný dluh ČR s projekcí do roku 2031", # "Veřejný dluh ČR od roku 1995 s projekcí do roku 2031"
     subtitle = "Hrubý dluh státu, samospráv a zdravotních pojišťoven", # "Hrubý dluh vládního sektoru v miliardách Kč a jako podíl na HDP"
-    tabs = list(list(id = "podil", label = "% HDP"), list(id = "kc", label = "Nominální")),
+    # výjimka z pořadí reálné > nominální > %: dluh se posuzuje hlavně jako podíl na HDP (kritérium 60 %, srovnání zemí)
+    tabs = list(list(id = "podil", label = "% HDP"), list(id = "realne", label = "Reálné (ceny z roku 2020)"),
+                list(id = "kc", label = "Nominální")),
     aes = list(
         list(type = "x", field = "year", label = "Rok", format = "year"),
         list(type = "y", field = "podil", label = "Dluh (% HDP)", format = "percent", tab = "podil"),
+        list(type = "y", field = "mld_2020", label = "Dluh v cenách roku 2020", unit = "mld. Kč", tab = "realne"),
         list(type = "y", field = "mld", label = "Dluh", unit = "mld. Kč", tab = "kc"),
         list(type = "linetype", field = "data", label = "Údaj")
     ),
     source = list(eurostat_source("gov_10dd_edpt1", "Government deficit/surplus, debt and associated data"),
-                  other_source("MMF", "World Economic Outlook, October 2026 (SDMX API)", "https://data.imf.org/")),
+                  other_source("MMF", "World Economic Outlook, October 2026 (SDMX API)", "https://data.imf.org/"),
+                  inflace_source, inflace_wb_source),
     options = list(annotations = list(list(y = 0.6, tab = "podil", label = "Maastrichtské kritérium fiskální stability"))),
-    data_note = "Skutečnost z dat Eurostatu, projekce MMF" # str_glue("Hrubý (maastrichtský) dluh vládního sektoru: stát, kraje a obce, zdravotní pojišťovny. Státní dluh v užším smyslu (dluh státního rozpočtu) je o něco nižší. Do roku {rok_dluh} Eurostat, poté projekce MMF (World Economic Outlook, říjen 2026).")
+    data_note = "Skutečnost z dat Eurostatu, projekce MMF. Reálné částky jsou přepočtené na ceny v roce 2020 (inflace ČSÚ, před rokem 1997 Světová banka, v letech projekce odhad MMF)." # str_glue("Hrubý (maastrichtský) dluh vládního sektoru: stát, kraje a obce, zdravotní pojišťovny. Státní dluh v užším smyslu (dluh státního rozpočtu) je o něco nižší. Do roku {rok_dluh} Eurostat, poté projekce MMF (World Economic Outlook, říjen 2026).")
 )
 
 # ---------- (7) Srovnání dluhu, % HDP: stejné země jako (2) + nejvyšší a nejnižší dluh v OECD ----------
@@ -339,48 +415,32 @@ dluh_zemi <- bind_rows(
     imf_dluh |> filter(kod %in% names(zeme_imf_dluh), rok <= rok_srovnani) |>
         transmute(zeme = zeme_imf_dluh[kod], rok, dluh = hodnota)
 )
+# (7+8) Výše dluhu v posledním roce (% HDP) a jeho změna za posledních 5 let dat (p. b.), jeden graf se dvěma záložkami
+rok_rust <- rok_srovnani - 5
 srovnani_dluh <- dluh_zemi |>
-    filter(rok == rok_srovnani) |>
-    transmute(zeme, year = rok, dluh = round(dluh / 100, 3), cesko = zeme == "Česko")
-stopifnot(nrow(srovnani_dluh) == length(zeme_eurostat_dluh) + length(zeme_imf_dluh))
+    filter(rok %in% c(rok_rust, rok_srovnani)) |>
+    pivot_wider(names_from = rok, values_from = dluh, names_prefix = "r") |>
+    transmute(zeme, year = rok_srovnani,
+              dluh = round(.data[[str_c("r", rok_srovnani)]] / 100, 3),
+              zmena = round((.data[[str_c("r", rok_srovnani)]] - .data[[str_c("r", rok_rust)]]) / 100, 3),
+              cesko = zeme == "Česko")
+stopifnot(nrow(srovnani_dluh) == length(zeme_eurostat_dluh) + length(zeme_imf_dluh), !anyNA(srovnani_dluh))
 
 write_chart(
     df = srovnani_dluh,
     id = "rozpocet-dluh-srovnani",
     type = "bar",
-    title = "Srovnání veřejného dluhu", # str_glue("Veřejný dluh ve srovnání se světem v roce {rok_srovnani}")
-    subtitle = str_glue("Hrubý dluh státu, samospráv a jiných státních organizací v roce {max(srovnani_dluh$year)}"), # "Hrubý dluh vládního sektoru jako podíl na HDP; Japonsko a Turecko mají nejvyšší a nejnižší dluh v OECD"
+    title = "Srovnání veřejného dluhu s vybranými zeměmi", # str_glue("Veřejný dluh ve srovnání se světem v roce {rok_srovnani}")
+    subtitle = str_glue("Hrubý dluh státu, samospráv a jiných státních organizací v roce {max(srovnani_dluh$year)} a jeho změna od roku {rok_rust}, % HDP"), # "Hrubý dluh vládního sektoru jako podíl na HDP; Japonsko a Turecko mají nejvyšší a nejnižší dluh v OECD"
+    tabs = list(list(id = "dluh", label = "Výše dluhu"), list(id = "zmena", label = str_glue("Změna od roku {rok_rust}"))),
     aes = list(
         list(type = "x", field = "zeme", label = "Země"),
-        list(type = "y", field = "dluh", label = "Dluh (% HDP)", format = "percent"),
+        list(type = "y", field = "dluh", label = "Dluh (% HDP)", format = "percent", tab = "dluh"),
+        list(type = "y", field = "zmena", label = "Změna dluhu", format = "percent", unit = "p. b.", tab = "zmena"),
         list(type = "highlight", field = "cesko")
     ),
     source = list(eurostat_source("gov_10dd_edpt1", "Government deficit/surplus, debt and associated data"), imf_source),
-    options = list(horizontal = TRUE, sort = "desc"),
-    data_note = "Evroské země a EU z dat Eurostatu, ostatní z dat MMF. Svět: vážený průměr z dat MMF podle velikosti HDP." # str_glue("Hrubý dluh vládního sektoru v roce {rok_srovnani}. Evropské země (bez Norska) a EU: Eurostat; ostatní: MMF (World Economic Outlook, část hodnot jsou odhady MMF; svět je průměr vážený HDP).")
-)
-
-# ---------- (8) Růst dluhu: změna v procentních bodech HDP za posledních 5 let dat ----------
-rok_rust <- rok_srovnani - 5
-rust_dluhu <- dluh_zemi |>
-    filter(rok %in% c(rok_rust, rok_srovnani)) |>
-    pivot_wider(names_from = rok, values_from = dluh, names_prefix = "r") |>
-    transmute(zeme, zmena = round((.data[[str_c("r", rok_srovnani)]] - .data[[str_c("r", rok_rust)]]) / 100, 3),
-              year = rok_srovnani, cesko = zeme == "Česko")
-stopifnot(!anyNA(rust_dluhu))
-
-write_chart(
-    df = rust_dluhu,
-    id = "rozpocet-dluh-rust",
-    type = "bar",
-    title = "Srovnání růstu veřejného dluhu", # "Jak rychle roste veřejný dluh"
-    subtitle = str_glue("Nárůst dluhu státu, samospráv a jiných státních organizací jako % HDP mezi lety {rok_rust} a {rok_srovnani}"), # str_glue("Změna hrubého dluhu vládního sektoru v procentních bodech HDP mezi lety {rok_rust} a {rok_srovnani}")
-    aes = list(
-        list(type = "x", field = "zeme", label = "Země"),
-        list(type = "y", field = "zmena", label = "Změna dluhu", format = "percent", unit = "p. b."),
-        list(type = "highlight", field = "cesko")
-    ),
-    source = list(eurostat_source("gov_10dd_edpt1", "Government deficit/surplus, debt and associated data"), imf_source),
-    options = list(horizontal = TRUE, sort = "desc"),
-    data_note = "Evropské země a EU z dat Eurostatu, ostatní MMF. Svět: vážený průměr z dat MMF podle velikosti HDP" # str_glue("Rozdíl mezi hrubým dluhem vládního sektoru (% HDP) v roce {rok_srovnani} a {rok_rust}. Evropské země (bez Norska) a EU: Eurostat; ostatní: MMF.")
+    options = list(horizontal = TRUE, sort = "desc",
+                   annotations = list(list(y = 0.6, tab = "dluh", label = "Maastrichtské kritérium fiskální stability"))),
+    data_note = str_glue("Evropské země a EU z dat Eurostatu, ostatní z dat MMF. Svět: vážený průměr z dat MMF podle velikosti HDP. Změna: rozdíl podílu dluhu na HDP mezi lety {rok_rust} a {rok_srovnani} v procentních bodech.") # str_glue("Hrubý dluh vládního sektoru v roce {rok_srovnani}. Evropské země (bez Norska) a EU: Eurostat; ostatní: MMF (World Economic Outlook, část hodnot jsou odhady MMF; svět je průměr vážený HDP).")
 )

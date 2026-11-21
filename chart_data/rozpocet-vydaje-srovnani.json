@@ -1,0 +1,68 @@
+{
+  "id": "rozpocet-vydaje-srovnani",
+  "data": "rozpocet-vydaje-srovnani.csv",
+  "type": "bar",
+  "title": "Srovnání skladby výdajů s vybranými zeměmi OECD",
+  "subtitle": "Výdaje vládního sektoru podle oblasti v roce 2024",
+  "tabs": [
+    {
+      "id": "podil",
+      "label": "% výdajů"
+    },
+    {
+      "id": "hdp",
+      "label": "% HDP"
+    }
+  ],
+  "aes": [
+    {
+      "type": "x",
+      "field": "zeme",
+      "label": "Země"
+    },
+    {
+      "type": "y",
+      "field": "podil",
+      "label": "% výdajů",
+      "format": "percent",
+      "tab": "podil"
+    },
+    {
+      "type": "y",
+      "field": "hdp",
+      "label": "% HDP",
+      "format": "percent",
+      "tab": "hdp"
+    },
+    {
+      "type": "fill",
+      "field": "oblast",
+      "label": "Oblast"
+    },
+    {
+      "type": "highlight",
+      "field": "cesko"
+    }
+  ],
+  "source": [
+    {
+      "name": "OECD",
+      "dataset": "Annual government expenditure by function (COFOG), Table 11",
+      "url": "https://data-explorer.oecd.org/?df[ds]=dsDisseminateFinalDMZ&df[id]=DSD_NASEC10%40DF_TABLE11&df[ag]=OECD.SDD.NAD",
+      "retrieved": "2026-11-21"
+    },
+    {
+      "name": "OECD",
+      "dataset": "Gross domestic product (Table 1)",
+      "url": "https://data-explorer.oecd.org/?df[ds]=dsDisseminateFinalDMZ&df[id]=DSD_NAMAIN10%40DF_TABLE1_EXPENDITURE&df[ag]=OECD.SDD.NAD",
+      "retrieved": "2026-11-21"
+    }
+  ],
+  "data_note": "Výdaje celého vládního sektoru (stát, kraje, obce, zdravotní pojišťovny a další) podle mezinárodní klasifikace funkcí vlády (COFOG), proto se skladba liší od státního rozpočtu. Důchody a sociální transfery odpovídají oblasti sociální ochrany v COFOG: oproti stejnojmenné kategorii státního rozpočtu zahrnují i sociální služby a dávky placené kraji a obcemi (domovy pro seniory, pečovatelská služba), nejen výdaje státu. Veřejná správa zahrnuje i úroky z dluhu. Obrana a bezpečnost: armáda, policie, hasiči, soudy, vězeňství. Ostatní: životní prostředí, bydlení, kultura a sport. EU: souhrn 27 členských zemí. Průměr OECD: nevážený průměr 32 z 38 členských zemí OECD, které mají data za rok 2024.",
+  "options": {
+    "horizontal": true,
+    "facet": true
+  },
+  "last_updated": "2026-11-21",
+  "rows": 105
+}

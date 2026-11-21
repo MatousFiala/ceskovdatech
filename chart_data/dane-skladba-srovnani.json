@@ -2,7 +2,7 @@
   "id": "dane-skladba-srovnani",
   "data": "dane-skladba-srovnani.csv",
   "type": "bar",
-  "title": "Srovnání skladby daní",
+  "title": "Srovnání skladby daní s vybranými zeměmi OECD",
   "subtitle": "Daňové příjmy podle druhu daně v roce 2023",
   "tabs": [
     {

@@ -10,6 +10,10 @@
       "label": "% HDP"
     },
     {
+      "id": "realne",
+      "label": "Reálné (ceny z roku 2020)"
+    },
+    {
       "id": "kc",
       "label": "Nominální"
     }
@@ -27,6 +31,13 @@
       "label": "Dluh (% HDP)",
       "format": "percent",
       "tab": "podil"
+    },
+    {
+      "type": "y",
+      "field": "mld_2020",
+      "label": "Dluh v cenách roku 2020",
+      "unit": "mld. Kč",
+      "tab": "realne"
     },
     {
       "type": "y",
@@ -53,9 +64,21 @@
       "dataset": "World Economic Outlook, October 2026 (SDMX API)",
       "url": "https://data.imf.org/",
       "retrieved": "2026-11-21"
+    },
+    {
+      "name": "ČSÚ",
+      "dataset": "Míra inflace (CEN0101H)",
+      "url": "https://data.csu.gov.cz/datastat/data/VYBER/CEN0101HT01",
+      "retrieved": "2026-11-21"
+    },
+    {
+      "name": "Světová banka",
+      "dataset": "Inflation, consumer prices (FP.CPI.TOTL.ZG)",
+      "url": "https://data.worldbank.org/indicator/FP.CPI.TOTL.ZG?locations=CZ",
+      "retrieved": "2026-11-21"
     }
   ],
-  "data_note": "Skutečnost z dat Eurostatu, projekce MMF",
+  "data_note": "Skutečnost z dat Eurostatu, projekce MMF. Reálné částky jsou přepočtené na ceny v roce 2020 (inflace ČSÚ, před rokem 1997 Světová banka, v letech projekce odhad MMF).",
   "options": {
     "annotations": [
       {

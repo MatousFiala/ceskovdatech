@@ -96,7 +96,7 @@ write_chart(
     title = "Průměrná mzda v ČR od roku 2000",
     subtitle = "Průměrná hrubá měsíční mzda v ČR, nominální i reálná v cenách z roku 2020",
     tabs = list(
-        list(id = "realna", label = "Reálná"),
+        list(id = "realna", label = "Reálná (ceny z roku 2020)"),
         list(id = "nominalni", label = "Nominální")
     ),
     aes = list(

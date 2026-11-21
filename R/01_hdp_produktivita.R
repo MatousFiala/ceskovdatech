@@ -119,7 +119,7 @@ write_chart(
     df = srov_nyni,
     id = "hdp-srovnani-cross-section",
     type = "bar",
-    title = "HDP na osobu ve srovnání s jinými zeměmi",
+    title = "HDP na osobu ve srovnání s vybranými zeměmi",
     subtitle = str_glue("HDP [PPP::Parita kupní síly: Ukazatel zohledňující, že si za stejný obnos lze v různých zemích pořídit rozdílné množství zboží] na osobu v roce {max(srov$year)} v českých cenách z roku 2020"),
     aes = list(
         list(type = "x", field = "country", label = "Země"),
@@ -144,7 +144,7 @@ write_chart(
     df = srov_cas,
     id = "hdp-srovnani-casova-rada",
     type = "line",
-    title = "Vývoj HDP na osobu ve srovnání s jinými zeměmi",
+    title = "Vývoj HDP na osobu ve srovnání s vybranými zeměmi",
     subtitle = str_glue("HDP [PPP::Parita kupní síly: Ukazatel zohledňující, že si za stejný obnos lze v různých zemích pořídit rozdílné množství zboží] na osobu v roce {max(srov$year)} v českých cenách z roku 2020"),
     aes = list(
         list(type = "x", field = "year", label = "Rok", format = "year"),

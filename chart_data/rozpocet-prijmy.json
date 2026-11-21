@@ -6,12 +6,12 @@
   "subtitle": "Příjmy státního rozpočtu podle kategoriem, miliardy Kč",
   "tabs": [
     {
-      "id": "nominalni",
-      "label": "Nominální"
+      "id": "realne",
+      "label": "Reálné (ceny z roku 2020)"
     },
     {
-      "id": "realne",
-      "label": "Reálné"
+      "id": "nominalni",
+      "label": "Nominální"
     }
   ],
   "aes": [

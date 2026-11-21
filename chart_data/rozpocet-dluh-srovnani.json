@@ -2,8 +2,18 @@
   "id": "rozpocet-dluh-srovnani",
   "data": "rozpocet-dluh-srovnani.csv",
   "type": "bar",
-  "title": "Srovnání veřejného dluhu",
-  "subtitle": "Hrubý dluh státu, samospráv a jiných státních organizací v roce 2025",
+  "title": "Srovnání veřejného dluhu s vybranými zeměmi",
+  "subtitle": "Hrubý dluh státu, samospráv a jiných státních organizací v roce 2025 a jeho změna od roku 2020, % HDP",
+  "tabs": [
+    {
+      "id": "dluh",
+      "label": "Výše dluhu"
+    },
+    {
+      "id": "zmena",
+      "label": "Změna od roku 2020"
+    }
+  ],
   "aes": [
     {
       "type": "x",
@@ -14,7 +24,16 @@
       "type": "y",
       "field": "dluh",
       "label": "Dluh (% HDP)",
-      "format": "percent"
+      "format": "percent",
+      "tab": "dluh"
+    },
+    {
+      "type": "y",
+      "field": "zmena",
+      "label": "Změna dluhu",
+      "format": "percent",
+      "unit": "p. b.",
+      "tab": "zmena"
     },
     {
       "type": "highlight",
@@ -35,10 +54,17 @@
       "retrieved": "2026-11-21"
     }
   ],
-  "data_note": "Evroské země a EU z dat Eurostatu, ostatní z dat MMF. Svět: vážený průměr z dat MMF podle velikosti HDP.",
+  "data_note": "Evropské země a EU z dat Eurostatu, ostatní z dat MMF. Svět: vážený průměr z dat MMF podle velikosti HDP. Změna: rozdíl podílu dluhu na HDP mezi lety 2020 a 2025 v procentních bodech.",
   "options": {
     "horizontal": true,
-    "sort": "desc"
+    "sort": "desc",
+    "annotations": [
+      {
+        "y": 0.6,
+        "tab": "dluh",
+        "label": "Maastrichtské kritérium fiskální stability"
+      }
+    ]
   },
   "last_updated": "2026-11-21",
   "rows": 16

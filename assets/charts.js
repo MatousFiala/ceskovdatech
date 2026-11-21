@@ -119,7 +119,17 @@ function colourScale(data, a, o) {
   const field = label(a);
   const all = [...new Set(data.map((d) => d[field]))];
   const domain = o.highlight ? all.filter((v) => [o.highlight].flat().includes(v)) : all;
-  return { domain, range: PALETTE, unknown: MUTED, legend: all.length > 1 && shown(a) };
+  return { domain, range: gradient(o, domain.length) ?? PALETTE, unknown: MUTED, legend: all.length > 1 && shown(a) };
+}
+
+// options.colour_scheme (e.g. "blues"): ordered series in shades of one colour, light to dark in data order;
+// the lightest shades are left out, so that every series stays visible on white
+function gradient(o, n) {
+  if (!o.colour_scheme) return null;
+  const name = String(o.colour_scheme);
+  const f = d3[`interpolate${name[0].toUpperCase()}${name.slice(1).toLowerCase()}`];
+  if (!f) throw new Error(`neznámá barevná škála „${name}“`);
+  return d3.range(n).map((i) => f(n > 1 ? 0.55 + (0.45 * i) / (n - 1) : 0.8));
 }
 
 // ---------- annotations ----------
@@ -264,6 +274,7 @@ function barChart(spec, data, A, o, width, all) {
         clip: o.y_domain ? true : undefined, // a fixed axis range that leaves out zero would let bars spill out
       }),
       horizontal ? Plot.ruleX([0]) : Plot.ruleY([0]),
+      ...totalMarks(data, { cat, y, catCh, valCh, on: o.totals && fillA && !grouped }),
       ...annotationMarks(o, {
         ch: { x: catCh, y: valCh },
         // a category that is shown; none for side-by-side groups, whose categories are facets
@@ -274,6 +285,120 @@ function barChart(spec, data, A, o, width, all) {
   // fill already gives the colours: the highlighted categories get a bold label instead
   if (hi && fillA) boldTicks(plot, data.filter(hi).map((d) => d[cat]));
   return plot;
+}
+
+// options.range = c(from, point, to) on a dot chart: three values of the colour column. Each row (or year, when x is
+// a number) gets a line from its `from` value to its `to` value with short caps at both ends and a point at `point`;
+// highlighted rows in colour, the rest grey. The tooltip lists every colour series of the row.
+function rangeChart(spec, data, A, o, width) {
+  const cat = label(A.x), y = A.y.field, colour = label(A.colour);
+  const [from, mid, to] = o.range.map(String);
+  const hi = highlighter(A);
+  const vertical = typeof data[0]?.[cat] === "number"; // years along x, values up
+  let cats = [...new Set(data.map((d) => d[cat]))];
+  if (o.sort_by != null) {
+    const v = new Map(data.filter((d) => String(d[colour]) === String(o.sort_by)).map((d) => [d[cat], d[y]]));
+    cats = d3.sort(cats, (c) => (o.sort === "desc" ? -v.get(c) : v.get(c)));
+  }
+  cats = sortLast(cats, o);
+  const rows = d3.rollups(data, (v) => {
+    const at = (s) => v.find((d) => String(d[colour]) === s)?.[y];
+    const tip = [fmt(A.x, v[0][cat]), ...v.map((d) => `${fmt(A.colour, d[colour])}: ${fmt(A.y, d[y], { unit: true })}`)].join("\n");
+    return { lo: at(from), mid: at(mid), hi: at(to), on: hi ? v.some(hi) : true, tip };
+  }, (d) => d[cat]).map(([c, r]) => ({ c, ...r })).filter((r) => r.lo != null && r.hi != null);
+  const stroke = (r) => (r.on ? PALETTE[0] : "#9b9993"); // darker than MUTED: thin lines in light grey are hard to see
+  const values = [...rows.flatMap((r) => [r.lo, r.hi]), ...annotationValues(o)];
+  const valAxis = { label: shown(A.y) ? A.y.label : null, grid: true, tickFormat: tickOf(A.y), domain: o.y_domain, zero: o.y_zero ?? false };
+  const key = h("div", { class: "chart-legend" },
+    `${A.colour.label}: čára ${fmt(A.colour, from)} až ${fmt(A.colour, to)}, bod ${fmt(A.colour, mid)}`);
+  let plot;
+  if (vertical) {
+    const cap = 0.3; // half-width of the end caps, in years
+    const [x0, x1] = d3.extent(rows, (r) => r.c);
+    plot = Plot.plot({
+      ...base(o, width),
+      marginLeft: axisMargin(A.y, values, o, false),
+      x: { label: null, tickFormat: tickOf(A.x), ticks: Math.max(2, Math.min(x1 - x0, Math.floor(width / 70))) },
+      y: valAxis,
+      marks: [
+        ...annotationMarks(o, { xValue: (v) => (v >= x0 && v <= x1 ? v : null) }),
+        Plot.ruleX(rows, { x: "c", y1: "lo", y2: "hi", stroke, strokeWidth: 2 }),
+        Plot.ruleY(rows, { y: "lo", x1: (r) => r.c - cap, x2: (r) => r.c + cap, stroke, strokeWidth: 2 }),
+        Plot.ruleY(rows, { y: "hi", x1: (r) => r.c - cap, x2: (r) => r.c + cap, stroke, strokeWidth: 2 }),
+        Plot.dot(rows, { x: "c", y: "mid", fill: stroke, r: 4, stroke: "white", strokeWidth: 1 }),
+        Plot.tip(rows, Plot.pointerX({ x: "c", y: "mid", title: "tip" })),
+      ],
+    });
+  } else {
+    const left = Math.min(250, d3.max(cats, (c) => String(c).length) * 7.5 + 12);
+    plot = Plot.plot({
+      ...base(o, width),
+      height: o.height ?? cats.length * 26 + 50,
+      marginLeft: left,
+      marginBottom: 48,
+      y: { label: null, domain: cats, tickFormat: (d) => fmt(A.x, d, { tick: true }) },
+      x: { ...valAxis, ticks: Math.max(2, Math.floor((width - left) / (axisMargin(A.y, values, o) + 10))) },
+      marks: [
+        ...annotationMarks(o, { ch: { x: "y", y: "x" }, xValue: (v) => cats.find((c) => String(c) === String(v)) ?? null }),
+        Plot.ruleY(rows, { y: "c", x1: "lo", x2: "hi", stroke, strokeWidth: 2 }),
+        Plot.tickX(rows, { y: "c", x: "lo", stroke, strokeWidth: 2, insetTop: 7, insetBottom: 7 }),
+        Plot.tickX(rows, { y: "c", x: "hi", stroke, strokeWidth: 2, insetTop: 7, insetBottom: 7 }),
+        Plot.dot(rows, { y: "c", x: "mid", fill: stroke, r: 5, stroke: "white", strokeWidth: 1 }),
+        Plot.tip(rows, Plot.pointerY({ y: "c", x: "mid", title: "tip" })),
+      ],
+    });
+    if (hi) boldTicks(plot, rows.filter((r) => r.on).map((r) => r.c));
+  }
+  return h("div", {}, key, plot);
+}
+
+// Dot plot: one row per category (x, in data order, first on top), one point per colour series at its value (y),
+// joined by a grey line from the lowest to the highest point of the row
+function dotChart(spec, data, A, o, width, all) {
+  const cat = label(A.x), y = A.y.field;
+  const colour = A.colour && label(A.colour);
+  const hi = highlighter(A);
+  if (o.range && colour) return rangeChart(spec, data, A, o, width);
+  let cats = [...new Set(data.map((d) => d[cat]))];
+  // options.sort_by = a colour series: rows ordered by its value (lowest first, or highest with sort = "desc"), in each tab
+  if (o.sort_by != null && colour) {
+    const v = new Map(data.filter((d) => String(d[colour]) === String(o.sort_by)).map((d) => [d[cat], d[y]]));
+    cats = d3.sort(cats, (c) => (o.sort === "desc" ? -v.get(c) : v.get(c)));
+  }
+  cats = sortLast(cats, o);
+  const values = [...data.map((d) => d[y]), ...annotationValues(o)];
+  const left = Math.min(250, d3.max(cats, (c) => String(c).length) * 7.5 + 12);
+  const rows = d3.rollups(data, (v) => d3.extent(v, (d) => d[y]), (d) => d[cat]).map(([c, [lo, hi]]) => ({ c, lo, hi }));
+  const fill = colour ?? (hi ? (d) => (hi(d) ? PALETTE[0] : MUTED) : PALETTE[0]);
+
+  const plot = Plot.plot({
+    ...base(o, width),
+    height: o.height ?? cats.length * 26 + 50,
+    marginLeft: left,
+    marginBottom: 48,
+    y: { label: null, domain: cats, tickFormat: (d) => fmt(A.x, d, { tick: true }) },
+    x: {
+      label: shown(A.y) ? A.y.label : null, grid: true, tickFormat: tickOf(A.y), domain: o.y_domain,
+      zero: o.y_zero ?? false,
+      ticks: Math.max(2, Math.floor((width - left) / (axisMargin(A.y, values, o) + 10))),
+    },
+    color: colour ? colourScale(all, A.colour, o) : undefined,
+    marks: [
+      Plot.ruleY(rows, { y: "c", x1: "lo", x2: "hi", stroke: "#d6d4cd", strokeWidth: 2 }),
+      ...annotationMarks(o, { ch: { x: "y", y: "x" }, xValue: (v) => cats.find((c) => String(c) === String(v)) ?? null }),
+      Plot.dot(data, { y: cat, x: y, fill, r: 5, stroke: "white", strokeWidth: 1, title: tipText(spec.aes), tip: true }),
+    ],
+  });
+  // colour already gives the series: the highlighted categories get a bold label instead
+  if (hi && colour) boldTicks(plot, data.filter(hi).map((d) => d[cat]));
+  return plot;
+}
+
+// options.totals on a stacked bar chart: a dark tick at each category's net total (negative parts subtracted)
+function totalMarks(data, { cat, y, catCh, valCh, on }) {
+  if (!on) return [];
+  const rows = d3.rollups(data, (v) => d3.sum(v, (d) => d[y]), (d) => d[cat]).map(([c, net]) => ({ c, net }));
+  return [(valCh === "y" ? Plot.tickY : Plot.tickX)(rows, { [catCh]: "c", [valCh]: "net", stroke: "#1f1f1e", strokeWidth: 2.5 })];
 }
 
 // Bold tick labels for the given categories (highlight on bar charts whose fill is taken)
@@ -404,14 +529,14 @@ function sortLast(cats, o) {
   return [...cats.filter((c) => !last.includes(String(c))), ...cats.filter((c) => last.includes(String(c)))];
 }
 
-const TYPES = { line: lineChart, bar: barChart, map: mapChart, pyramid: pyramidChart };
+const TYPES = { line: lineChart, bar: barChart, dot: dotChart, map: mapChart, pyramid: pyramidChart };
 
 // ---------- facets (small multiples) ----------
-// options.facet = TRUE adds a toggle that splits a line chart (by colour) or a stacked bar chart (by fill) into one
+// options.facet = TRUE adds a toggle that splits a line or dot chart (by colour) or a stacked bar chart (by fill) into one
 // small chart per series, three across (two on narrow screens or for four series). Each panel has its own y scale
 // (it is there to show each series' trend); options.facet_scale = "shared" puts every panel on the same scale,
 // so sizes can be compared. Each panel's title gives the series and its latest value.
-const facetAes = (spec, A) => (spec.type === "bar" ? A.fill : spec.type === "line" ? A.colour : null);
+const facetAes = (spec, A) => (spec.type === "bar" ? A.fill : spec.type === "line" || spec.type === "dot" ? A.colour : null);
 function facetChart(spec, data, A, o, width, all) {
   const by = facetAes(spec, A), key = label(by), x = A.x.field, y = A.y.field;
   const series = [...new Set(all.map((d) => d[key]))]; // order and colours of the whole dataset
@@ -426,7 +551,8 @@ function facetChart(spec, data, A, o, width, all) {
   const hi = highlighter(A);
   // categories instead of years (e.g. countries): each panel is a horizontal bar chart, sorted highest first
   const textual = typeof xs[0] === "string";
-  const horizontal = spec.type === "bar" && (o.horizontal ?? (textual && xs.length > 6));
+  // a dot chart (one row per category) always splits into horizontal bar panels
+  const horizontal = spec.type === "dot" || (spec.type === "bar" && (o.horizontal ?? (textual && xs.length > 6)));
   if (horizontal) {
     measure.font = `13px ${FONT}`;
     const labelW = Math.min(160, Math.ceil(d3.max(xs, (c) => measure.measureText(String(c)).width)) + 12);
@@ -656,7 +782,9 @@ export async function renderChart(el, id = el.dataset.chart) {
       const latest = d3.max(data, (d) => d[o.filter_latest]);
       data = Object.assign(data.filter((d) => +d[o.filter_latest] === +latest), { columns: data.columns });
     }
-    if (!TYPES[spec.type]) throw new Error(`neznámý typ grafu „${spec.type}“`);
+    for (const t of [spec.type, ...tabList.map((t) => t.type).filter(Boolean)]) {
+      if (!TYPES[t]) throw new Error(`neznámý typ grafu „${t}“`);
+    }
 
     const body = h("div", { class: "chart-body" });
     const subset = (keep) => Object.assign(data.filter(keep), { columns: data.columns });
@@ -746,11 +874,14 @@ export async function renderChart(el, id = el.dataset.chart) {
       stale = false;
       // tabs of a line or bar chart: only the rows that have this tab's y (a tab may use its own rows)
       const has = tabList.length && A.y ? (d) => d[A.y.field] != null : null;
-      const chart = faceted && facetAes(spec, A) ? facetChart : TYPES[spec.type];
+      // a tab may draw as another chart type (tabs = list(list(id, label, type = "bar")))
+      const type = tabList.find((t) => t.id === tab)?.type ?? spec.type;
+      const tspec = { ...spec, type, aes };
+      const chart = faceted && facetAes(tspec, A) ? facetChart : TYPES[type];
       // annotations with a `tab` are drawn in that tab only
       const ot = o.annotations ? { ...o, annotations: o.annotations.filter((a) => a.tab == null || a.tab === tab) } : o;
-      const plot = await chart({ ...spec, aes }, has ? shown.filter(has) : shown, A, ot, width, has ? data.filter(has) : data);
-      body.replaceChildren(...[spec.type === "line" && !faceted && dashLegend(data, A), plot].filter(Boolean));
+      const plot = await chart(tspec, has ? shown.filter(has) : shown, A, ot, width, has ? data.filter(has) : data);
+      body.replaceChildren(...[type === "line" && !faceted && dashLegend(data, A), plot].filter(Boolean));
     }
     await draw();
     new ResizeObserver(() => requestAnimationFrame(draw)).observe(body);

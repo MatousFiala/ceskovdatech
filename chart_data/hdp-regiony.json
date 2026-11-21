@@ -15,8 +15,7 @@
       "type": "fill",
       "field": "gdp_pc",
       "label": "HDP na obyvatele",
-      "format": "number",
-      "unit": "Kč"
+      "format": "percent"
     }
   ],
   "source": [
@@ -24,10 +23,10 @@
       "name": "ČSÚ",
       "dataset": "Národní účty – hlavní souhrnné ukazatele HDP - roční údaje",
       "url": "https://data.csu.gov.cz/datastat/data/VYBER/NUC06RT01?vSet=2&vSel=1",
-      "retrieved": "2026-11-15"
+      "retrieved": "2026-11-21"
     }
   ],
   "data_note": "",
-  "last_updated": "2026-11-15",
+  "last_updated": "2026-11-21",
   "rows": 14
 }

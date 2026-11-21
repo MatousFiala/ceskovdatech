@@ -2,7 +2,7 @@
   "id": "rozpocet-velikost-srovnani",
   "data": "rozpocet-velikost-srovnani.csv",
   "type": "bar",
-  "title": "Srovnání velikosti veřejného sektoru",
+  "title": "Srovnání velikosti veřejného sektoru s vybranými zeměmi",
   "subtitle": "Výdaje státu, samospráv a jiných státních organizací v roce 2025",
   "aes": [
     {

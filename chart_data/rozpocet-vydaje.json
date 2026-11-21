@@ -6,12 +6,16 @@
   "subtitle": "Výdaje státního rozpočtu podle kategorie, miliardy Kč",
   "tabs": [
     {
+      "id": "realne",
+      "label": "Reálné (ceny z roku 2020)"
+    },
+    {
       "id": "nominalni",
       "label": "Nominální"
     },
     {
-      "id": "realne",
-      "label": "Reálné"
+      "id": "podil",
+      "label": "% výdajů"
     }
   ],
   "aes": [
@@ -34,6 +38,13 @@
       "label": "Reálné výdaje",
       "unit": "mld. Kč",
       "tab": "realne"
+    },
+    {
+      "type": "y",
+      "field": "podil",
+      "label": "Podíl na výdajích",
+      "format": "percent",
+      "tab": "podil"
     },
     {
       "type": "fill",

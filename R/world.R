@@ -52,13 +52,14 @@ c("G_X_G01_GDP_PT", "GGXWDG_NGDP", "NGDPD") |>
   list_rbind() |>
   write_csv("data/imf_datamapper.csv")
 
-# MMF World Economic Outlook (SDMX API), Česko: hrubý dluh vládního sektoru v Kč a % HDP včetně projekce
+# MMF World Economic Outlook (SDMX API), Česko: hrubý dluh vládního sektoru v Kč a % HDP a inflace (spotřebitelské
+# ceny, roční průměr, %; pro reálný dluh v letech projekce), včetně projekce
 weo_csv <- tempfile(fileext = ".csv")
-download.file("https://api.imf.org/external/sdmx/3.0/data/dataflow/IMF.RES/WEO/+/CZE.GGXWDG+GGXWDG_NGDP.A", weo_csv,
+download.file("https://api.imf.org/external/sdmx/3.0/data/dataflow/IMF.RES/WEO/+/CZE.GGXWDG+GGXWDG_NGDP+PCPIPCH.A", weo_csv,
               headers = c(Accept = "application/vnd.sdmx.data+csv;version=1.0.0"), quiet = TRUE)
 read_csv(weo_csv, show_col_types = FALSE) |>
   transmute(kod = COUNTRY, ukazatel = INDICATOR, rok = as.integer(TIME_PERIOD), hodnota = OBS_VALUE) |>
-  write_csv("data/imf_weo_cze_dluh.csv")
+  write_csv("data/imf_weo_cze.csv")
 unlink(weo_csv)
 
 # OECD Global Revenue Statistics (SDMX API): daňové příjmy vládního sektoru podle druhu daně (DPFO 1100, DPPO 1200,
@@ -71,6 +72,39 @@ read_csv(oecd_url, show_col_types = FALSE) |>
   transmute(kod = REF_AREA, dan = STANDARD_REVENUE, jednotka = UNIT_MEASURE, rok = TIME_PERIOD, hodnota = OBS_VALUE) |>
   filter(!is.na(hodnota)) |>
   write_csv("data/oecd_revenue_statistics.csv")
+
+# OECD Taxing Wages (SDMX API), daňový klín a jeho složky (daň z příjmů IT_CG, pojistné zaměstnance EESSC a zaměstnavatele ERSSC,
+# peněžní dávky CB, celkem AV_TW; hrubá mzda GWE) podle výše mzdy (% průměrné mzdy) u svobodného bez dětí, poslední rok;
+# země jako u daní a průměr OECD
+read_csv(str_c("https://sdmx.oecd.org/public/rest/data/OECD.CTP.TPS,DSD_TAX_WAGES_DECOMP@DF_TW_DECOMP,/",
+               "CZE+DEU+AUT+SVK+POL+FRA+GBR+SWE+DNK+FIN+NOR+USA+EST+OECD_REP.AV_TW+IT_CG+EESSC+ERSSC+CB+GWE.PT_COS_LB+XDC.",
+               "S_C0.AW50+AW67+AW100+AW133+AW167+AW200+AW250....?format=csvfile"), show_col_types = FALSE) |>
+  transmute(kod = REF_AREA, ukazatel = MEASURE, jednotka = UNIT_MEASURE, domacnost = HOUSEHOLD_TYPE,
+            mzda = INCOME_PRINCIPAL, rok = TIME_PERIOD, hodnota = OBS_VALUE) |>
+  filter(!is.na(hodnota)) |>
+  write_csv("data/oecd_taxing_wages.csv")
+# Česko od roku 2000: daňový klín a jeho složky u svobodného bez dětí s 67, 100, 133 a 167 % průměrné mzdy (% nákladů práce)
+read_csv("https://sdmx.oecd.org/public/rest/data/OECD.CTP.TPS,DSD_TAX_PIT@DF_PIT_AV,/all?format=csvfile", show_col_types = FALSE) |>
+  filter(REF_AREA == "CZE", SECTOR == "S13", UNIT_MEASURE == "PT_COS_LB") |>
+  transmute(ukazatel = MEASURE, mzda = INCOME_PRINCIPAL, rok = TIME_PERIOD, hodnota = OBS_VALUE) |>
+  filter(!is.na(hodnota)) |>
+  write_csv("data/oecd_taxing_wages_cz.csv")
+
+# OECD National Accounts (SDMX API): výdaje vládního sektoru (S13, celkové výdaje OTE) podle funkcí COFOG, oddíly GF01–GF10
+# a celkem, mil. národní měny; a nominální HDP (B1GQ, mil. národní měny) jako jmenovatel. Všechny členské země OECD (pro průměr OECD) a EU27
+zeme_oecd_vydaje <- str_c(c("AUS", "AUT", "BEL", "CAN", "CHL", "COL", "CRI", "CZE", "DNK", "EST", "FIN", "FRA", "DEU", "GRC", "HUN", "ISL",
+                            "IRL", "ISR", "ITA", "JPN", "KOR", "LVA", "LTU", "LUX", "MEX", "NLD", "NZL", "NOR", "POL", "PRT", "SVK", "SVN",
+                            "ESP", "SWE", "CHE", "TUR", "GBR", "USA", "EU27_2020"), collapse = "+")
+read_csv(str_c("https://sdmx.oecd.org/public/rest/data/OECD.SDD.NAD,DSD_NASEC10@DF_TABLE11,/A.", zeme_oecd_vydaje,
+               ".S13..D.OTE.._T+GF01+GF02+GF03+GF04+GF05+GF06+GF07+GF08+GF09+GF10.XDC....?format=csvfile"), show_col_types = FALSE) |>
+  transmute(kod = REF_AREA, funkce = EXPENDITURE, rok = TIME_PERIOD, hodnota = OBS_VALUE) |>
+  filter(!is.na(hodnota)) |>
+  write_csv("data/oecd_cofog.csv")
+read_csv(str_c("https://sdmx.oecd.org/public/rest/data/OECD.SDD.NAD,DSD_NAMAIN10@DF_TABLE1_EXPENDITURE,/A.", zeme_oecd_vydaje,
+               ".S1..B1GQ._Z...XDC.V..?format=csvfile"), show_col_types = FALSE) |>
+  transmute(kod = REF_AREA, rok = TIME_PERIOD, hdp = OBS_VALUE) |>
+  filter(!is.na(hdp)) |>
+  write_csv("data/oecd_hdp.csv")
 
 # Podíl nejbohatšího 1 % na příjmech (před zdaněním) a na majetku (World Inequality Database, jak ji publikuje
 # Our World in Data), všechny země a regiony

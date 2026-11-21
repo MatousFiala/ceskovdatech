@@ -6,6 +6,10 @@
   "subtitle": "Rozdíl mezi příjmy a výdaji státního rozpočtu",
   "tabs": [
     {
+      "id": "realne",
+      "label": "Reálné (ceny z roku 2020)"
+    },
+    {
       "id": "nominalni",
       "label": "Nominální"
     },
@@ -23,14 +27,21 @@
     },
     {
       "type": "y",
-      "field": "saldo_mld",
+      "field": "mld_2020",
+      "label": "Schodek v cenách roku 2020",
+      "unit": "mld. Kč",
+      "tab": "realne"
+    },
+    {
+      "type": "y",
+      "field": "mld",
       "label": "Schodek",
       "unit": "mld. Kč",
       "tab": "nominalni"
     },
     {
       "type": "y",
-      "field": "saldo_hdp",
+      "field": "podil",
       "label": "Schodek (% HDP)",
       "format": "percent",
       "tab": "hdp"
@@ -44,13 +55,19 @@
       "retrieved": "2026-11-21"
     },
     {
+      "name": "ČSÚ",
+      "dataset": "Míra inflace (CEN0101H)",
+      "url": "https://data.csu.gov.cz/datastat/data/VYBER/CEN0101HT01",
+      "retrieved": "2026-11-21"
+    },
+    {
       "name": "Eurostat",
       "dataset": "Government deficit/surplus, debt and associated data (gov_10dd_edpt1)",
       "url": "https://ec.europa.eu/eurostat/databrowser/view/gov_10dd_edpt1/default/table",
       "retrieved": "2026-11-21"
     }
   ],
-  "data_note": "Nominální schodek z dat MSP, podíl na HDP z dat Eurostatu",
+  "data_note": "Schodek z dat MSP, podíl na HDP z dat Eurostatu. Reálné částky jsou přepočtené na ceny v roce 2020.",
   "last_updated": "2026-11-21",
   "rows": 16
 }

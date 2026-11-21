@@ -1,11 +1,11 @@
 library(tidyverse)
 library(jsonlite)
 
-write_chart <- function(df, id, type = c("line", "bar", "map", "pyramid"), title, subtitle, aes, source, data_note, options = NULL, tabs = NULL) {
+write_chart <- function(df, id, type = c("line", "bar", "dot", "map", "pyramid"), title, subtitle, aes, source, data_note, options = NULL, tabs = NULL) {
     #' Writes charts data and metadata in a csv and json file in chart_data folder, respectivelly
     #' df = long df with chart data 
     #' id = slug of chart. used for file names
-    #' type = line, bar, map or pyramid (population pyramid: x = age, y = count, fill = the two sides,
+    #' type = line, bar, dot, map or pyramid (dot: one row per x category, a point per colour series at y; population pyramid: x = age, y = count, fill = the two sides,
     #'   the first value on the left, frame = the year shown; see README)
     #' title, subtitle = text; "[word::tooltip]" underlines the word and shows the tooltip on hover
     #' aes = list of aesthetic mappings, each a list of:
@@ -21,7 +21,8 @@ write_chart <- function(df, id, type = c("line", "bar", "map", "pyramid"), title
     #'   scheme, reverse, midpoint, fill_domain (map fill only): its own colour scale, overriding options (e.g. one per tab)
     #' tabs = optional list of tabs, each list(id, label): a switch in the chart that swaps the aesthetics
     #'   which have that `tab`, e.g. one y per tab. The first tab is shown first. NULL = no tabs.
-    #'   All tabs share x (line, bar) or geometry (map), so that aesthetic cannot have a tab
+    #'   All tabs share x (line, bar) or geometry (map), so that aesthetic cannot have a tab.
+    #'   A tab may draw as another type: list(id, label, type = "bar") (line, bar and dot only)
     #' source = one source, or a list of several: list(name, dataset, url, retrieved).
     #'   Sources with the same name are shown together: "ČSÚ (1, 2), Maddison"
     #' data_note = text shown in a tooltip under the chart. For methodology comments and such
@@ -56,7 +57,7 @@ write_chart <- function(df, id, type = c("line", "bar", "map", "pyramid"), title
     tab_ids <- map_chr(tabs, ~as.character(.x$id %||% NA))
     aes_tabs <- map_chr(aes, ~as.character(.x$tab %||% NA))
     views <- map(if (length(tabs)) tab_ids else NA, ~aeses[is.na(aes_tabs) | aes_tabs %in% .x])
-    required <- list(line = c("x", "y"), bar = c("x", "y"), map = c("geometry", "fill"), pyramid = c("x", "y", "fill", "frame"))[[type]]
+    required <- list(line = c("x", "y"), bar = c("x", "y"), dot = c("x", "y"), map = c("geometry", "fill"), pyramid = c("x", "y", "fill", "frame"))[[type]]
 
     needed <- map_chr(aes, ~.x$field)
     formats <- unlist(map(aes, ~.x$format))
@@ -68,14 +69,16 @@ write_chart <- function(df, id, type = c("line", "bar", "map", "pyramid"), title
               "Tabs must be a list of lists, each with an id and a label (check the brackets)" =
                   is.null(names(tabs)) && all(map_lgl(tabs, ~is.list(.x) && !is.null(.x$id) && !is.null(.x$label))),
               "Tab ids must be unique" = !anyDuplicated(tab_ids),
+              "A tab type must be line, bar or dot, in a line, bar or dot chart" =
+                  all(map_lgl(tabs, ~is.null(.x$type) || (.x$type %in% c("line", "bar", "dot") && type %in% c("line", "bar", "dot")))),
               "An aesthetic has a tab that is not in tabs" = all(aes_tabs %in% c(tab_ids, NA)),
-              "Line and bar require x and y aesthetic, map geometry and fill, pyramid x, y, fill and frame (in every tab)" =
+              "Line, bar and dot require x and y aesthetic, map geometry and fill, pyramid x, y, fill and frame (in every tab)" =
                   all(map_lgl(views, ~all(required %in% .x))),
-              "Tabs share the x aesthetic (line, bar) or the geometry aesthetic (map): it cannot have a tab" =
+              "Tabs share the x aesthetic (line, bar, dot) or the geometry aesthetic (map): it cannot have a tab" =
                   all(is.na(aes_tabs[aeses == required[1]])),
               "An aesthetic type is used twice (in the same tab)" = !any(map_lgl(views, ~anyDuplicated(.x) > 0)),
-              "Annotations must be a list of lists, each with either x or y (line and bar charts only)" =
-                  is.null(annotations) || (type %in% c("line", "bar") && is.null(names(annotations)) &&
+              "Annotations must be a list of lists, each with either x or y (line, bar and dot charts only)" =
+                  is.null(annotations) || (type %in% c("line", "bar", "dot") && is.null(names(annotations)) &&
                       all(map_lgl(annotations, ~is.list(.x) && xor(!is.null(.x$x), !is.null(.x$y))))),
               "Annotation align must be top, centre or bottom" =
                   all(map_lgl(annotations, ~is.null(.x$align) || .x$align %in% c("top", "centre", "center", "bottom"))),
