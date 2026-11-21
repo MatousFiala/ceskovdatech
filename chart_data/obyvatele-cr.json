@@ -3,7 +3,7 @@
   "data": "obyvatele-cr.csv",
   "type": "line",
   "title": "Počet obyvatel Česka od roku 1785",
-  "subtitle": "Počet obyvatel žijící na území dnešní ČR, miliony",
+  "subtitle": "Počet obyvatel žijících na území dnešní ČR, miliony",
   "aes": [
     {
       "type": "x",
@@ -23,7 +23,7 @@
       "name": "ČSÚ",
       "dataset": "Obyvatelstvo - dlouhodobé časové řady za Českou republiku",
       "url": "https://data.csu.gov.cz/datastat/data/VYBER/WOBYG",
-      "retrieved": "2026-11-21"
+      "retrieved": "2026-11-22"
     }
   ],
   "data_note": "",
@@ -36,6 +36,6 @@
       }
     ]
   },
-  "last_updated": "2026-11-21",
+  "last_updated": "2026-11-22",
   "rows": 241
 }

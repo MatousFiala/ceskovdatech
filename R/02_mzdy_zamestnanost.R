@@ -26,7 +26,7 @@ write_chart(
     id = "nezamestnanost-cr",
     type = "line",
     title = "Míra nezaměstnanosti v ČR od roku 1993",
-    subtitle = "Obecná [míra nezaměstnanosti::Procento lidí v pracovní síle, kteří si hledají práci ale v danou chvíli žádnou nemají. Nezapočítává ty, kteří pracovat nemohou nebo si práci nehledají], %",
+    subtitle = "Obecná [míra nezaměstnanosti::Podíl lidí v pracovní síle, kteří si hledají práci, ale v danou chvíli žádnou nemají. Nezapočítává ty, kteří pracovat nemohou nebo si práci nehledají], %",
     aes = list(
         list(type = "x", field = "year", label = "Rok", format = "year"),
         list(type = "y", field = "nezamestnanost", label = "Míra nezaměstnanosti", format = "percent")
@@ -39,7 +39,7 @@ write_chart(
     df = zam,
     id = "zamestnanost-cr",
     type = "line",
-    title = "Míra Zaměstnanosti v ČR od roku 1993",
+    title = "Míra zaměstnanosti v ČR od roku 1993",
     subtitle = "Podíl všech obyvatel ČR, kteří aktivně pracují - exkluduje nezaměstnané a ekonomicky neaktivní (důchodce, děti)",
     aes = list(
         list(type = "x", field = "year", label = "Rok", format = "year"),
@@ -60,7 +60,7 @@ write_chart(
     id = "nezamestnanost-kraje",
     type = "map",
     title = "Míra nezaměstnanosti v krajích",
-    subtitle = "Obecná [míra nezaměstnanosti::Procento lidí v pracovní síle, kteří si hledají práci ale v danou chvíli žádnou nemají. Nezapočítává ty, kteří pracovat nemohou nebo si práci nehledají], %",
+    subtitle = "Obecná [míra nezaměstnanosti::Podíl lidí v pracovní síle, kteří si hledají práci, ale v danou chvíli žádnou nemají. Nezapočítává ty, kteří pracovat nemohou nebo si práci nehledají], %",
     aes = list(
         list(type = "geometry", field = "kraj_kod", label = "Kraj", labeller = "kraj_nazev"),
         list(type = "fill", field = "nezamestnanost", label = "Míra nezaměstnanosti", format = "percent")
@@ -94,7 +94,7 @@ write_chart(
     id = "mzdy-cr",
     type = "line",
     title = "Průměrná mzda v ČR od roku 2000",
-    subtitle = "Průměrná hrubá měsíční mzda v ČR, nominální i reálná v cenách z roku 2020",
+    subtitle = "Průměrná hrubá měsíční mzda v ČR, nominální i reálná v cenách roku 2020",
     tabs = list(
         list(id = "realna", label = "Reálná (ceny z roku 2020)"),
         list(id = "nominalni", label = "Nominální")
@@ -108,7 +108,7 @@ write_chart(
                                       dataset = "Míra inflace",
                                       url = "https://data.csu.gov.cz/datastat/data/VYBER/CEN0101HT01",
                                       retrieved = format(Sys.Date())))),
-    data_note = "Reálné mzdy jsou přepočítané na ceny v roce 2020"
+    data_note = "Reálné mzdy jsou přepočtené na ceny roku 2020."
 )
 
 # Průměrná mzda podle krajů (pracovištní metoda: podle místa pracoviště), poslední rok
@@ -128,7 +128,7 @@ write_chart(
         list(type = "fill", field = "mzda", label = "Průměrná mzda", unit = "Kč")
     ),
     source = mzdy_source,
-    data_note = "Mzda na přepočtené počty zaměstnanců. Zaměstnanci jsou zařazeni podle místa pracoviště, ne podle bydliště nebo sídla zaměstnavatele."
+    data_note = "Mzda na přepočtené počty zaměstnanců. Zaměstnanci jsou zařazeni podle místa pracoviště, nikoli podle bydliště nebo sídla zaměstnavatele."
 )
 
 # Podíl zaměstnanců podle sektoru (národní účty, sekce CZ-NACE sloučené do šesti sektorů)
@@ -152,7 +152,7 @@ write_chart(
     id = "zamestnanci-sektory",
     type = "line",
     title = "Zaměstnanci podle sektoru od roku 1993",
-    subtitle = "Procento zaměstnanců podle sektoru (bez [sebezaměstnaných::Podnikatelé a osoby samostatně výdělečně činné]), %",
+    subtitle = "Procento zaměstnanců podle sektoru (bez [sebezaměstnaných::Podnikatelů a osob samostatně výdělečně činných]), %",
     aes = list(
         list(type = "x", field = "year", label = "Rok", format = "year"),
         list(type = "y", field = "podil", label = "Podíl zaměstnanců", format = "percent"),
@@ -198,7 +198,7 @@ write_chart(
     id = "nezamestnanost-vek",
     type = "line",
     title = "Míra nezaměstnanosti podle věku od roku 1993",
-    subtitle = "Obecná [míra nezaměstnanosti::Procento lidí v pracovní síle, kteří si hledají práci ale v danou chvíli žádnou nemají. Nezapočítává ty, kteří pracovat nemohou nebo si práci nehledají] podle věkových skupin, %",
+    subtitle = "Obecná [míra nezaměstnanosti::Podíl lidí v pracovní síle, kteří si hledají práci, ale v danou chvíli žádnou nemají. Nezapočítává ty, kteří pracovat nemohou nebo si práci nehledají] podle věkových skupin, %",
     aes = list(
         list(type = "x", field = "year", label = "Rok", format = "year"),
         list(type = "y", field = "nezamestnanost", label = "Míra nezaměstnanosti", format = "percent"),

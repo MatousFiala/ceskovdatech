@@ -3,7 +3,7 @@
   "data": "porodnost-plodnost.csv",
   "type": "line",
   "title": "Míra plodnosti v ČR od roku 1960",
-  "subtitle": "[Úhrnná plodnost::Odhad, kolik dětí by se narodilo jedné ženě, kdyby po celý její život platily míry porodnosti z daného roku], počet dětí na ženu",
+  "subtitle": "[Úhrnná plodnost::Odhad, kolik dětí by se narodilo jedné ženě, kdyby po celý její život platily míry plodnosti z daného roku], počet dětí na ženu",
   "aes": [
     {
       "type": "x",
@@ -22,16 +22,16 @@
       "name": "Eurostat",
       "dataset": "Fertility indicators (demo_find)",
       "url": "https://ec.europa.eu/eurostat/databrowser/view/demo_find/default/table",
-      "retrieved": "2026-11-21"
+      "retrieved": "2026-11-22"
     },
     {
       "name": "ČSÚ",
       "dataset": "Narození - vybrané souhrnné údaje",
       "url": "https://data.csu.gov.cz/datastat/data/VYBER/OBY03HVDT01",
-      "retrieved": "2026-11-21"
+      "retrieved": "2026-11-22"
     }
   ],
-  "data_note": "Do roku 2000 data Eurostatu, poté ČSÚ",
+  "data_note": "Do roku 2000 data Eurostatu, poté ČSÚ.",
   "options": {
     "annotations": [
       {
@@ -40,6 +40,6 @@
       }
     ]
   },
-  "last_updated": "2026-11-21",
+  "last_updated": "2026-11-22",
   "rows": 66
 }

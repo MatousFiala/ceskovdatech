@@ -3,7 +3,7 @@
   "data": "hdp-rust.csv",
   "type": "bar",
   "title": "Růst české ekonomiky od roku 1990",
-  "subtitle": "[Reálný::Očištěný od inflace] růst českého HDP v %",
+  "subtitle": "[Reálný::Očištěný od inflace] meziroční růst českého HDP, %",
   "aes": [
     {
       "type": "x",
@@ -23,10 +23,10 @@
       "name": "ČSÚ",
       "dataset": "Národní účty – hlavní souhrnné ukazatele HDP - roční údaje",
       "url": "https://data.csu.gov.cz/datastat/data/VYBER/NUC06RT01?vSet=2&vSel=1",
-      "retrieved": "2026-11-21"
+      "retrieved": "2026-11-22"
     }
   ],
   "data_note": "",
-  "last_updated": "2026-11-21",
+  "last_updated": "2026-11-22",
   "rows": 35
 }

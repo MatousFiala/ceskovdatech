@@ -3,7 +3,7 @@
   "data": "dane-klin-vyvoj.csv",
   "type": "line",
   "title": "Vývoj zdanění práce",
-  "subtitle": "Daně a odvody jako podíl na [nákladech práce::Vše, co zaměstanavat platí za změstnance. Mzda + Odvody], daňové sazby v různých násobcích průměrné mzdy",
+  "subtitle": "Daně a odvody jako podíl na [nákladech práce::Vše, co zaměstnavatel platí za zaměstnance: hrubá mzda a odvody], daňové sazby v různých násobcích průměrné mzdy",
   "tabs": [
     {
       "id": "klin",
@@ -48,7 +48,7 @@
       "name": "OECD",
       "dataset": "Taxing Wages",
       "url": "https://www.oecd.org/en/topics/sub-issues/tax-policy/taxing-wages.html",
-      "retrieved": "2026-11-21"
+      "retrieved": "2026-11-22"
     }
   ],
   "data_note": "Náklady práce = hrubá mzda + odvody placené zaměstnavatelem. Počítá se se svobodným pracovníkem bez dětí.",
@@ -66,6 +66,6 @@
       }
     ]
   },
-  "last_updated": "2026-11-21",
+  "last_updated": "2026-11-22",
   "rows": 130
 }

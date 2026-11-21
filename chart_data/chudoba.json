@@ -3,7 +3,7 @@
   "data": "chudoba.csv",
   "type": "line",
   "title": "Míra chudoby v ČR",
-  "subtitle": "Procento domácností ohroženo chudobou na základě jejich příjmů",
+  "subtitle": "Podíl obyvatel ohrožených chudobou podle příjmu jejich domácnosti",
   "aes": [
     {
       "type": "x",
@@ -14,7 +14,7 @@
     {
       "type": "y",
       "field": "chudoba",
-      "label": "Procento domácností",
+      "label": "Podíl obyvatel",
       "format": "percent"
     },
     {
@@ -28,16 +28,16 @@
       "name": "Eurostat",
       "dataset": "At-risk-of-poverty rate (ilc_li02)",
       "url": "https://ec.europa.eu/eurostat/databrowser/view/ilc_li02/default/table",
-      "retrieved": "2026-11-21"
+      "retrieved": "2026-11-22"
     },
     {
       "name": "Eurostat",
       "dataset": "At-risk-of-poverty rate anchored at a fixed moment in time (2008) (ilc_li22b)",
       "url": "https://ec.europa.eu/eurostat/databrowser/view/ilc_li22b/default/table",
-      "retrieved": "2026-11-21"
+      "retrieved": "2026-11-22"
     }
   ],
-  "data_note": "Pevná hranice nezávisí na příjmu zbytku společnosti -- jedná se o příjem mezní domácnosti ohrožené chudobou v roce 2008. V budoucích letech byla tato hranice pouze očištěna od inflace.",
-  "last_updated": "2026-11-21",
+  "data_note": "Pevná hranice nezávisí na příjmech zbytku společnosti -- odpovídá hranici chudoby z roku 2008, která se v dalších letech pouze upravuje o inflaci.",
+  "last_updated": "2026-11-22",
   "rows": 40
 }

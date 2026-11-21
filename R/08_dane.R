@@ -69,7 +69,7 @@ write_chart(
                   other_source("Světová banka", "Inflation, consumer prices (FP.CPI.TOTL.ZG), roky 1993–1996",
                                "https://data.worldbank.org/indicator/FP.CPI.TOTL.ZG?locations=CZ")),
     options = list(facet = TRUE),
-    data_note = "Daně vybrané v celém veřejném sektoru, i ty proudící mimo státní rozpočet. Reálné částky jsou přepočteny na ceny v roce 2020 (ČSÚ, před rokem 1997 Světová banka)." # "Daně vybrané všemi úrovněmi vlády (stát, kraje, obce, zdravotní pojišťovny) podle metodiky OECD. Sociální a zdravotní pojištění zahrnuje pojistné zaměstnanců, zaměstnavatelů a OSVČ. Ostatní daně: hlavně silniční daň, cla, poplatky a daně z hazardu. Ceny roku 2020 podle průměrné roční míry inflace (ČSÚ, před rokem 1997 Světová banka)."
+    data_note = "Daně vybrané v celém veřejném sektoru, včetně těch, které plynou mimo státní rozpočet. Reálné částky jsou přepočtené na ceny roku 2020 (inflace podle ČSÚ, před rokem 1997 podle Světové banky)." # "Daně vybrané všemi úrovněmi vlády (stát, kraje, obce, zdravotní pojišťovny) podle metodiky OECD. Sociální a zdravotní pojištění zahrnuje pojistné zaměstnanců, zaměstnavatelů a OSVČ. Ostatní daně: hlavně silniční daň, cla, poplatky a daně z hazardu. Ceny roku 2020 podle průměrné roční míry inflace (ČSÚ, před rokem 1997 Světová banka)."
 )
 
 # ---------- (2) Mezinárodní srovnání: skladba daní, % všech daňových příjmů ----------
@@ -110,7 +110,7 @@ write_chart(
     tabs = list(list(id = "podil", label = "% daňových příjmů"), list(id = "hdp", label = "% HDP")),
     source = oecd_source,
     options = list(horizontal = TRUE, facet = TRUE),
-    data_note = "Daně vybrané v celém veřejném sektoru, i ty proudící mimo státní rozpočet. Průměr OECD: nevážený průměr členských zemí. DPH zahrnuje i ostatní všeobecné daně ze zboží a služeb, hlavně daň z obratu (sales tax) v USA, která DPH nahrazuje" # str_glue("Rok {rok_dane}. Daně a pojistné vybrané všemi úrovněmi vlády podle metodiky OECD. Průměr OECD je nevážený průměr členských zemí. Ve skandinávských zemích se sociální systém financuje hlavně z daně z příjmů, proto mají nízký podíl pojistného; v Dánsku pojistné téměř neexistuje.")
+    data_note = "Daně vybrané v celém veřejném sektoru, včetně těch, které plynou mimo státní rozpočet. Průměr OECD: nevážený průměr členských zemí. DPH zahrnuje i ostatní všeobecné daně ze zboží a služeb, hlavně daň z obratu (sales tax) v USA, která tam DPH nahrazuje." # str_glue("Rok {rok_dane}. Daně a pojistné vybrané všemi úrovněmi vlády podle metodiky OECD. Průměr OECD je nevážený průměr členských zemí. Ve skandinávských zemích se sociální systém financuje hlavně z daně z příjmů, proto mají nízký podíl pojistného; v Dánsku pojistné téměř neexistuje.")
 )
 
 # ---------- Zdanění práce podle výše mzdy (3–5) ----------
@@ -143,8 +143,8 @@ write_chart(
     df = klin_mzda,
     id = "dane-klin-mzda",
     type = "bar",
-    title = "Zdanění práce podle vyše mzdy", # "Kolik ze mzdy si vezme stát"
-    subtitle = str_glue("Daň z příjmů a odvody jako podíl [nákladů práce::Vše, co zaměstanavat platí za změstnance. Mzda + Odvody] v roce {max(klin_mzda$year)}, daňové sazby v různých násobcích průměrné mzdy"), # "Daň z příjmů a pojistné jako podíl na celkových nákladech zaměstnavatele"
+    title = "Zdanění práce podle výše mzdy", # "Kolik ze mzdy si vezme stát"
+    subtitle = str_glue("Daň z příjmů a odvody jako podíl na [nákladech práce::Vše, co zaměstnavatel platí za zaměstnance: hrubá mzda a odvody] v roce {max(klin_mzda$year)}, daňové sazby v různých násobcích průměrné mzdy"), # "Daň z příjmů a pojistné jako podíl na celkových nákladech zaměstnavatele"
     aes = list(
         list(type = "x", field = "mzda", label = "Mzda (% průměrné mzdy)"),
         list(type = "y", field = "podil", label = "Celková daňová sazba", format = "percent"),
@@ -177,7 +177,7 @@ write_chart(
     id = "dane-klin-srovnani",
     type = "dot",
     title = "Srovnání zdanění práce s vybranými zeměmi OECD", # "Jak progresivně země daní práci"
-    subtitle = str_glue("Daň z příjmů a odvody jako podíl na [nákladech práce::Vše, co zaměstanavat platí za změstnance. Mzda + Odvody] v roce {max(klin_srovnani$year)}, daňové sazby v různých násobcích průměrné mzdy"), # "Zdanění práce při nízké, průměrné a vysoké mzdě"
+    subtitle = str_glue("Daň z příjmů a odvody jako podíl na [nákladech práce::Vše, co zaměstnavatel platí za zaměstnance: hrubá mzda a odvody] v roce {max(klin_srovnani$year)}, daňové sazby v různých násobcích průměrné mzdy"), # "Zdanění práce při nízké, průměrné a vysoké mzdě"
     tabs = list(list(id = "klin", label = "Celkové sazby"), list(id = "progrese", label = "Rozdíl v sazbě mezi 50 % a 250 % průměrné mzdy", type = "bar")),
     aes = list(
         list(type = "x", field = "zeme", label = "Země"),
@@ -188,7 +188,7 @@ write_chart(
     ),
     source = oecd_tw_source,
     options = list(range = c("50 %", "100 %", "250 %"), sort_by = "50 %", colour_scheme = "blues", facet = TRUE, facet_scale = "shared"),
-    data_note = "Náklady práce = hrubá mzda + odvody placené zaměstnavatelem. Počítá se se svobodným pracovníkem bez dětí. Průměr OECD: nevážený průměr členských zemí. Německo daní průměrnou mzdu více, než 250 % průměrné mzdy, proto má bod mimo čáru." # návrh
+    data_note = "Náklady práce = hrubá mzda + odvody placené zaměstnavatelem. Počítá se se svobodným pracovníkem bez dětí. Průměr OECD: nevážený průměr členských zemí. Německo daní průměrnou mzdu více než mzdu ve výši 250 % průměru (kvůli stropu odvodů), proto jeho bod leží mimo čáru." # návrh
 )
 
 # (5) Vývoj daňového klínu v Česku od roku 2000 při čtyřech výších mzdy, svobodný bez dětí; druhá záložka: rozdíl
@@ -209,7 +209,7 @@ write_chart(
     id = "dane-klin-vyvoj",
     type = "line",
     title = "Vývoj zdanění práce", # "Jak se měnilo zdanění práce"
-    subtitle = "Daně a odvody jako podíl na [nákladech práce::Vše, co zaměstanavat platí za změstnance. Mzda + Odvody], daňové sazby v různých násobcích průměrné mzdy", # "Daňový klín v Česku od roku 2000"
+    subtitle = "Daně a odvody jako podíl na [nákladech práce::Vše, co zaměstnavatel platí za zaměstnance: hrubá mzda a odvody], daňové sazby v různých násobcích průměrné mzdy", # "Daňový klín v Česku od roku 2000"
     tabs = list(list(id = "klin", label = "Celkové sazby"), list(id = "rozdil", label = "Rozdíl v sazbě pro 67 % a 167 % průměrné mzdy")),
     aes = list(
         list(type = "x", field = "year", label = "Rok", format = "year"),

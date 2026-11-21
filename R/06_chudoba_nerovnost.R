@@ -48,15 +48,15 @@ write_chart(
     id = "chudoba",
     type = "line",
     title = "Míra chudoby v ČR",
-    subtitle = "Procento domácností ohroženo chudobou na základě jejich příjmů",
+    subtitle = "Podíl obyvatel ohrožených chudobou podle příjmu jejich domácnosti",
     aes = list(
         list(type = "x", field = "year", label = "Rok", format = "year"),
-        list(type = "y", field = "chudoba", label = "Procento domácností", format = "percent"),
+        list(type = "y", field = "chudoba", label = "Podíl obyvatel", format = "percent"),
         list(type = "colour", field = "mira", label = "Definice chudoby")
     ),
     source = list(eurostat_source("ilc_li02", "At-risk-of-poverty rate"),
                   eurostat_source("ilc_li22b", "At-risk-of-poverty rate anchored at a fixed moment in time (2008)")),
-    data_note = "Pevná hranice nezávisí na příjmu zbytku společnosti -- jedná se o příjem mezní domácnosti ohrožené chudobou v roce 2008. V budoucích letech byla tato hranice pouze očištěna od inflace." # "Podíl lidí v domácnostech s ekvivalizovaným disponibilním příjmem pod 60 % mediánu; relativní hranice z mediánu daného roku, pevná hranice z roku 2008 upravená jen o inflaci. Šetření EU-SILC; rok šetření, příjmy jsou za předchozí rok."
+    data_note = "Pevná hranice nezávisí na příjmech zbytku společnosti -- odpovídá hranici chudoby z roku 2008, která se v dalších letech pouze upravuje o inflaci." # "Podíl lidí v domácnostech s ekvivalizovaným disponibilním příjmem pod 60 % mediánu; relativní hranice z mediánu daného roku, pevná hranice z roku 2008 upravená jen o inflaci. Šetření EU-SILC; rok šetření, příjmy jsou za předchozí rok."
 )
 
 write_chart(
@@ -64,10 +64,10 @@ write_chart(
     id = "chudoba-ukazatele",
     type = "line",
     title = "Materiální indikátory chudoby v ČR",
-    subtitle = "Procento dotázaných domácností, které souhlasí s uvedeným trvzením",
+    subtitle = "Podíl obyvatel žijících v domácnostech, pro které platí uvedené tvrzení",
     aes = list(
         list(type = "x", field = "year", label = "Rok", format = "year"),
-        list(type = "y", field = "podil", label = "Procento domácností", format = "percent"),
+        list(type = "y", field = "podil", label = "Podíl obyvatel", format = "percent"),
         list(type = "colour", field = "ukazatel", label = "Indikátor")
     ),
     source = list(eurostat_source("ilc_mdsd11", "Severe material and social deprivation rate"),
@@ -76,7 +76,7 @@ write_chart(
                   eurostat_source("ilc_mdes01", "Inability to keep home adequately warm"),
                   eurostat_source("ilc_mdes03", "Inability to afford a meal with meat, chicken, fish (or vegetarian equivalent) every second day")),
     options = list(facet = TRUE),
-    data_note = "Závažná deprivace: domácnost si nemůže dovolit aspoň 7 z 13 běžných položek (od 2015). Náklady na bydlení: domácnosti, které na bydlení vydávají víc než 40 % disponibilního příjmu. Nečekaný výdaj: částka zhruba ve výši měsíční hranice chudoby pro jednotlivce (v šetření 2025 16 800 Kč), kterou domácnost nezvládne zaplatit z vlastních zdrojů. Bílkovina: domácnosti, které nedokážou koupit maso, rybu či rostlinnou alternativu alespoň ob den."
+    data_note = "Závažná deprivace: domácnost si nemůže dovolit aspoň 7 z 13 běžných položek (údaje od roku 2015). Náklady na bydlení: domácnosti, které na bydlení vydávají více než 40 % disponibilního příjmu. Nečekaný výdaj: částka zhruba ve výši měsíční hranice chudoby pro jednotlivce (v šetření 2025 16 800 Kč), kterou domácnost nezvládne zaplatit z vlastních zdrojů. Bílkovina: domácnosti, které si nemohou dovolit maso, rybu či rostlinnou alternativu alespoň ob den."
 )
 
 # ---------- Index sociálního vyloučení ----------
@@ -168,7 +168,7 @@ write_chart(
     ),
     source = list(isv_source, obyvatele_source),
     options = list(geo = "orp.geojson", geo_key = "KOD_ORP"),
-    data_note = "Dimenze hodnoceny na bodové škále 0-6, průměr SO ORP je vážený průměr obcí podle počtu obyvatel" # "Index sociálního vyloučení za SO ORP v roce {max(isv_orp$year)} (MMR) a body za jeho jednotlivé dimenze (0–6), průměr obcí vážený počtem obyvatel."
+    data_note = "Dimenze jsou hodnoceny na bodové škále 0–6. Hodnota za SO ORP je průměr obcí vážený počtem obyvatel." # "Index sociálního vyloučení za SO ORP v roce {max(isv_orp$year)} (MMR) a body za jeho jednotlivé dimenze (0–6), průměr obcí vážený počtem obyvatel."
 )
 
 # ---------- (5) Giniho koeficient ----------
@@ -182,7 +182,7 @@ write_chart(
     id = "nerovnost-gini",
     type = "line",
     title = "Giniho koeficient nerovnosti v ČR",
-    subtitle = "Giniho koeficient [ekvivalizovaného::Se zohledněním počtu členů domácnosti] [disponibilního::Po odečtení daní a přičtení dávek, důchodů a jiných transferů] příjmu. 0 = všichni mají stejně, 100 = vše vlastní jeden",
+    subtitle = "Giniho koeficient [ekvivalizovaného::Se zohledněním počtu členů domácnosti] [disponibilního::Po odečtení daní a přičtení dávek, důchodů a jiných transferů] příjmu. 0 = všichni mají stejně, 100 = veškerý příjem má jeden člověk",
     aes = list(
         list(type = "x", field = "year", label = "Rok", format = "year"),
         list(type = "y", field = "gini", label = "Gini")
@@ -211,7 +211,7 @@ write_chart(
     id = "nerovnost-top1",
     type = "line",
     title = "Příjem a majetek nejbohatšího 1 %",
-    subtitle = "Pofíl ns příjmech a na majetku, který vlastní nejbohatší 1 % obyvatel",
+    subtitle = "Podíl nejbohatšího 1 % obyvatel na všech příjmech a na veškerém majetku",
     aes = list(
         list(type = "x", field = "year", label = "Rok", format = "year"),
         list(type = "y", field = "podil", label = "Podíl",  format = "percent"),
@@ -235,7 +235,7 @@ write_chart(
     id = "nerovnost-gini-srovnani",
     type = "bar",
     title = "Srovnání příjmové nerovnosti s vybranými zeměmi", # "Srovnání příjmové nerovnosti"
-    subtitle = str_glue("Giniho koeficient [ekvivalizovaného::Se zohledněním počtu členů domácnosti] [disponibilního::Po odečtení daní a přičtení dávek, důchodů a jiných transferů] příjmu v roce {max(srovnani_gini$year)}. 0 = všichni mají stejně, 100 = vše vlastní jeden "), # str_glue("Giniho koeficient disponibilních příjmů v roce {rok_gini}. 0 = všichni mají stejně, 100 = vše má jeden")
+    subtitle = str_glue("Giniho koeficient [ekvivalizovaného::Se zohledněním počtu členů domácnosti] [disponibilního::Po odečtení daní a přičtení dávek, důchodů a jiných transferů] příjmu v roce {max(srovnani_gini$year)}. 0 = všichni mají stejně, 100 = veškerý příjem má jeden člověk"), # str_glue("Giniho koeficient disponibilních příjmů v roce {rok_gini}. 0 = všichni mají stejně, 100 = vše má jeden")
     aes = list(
         list(type = "x", field = "zeme", label = "Země"),
         list(type = "y", field = "gini", label = "Gini"),
@@ -266,13 +266,13 @@ write_chart(
     type = "bar",
     title = "Nerovnost v majetku českých domácností",
     subtitle = str_glue("Majetek podle [kvintilu::Domácnosti seřazené od nejchudší po nejbohatší a rozdělené do pěti stejně velkých skupin] majetku domácnosti v roce {max(jmeni$year)}"),
-    tabs = list(list(id = "prumer", label = "Průměrný majetek"), list(id = "podil", label = "Procento majetku v čr")),
+    tabs = list(list(id = "prumer", label = "Průměrný majetek"), list(id = "podil", label = "Podíl na majetku")),
     aes = list(
         list(type = "x", field = "kvintil", label = "Kvintil"),
         list(type = "y", field = "prumer", label = "Průměrný majetek", unit = "mil. Kč", tab = "prumer"),
-        list(type = "y", field = "podil", label = "Procento majektu v ČR", format = "percent", tab = "podil")
+        list(type = "y", field = "podil", label = "Podíl na majetku v ČR", format = "percent", tab = "podil")
     ),
     source = other_source("ČSÚ", "Finanční situace domácností 2022 až 2024, tab. 12: Čisté jmění domácností ČR podle kvintilů čistého jmění",
                           "https://csu.gov.cz/produkty/financni-situace-domacnosti-2022-az-2024-"),
-    data_note = "Čistý majetek (tj. po odečtení dluhů). Podíl na celkovém jmění všech domácností spočten z průměrů."
+    data_note = "Čistý majetek (tj. po odečtení dluhů). Podíl na celkovém majetku všech domácností je spočítán z průměrů."
 )

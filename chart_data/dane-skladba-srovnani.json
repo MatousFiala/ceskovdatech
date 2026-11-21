@@ -49,14 +49,14 @@
       "name": "OECD",
       "dataset": "Global Revenue Statistics Database (DF_RSGLOBAL)",
       "url": "https://www.oecd.org/en/data/datasets/global-revenue-statistics-database.html",
-      "retrieved": "2026-11-21"
+      "retrieved": "2026-11-22"
     }
   ],
-  "data_note": "Daně vybrané v celém veřejném sektoru, i ty proudící mimo státní rozpočet. Průměr OECD: nevážený průměr členských zemí. DPH zahrnuje i ostatní všeobecné daně ze zboží a služeb, hlavně daň z obratu (sales tax) v USA, která DPH nahrazuje",
+  "data_note": "Daně vybrané v celém veřejném sektoru, včetně těch, které plynou mimo státní rozpočet. Průměr OECD: nevážený průměr členských zemí. DPH zahrnuje i ostatní všeobecné daně ze zboží a služeb, hlavně daň z obratu (sales tax) v USA, která tam DPH nahrazuje.",
   "options": {
     "horizontal": true,
     "facet": true
   },
-  "last_updated": "2026-11-21",
+  "last_updated": "2026-11-22",
   "rows": 98
 }

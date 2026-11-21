@@ -3,7 +3,7 @@
   "data": "nezamestnanost-cr.csv",
   "type": "line",
   "title": "Míra nezaměstnanosti v ČR od roku 1993",
-  "subtitle": "Obecná [míra nezaměstnanosti::Procento lidí v pracovní síle, kteří si hledají práci ale v danou chvíli žádnou nemají. Nezapočítává ty, kteří pracovat nemohou nebo si práci nehledají], %",
+  "subtitle": "Obecná [míra nezaměstnanosti::Podíl lidí v pracovní síle, kteří si hledají práci, ale v danou chvíli žádnou nemají. Nezapočítává ty, kteří pracovat nemohou nebo si práci nehledají], %",
   "aes": [
     {
       "type": "x",
@@ -23,10 +23,10 @@
       "name": "ČSÚ",
       "dataset": "Zaměstnanost a nezaměstnanost (VŠPS)",
       "url": "https://data.csu.gov.cz/datastat/data/VYBER/ZAM01T2",
-      "retrieved": "2026-11-21"
+      "retrieved": "2026-11-22"
     }
   ],
   "data_note": "",
-  "last_updated": "2026-11-21",
+  "last_updated": "2026-11-22",
   "rows": 33
 }

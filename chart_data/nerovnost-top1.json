@@ -3,7 +3,7 @@
   "data": "nerovnost-top1.csv",
   "type": "line",
   "title": "Příjem a majetek nejbohatšího 1 %",
-  "subtitle": "Pofíl ns příjmech a na majetku, který vlastní nejbohatší 1 % obyvatel",
+  "subtitle": "Podíl nejbohatšího 1 % obyvatel na všech příjmech a na veškerém majetku",
   "aes": [
     {
       "type": "x",
@@ -28,10 +28,10 @@
       "name": "World Inequality Database",
       "dataset": "Top 1% income share (pre-tax national income) and wealth share, via Our World in Data",
       "url": "https://wid.world/country/czech-republic/",
-      "retrieved": "2026-11-21"
+      "retrieved": "2026-11-22"
     }
   ],
   "data_note": "Příjem před zdaněním; čistý majetek (tj. po odečtení dluhů). Před rokem 1989 se jedná o relativně hrubé odhady.",
-  "last_updated": "2026-11-21",
+  "last_updated": "2026-11-22",
   "rows": 78
 }

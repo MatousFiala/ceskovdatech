@@ -45,7 +45,7 @@
       "name": "Monitor státní pokladny (MF ČR)",
       "dataset": "Plnění rozpočtu ústředně řízených organizací, kapitoly státního rozpočtu",
       "url": "https://monitor.statnipokladna.gov.cz/",
-      "retrieved": "2026-11-21"
+      "retrieved": "2026-11-22"
     }
   ],
   "data_note": "Ostatní: ostatní činnosti veřejné správy a oblasti, které mají každá méně než 0,5 % výdajů (ostatní hospodářství, sport a zájmová činnost, jiné veřejné služby, vodní hospodářství, krizová připravenost, spoje, dávky pro zdravotně postižené). Vzdělávání zahrnuje i platy učitelů v regionálním školství, které stát posílá přes kraje. Zdravotnictví zahrnuje i platbu státu do zdravotního pojištění za státní pojištěnce (děti, studenty, důchodce a další). Příspěvek na péči zahrnuje i státní příspěvky na penzijní spoření a další drobné dávky sociálního zabezpečení.",
@@ -56,6 +56,6 @@
     "facet": true,
     "facet_columns": 2
   },
-  "last_updated": "2026-11-21",
+  "last_updated": "2026-11-22",
   "rows": 28
 }

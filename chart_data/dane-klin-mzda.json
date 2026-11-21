@@ -2,8 +2,8 @@
   "id": "dane-klin-mzda",
   "data": "dane-klin-mzda.csv",
   "type": "bar",
-  "title": "Zdanění práce podle vyše mzdy",
-  "subtitle": "Daň z příjmů a odvody jako podíl [nákladů práce::Vše, co zaměstanavat platí za změstnance. Mzda + Odvody] v roce 2025, daňové sazby v různých násobcích průměrné mzdy",
+  "title": "Zdanění práce podle výše mzdy",
+  "subtitle": "Daň z příjmů a odvody jako podíl na [nákladech práce::Vše, co zaměstnavatel platí za zaměstnance: hrubá mzda a odvody] v roce 2025, daňové sazby v různých násobcích průměrné mzdy",
   "aes": [
     {
       "type": "x",
@@ -27,10 +27,10 @@
       "name": "OECD",
       "dataset": "Taxing Wages",
       "url": "https://www.oecd.org/en/topics/sub-issues/tax-policy/taxing-wages.html",
-      "retrieved": "2026-11-21"
+      "retrieved": "2026-11-22"
     }
   ],
   "data_note": "Náklady práce = hrubá mzda + odvody placené zaměstnavatelem. Počítá se se svobodným pracovníkem bez dětí.",
-  "last_updated": "2026-11-21",
+  "last_updated": "2026-11-22",
   "rows": 21
 }

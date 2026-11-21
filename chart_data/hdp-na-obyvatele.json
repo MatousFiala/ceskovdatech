@@ -3,7 +3,7 @@
   "data": "hdp-na-obyvatele.csv",
   "type": "line",
   "title": "Dlouhodobý vývoj HDP na obyvatele",
-  "subtitle": "Hrubý domácí produkt na obyvatele, očištěný od inflace, v cenách z roku 2020",
+  "subtitle": "Hrubý domácí produkt na obyvatele očištěný od inflace, v cenách roku 2020",
   "aes": [
     {
       "type": "x",
@@ -29,22 +29,22 @@
       "name": "ČSÚ",
       "dataset": "Hrubý domácí produkt - mil. Kč, srovnatelné ceny roku 2020",
       "url": "https://data.csu.gov.cz/datastat/data/VYBER/WNUC03CT01?vSet=1&vSel=1",
-      "retrieved": "2026-11-21"
+      "retrieved": "2026-11-22"
     },
     {
       "name": "ČSÚ",
       "dataset": "Obyvatelstvo - dlouhodobé časové řady za Českou republiku",
       "url": "https://data.csu.gov.cz/datastat/data/VYBER/WOBYG?vSet=2&vSel=1",
-      "retrieved": "2026-11-21"
+      "retrieved": "2026-11-22"
     },
     {
       "name": "Maddison Historical Statistics",
       "dataset": "Maddison Project Database 2023",
       "url": "https://www.rug.nl/ggdc/historicaldevelopment/maddison/releases/maddison-project-database-2023",
-      "retrieved": "2026-11-21"
+      "retrieved": "2026-11-22"
     }
   ],
-  "data_note": "Po roce 1990 data ČSÚ, předtím odhad na základě míry růstu Československé ekonomiky podle dat Maddison. Historická čísla jsou spíše hrubý odhad: Maddison používá jinou metodiku než ČSÚ; Československo kvůli dohánivému růstu Slovenska nejspíše rostlo rychleji než Česko samotné.",
-  "last_updated": "2026-11-21",
+  "data_note": "Od roku 1990 data ČSÚ, předtím odhad na základě tempa růstu československé ekonomiky podle databáze Maddison. Historická čísla jsou spíše hrubým odhadem: Maddison používá jinou metodiku než ČSÚ a Československo kvůli dohánějícímu růstu Slovenska nejspíše rostlo rychleji než Česko samotné.",
+  "last_updated": "2026-11-22",
   "rows": 104
 }

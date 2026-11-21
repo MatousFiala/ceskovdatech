@@ -3,7 +3,7 @@
   "data": "dane-klin-srovnani.csv",
   "type": "dot",
   "title": "Srovnání zdanění práce s vybranými zeměmi OECD",
-  "subtitle": "Daň z příjmů a odvody jako podíl na [nákladech práce::Vše, co zaměstanavat platí za změstnance. Mzda + Odvody] v roce 2025, daňové sazby v různých násobcích průměrné mzdy",
+  "subtitle": "Daň z příjmů a odvody jako podíl na [nákladech práce::Vše, co zaměstnavatel platí za zaměstnance: hrubá mzda a odvody] v roce 2025, daňové sazby v různých násobcích průměrné mzdy",
   "tabs": [
     {
       "id": "klin",
@@ -52,10 +52,10 @@
       "name": "OECD",
       "dataset": "Taxing Wages",
       "url": "https://www.oecd.org/en/topics/sub-issues/tax-policy/taxing-wages.html",
-      "retrieved": "2026-11-21"
+      "retrieved": "2026-11-22"
     }
   ],
-  "data_note": "Náklady práce = hrubá mzda + odvody placené zaměstnavatelem. Počítá se se svobodným pracovníkem bez dětí. Průměr OECD: nevážený průměr členských zemí. Německo daní průměrnou mzdu více, než 250 % průměrné mzdy, proto má bod mimo čáru.",
+  "data_note": "Náklady práce = hrubá mzda + odvody placené zaměstnavatelem. Počítá se se svobodným pracovníkem bez dětí. Průměr OECD: nevážený průměr členských zemí. Německo daní průměrnou mzdu více než mzdu ve výši 250 % průměru (kvůli stropu odvodů), proto jeho bod leží mimo čáru.",
   "options": {
     "range": ["50 %", "100 %", "250 %"],
     "sort_by": "50 %",
@@ -63,6 +63,6 @@
     "facet": true,
     "facet_scale": "shared"
   },
-  "last_updated": "2026-11-21",
+  "last_updated": "2026-11-22",
   "rows": 56
 }

@@ -3,7 +3,7 @@
   "data": "nerovnost-gini-srovnani.csv",
   "type": "bar",
   "title": "Srovnání příjmové nerovnosti s vybranými zeměmi",
-  "subtitle": "Giniho koeficient [ekvivalizovaného::Se zohledněním počtu členů domácnosti] [disponibilního::Po odečtení daní a přičtení dávek, důchodů a jiných transferů] příjmu v roce 2023. 0 = všichni mají stejně, 100 = vše vlastní jeden ",
+  "subtitle": "Giniho koeficient [ekvivalizovaného::Se zohledněním počtu členů domácnosti] [disponibilního::Po odečtení daní a přičtení dávek, důchodů a jiných transferů] příjmu v roce 2023. 0 = všichni mají stejně, 100 = veškerý příjem má jeden člověk",
   "aes": [
     {
       "type": "x",
@@ -25,7 +25,7 @@
       "name": "World Inequality Database",
       "dataset": "Gini coefficient of post-tax disposable income, bulk download",
       "url": "https://wid.world/data/",
-      "retrieved": "2026-11-21"
+      "retrieved": "2026-11-22"
     }
   ],
   "data_note": "",
@@ -33,6 +33,6 @@
     "horizontal": true,
     "sort": "desc"
   },
-  "last_updated": "2026-11-21",
+  "last_updated": "2026-11-22",
   "rows": 11
 }

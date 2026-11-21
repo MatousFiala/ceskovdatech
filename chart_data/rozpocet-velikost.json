@@ -28,13 +28,13 @@
       "name": "Eurostat",
       "dataset": "Government revenue, expenditure and main aggregates (gov_10a_main)",
       "url": "https://ec.europa.eu/eurostat/databrowser/view/gov_10a_main/default/table",
-      "retrieved": "2026-11-21"
+      "retrieved": "2026-11-22"
     }
   ],
   "data_note": "",
   "options": {
     "y_zero": false
   },
-  "last_updated": "2026-11-21",
+  "last_updated": "2026-11-22",
   "rows": 60
 }

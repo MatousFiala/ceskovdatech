@@ -71,7 +71,7 @@ write_chart(
     id = "rozpocet-velikost-srovnani",
     type = "bar",
     title = "Srovnání velikosti veřejného sektoru s vybranými zeměmi", # str_glue("Velikost veřejného sektoru ve srovnání se světem v roce {rok_srovnani}")
-    subtitle = str_glue("Výdaje státu, samospráv a jiných státních organizací v roce {max(srovnani_vydaje$year)}"), # "Výdaje vládního sektoru jako podíl na HDP"
+    subtitle = str_glue("Výdaje státu, samospráv a dalších veřejných institucí v roce {max(srovnani_vydaje$year)}, % HDP"), # "Výdaje vládního sektoru jako podíl na HDP"
     aes = list(
         list(type = "x", field = "zeme", label = "Země"),
         list(type = "y", field = "vydaje", label = "Výdaje (% HDP)", format = "percent"),
@@ -79,7 +79,7 @@ write_chart(
     ),
     source = list(eurostat_source("gov_10a_main", "Government revenue, expenditure and main aggregates"), imf_source),
     options = list(horizontal = TRUE, sort = "desc"),
-    data_note = "Evropské země a EU z dat Eurostatu, UK a USA z dat MMF. Svět: vážený průměr dat MMF podle HDP" # str_glue("Celkové výdaje vládního sektoru v roce {rok_srovnani}. Evropské země a EU: Eurostat; Spojené království a USA: MMF (Fiscal Monitor, část hodnot jsou odhady MMF). Svět: průměr zemí z Fiscal Monitoru vážený HDP v amerických dolarech.")
+    data_note = "Evropské země a EU z dat Eurostatu, Spojené království a USA z dat MMF. Svět: průměr z dat MMF vážený podle HDP." # str_glue("Celkové výdaje vládního sektoru v roce {rok_srovnani}. Evropské země a EU: Eurostat; Spojené království a USA: MMF (Fiscal Monitor, část hodnot jsou odhady MMF). Svět: průměr zemí z Fiscal Monitoru vážený HDP v amerických dolarech.")
 )
 
 # ---------- Státní rozpočet podle Monitoru (3–5) ----------
@@ -134,7 +134,7 @@ write_chart(
     df = prijmy_vydaje,
     id = "rozpocet-prijmy-vydaje",
     type = "bar",
-    title = "Příjmy a výdaje státního ropočtu od roku 2018", # "Příjmy a výdaje státního rozpočtu od roku 2010"
+    title = "Příjmy a výdaje státního rozpočtu od roku 2010", # "Příjmy a výdaje státního rozpočtu od roku 2010"
     subtitle = "Výdaje a jejich krytí příjmy a schodkem, nominální i očištěné od inflace, miliardy Kč", # "Výdaje (nahoře) jsou kryté příjmy a schodkem, tedy novým dluhem (dole), v miliardách Kč"
     aes = list(
         list(type = "x", field = "year", label = "Rok", format = "year"),
@@ -144,7 +144,7 @@ write_chart(
     ),
     source = list(monitor_source, inflace_source),
     tabs = tabs_ceny,
-    data_note = "Reálné částky jsou přepočtené na ceny v roce 2020. Příjmy a schodek jsou účetnicky pod osou -- z příjmových a dluhových účtů 'odchází' peníze pro financování výdajů" # "Skutečné příjmy a výdaje kapitol státního rozpočtu (bez státních fondů, krajů, obcí a zdravotních pojišťoven), v běžných cenách nebo přepočtené na ceny roku 2020 podle míry inflace. Příjmy a schodek jsou pod osou, aby bylo vidět, že dohromady pokrývají výdaje."
+    data_note = "Reálné částky jsou přepočtené na ceny roku 2020. Příjmy a schodek jsou z účetního pohledu pod osou -- z příjmových a dluhových účtů odcházejí peníze na financování výdajů." # "Skutečné příjmy a výdaje kapitol státního rozpočtu (bez státních fondů, krajů, obcí a zdravotních pojišťoven), v běžných cenách nebo přepočtené na ceny roku 2020 podle míry inflace. Příjmy a schodek jsou pod osou, aby bylo vidět, že dohromady pokrývají výdaje."
 )
 
 # (3b) Saldo státního rozpočtu (Monitor) v mld. Kč (běžné ceny a ceny roku 2020) a v % nominálního HDP (Eurostat).
@@ -172,7 +172,7 @@ write_chart(
         list(type = "y", field = "podil", label = "Schodek (% HDP)", format = "percent", tab = "hdp")
     ),
     source = list(monitor_source, inflace_source, eurostat_source("gov_10dd_edpt1", "Government deficit/surplus, debt and associated data")),
-    data_note = "Schodek z dat MSP, podíl na HDP z dat Eurostatu. Reálné částky jsou přepočtené na ceny v roce 2020." # "Saldo = příjmy − výdaje; schodek je pod nulou. Státní rozpočet: kapitoly státního rozpočtu podle Monitoru státní pokladny, od roku 2010, v běžných cenách nebo přepočtené na ceny roku 2020 podle míry inflace; podíl na nominálním HDP (Eurostat)."
+    data_note = "Schodek z Monitoru státní pokladny (MF ČR), HDP z dat Eurostatu. Reálné částky jsou přepočtené na ceny roku 2020." # "Saldo = příjmy − výdaje; schodek je pod nulou. Státní rozpočet: kapitoly státního rozpočtu podle Monitoru státní pokladny, od roku 2010, v běžných cenách nebo přepočtené na ceny roku 2020 podle míry inflace; podíl na nominálním HDP (Eurostat)."
 )
 
 # (4) Hrubé kategorie příjmů podle druhového třídění: daně (seskupení 11–15, 17), pojistné (16), přijaté transfery (41–42,
@@ -195,7 +195,7 @@ write_chart(
     id = "rozpocet-prijmy",
     type = "bar",
     title = "Příjmy státního rozpočtu od roku 2010", # "Z čeho stát žije: příjmy státního rozpočtu"
-    subtitle = "Příjmy státního rozpočtu podle kategoriem, miliardy Kč", # "Příjmy státního rozpočtu podle druhu, v miliardách Kč"
+    subtitle = "Příjmy státního rozpočtu podle kategorie, miliardy Kč", # "Příjmy státního rozpočtu podle druhu, v miliardách Kč"
     aes = list(
         list(type = "x", field = "year", label = "Rok", format = "year"),
         list(type = "y", field = "mld", label = "Nominální příjem", unit = "mld. Kč", tab = "nominalni"),
@@ -205,7 +205,7 @@ write_chart(
     source = list(monitor_source, inflace_source),
     tabs = tabs_ceny,
     options = list(facet = TRUE),
-    data_note = "Reálné částky jsou přepočteny na ceny v roce 2020. Do sociálního pojištění se neřadí zdravotní odvody -- ty proudí státní rozpočet pojišťovnám. Přijaté transfery jsou převážně dotace EU." # "V běžných cenách nebo přepočtené na ceny roku 2020 podle míry inflace. Druhové třídění rozpočtové skladby. Daně: daně z příjmů, DPH, spotřební, majetkové a další daně. Sociální pojištění: důchodové, nemocenské a příspěvek na politiku zaměstnanosti; zdravotní pojištění jde zdravotním pojišťovnám, ne do státního rozpočtu. Přijaté transfery: hlavně peníze z rozpočtu EU. Ostatní: nedaňové a kapitálové příjmy (poplatky, dividendy, prodej majetku). Část daní (sdílené daně) jde krajům a obcím a v rozpočtu státu není."
+    data_note = "Reálné částky jsou přepočtené na ceny roku 2020. Do sociálního pojištění se nepočítá zdravotní pojištění -- to plyne mimo státní rozpočet přímo zdravotním pojišťovnám. Přijaté transfery jsou převážně dotace z EU." # "V běžných cenách nebo přepočtené na ceny roku 2020 podle míry inflace. Druhové třídění rozpočtové skladby. Daně: daně z příjmů, DPH, spotřební, majetkové a další daně. Sociální pojištění: důchodové, nemocenské a příspěvek na politiku zaměstnanosti; zdravotní pojištění jde zdravotním pojišťovnám, ne do státního rozpočtu. Přijaté transfery: hlavně peníze z rozpočtu EU. Ostatní: nedaňové a kapitálové příjmy (poplatky, dividendy, prodej majetku). Část daní (sdílené daně) jde krajům a obcím a v rozpočtu státu není."
 )
 
 # (5) Hrubé kategorie výdajů podle odvětvového třídění (skupiny paragrafů)
@@ -238,7 +238,7 @@ write_chart(
     source = list(monitor_source, inflace_source),
     tabs = c(tabs_ceny, list(list(id = "podil", label = "% výdajů"))),
     options = list(facet = TRUE),
-    data_note = "Reálné častky jsou přepočteny na ceny v roce 2020. Důchody a sociální transfery: veškeré důchody, sociální dávky a příspěvky. Služby: vzdělávání, zdravotnictví, kultura, bydlení, životní prostředí. Hospodářství: doprava, zemědělství, průmysl, energetika, výzkum. Bezpečnost: obrana, bezpečnostní složky. Veřejná správa: státní a místní správa, obsluha dluhu, transfery samosprávám." # "V běžných cenách nebo přepočtené na ceny roku 2020 podle míry inflace. Odvětvové třídění rozpočtové skladby. Důchody a sociální transfery: důchody, dávky, podpora v nezaměstnanosti, politika zaměstnanosti. Služby: vzdělávání (včetně platů učitelů placených přes kraje), zdravotnictví (včetně plateb za státní pojištěnce), kultura, bydlení, životní prostředí. Hospodářství a infrastruktura: doprava, zemědělství, průmysl, energetika, výzkum. Bezpečnost: obrana, policie, hasiči, soudy, vězeňství. Veřejná správa: státní a místní správa, úroky ze státního dluhu, transfery obcím a krajům."
+    data_note = "Reálné částky jsou přepočtené na ceny roku 2020. Důchody a sociální transfery: veškeré důchody, sociální dávky a příspěvky. Služby: vzdělávání, zdravotnictví, kultura, bydlení, životní prostředí. Hospodářství: doprava, zemědělství, průmysl, energetika, výzkum. Bezpečnost: obrana, bezpečnostní složky. Veřejná správa: státní a místní správa, obsluha dluhu, transfery samosprávám." # "V běžných cenách nebo přepočtené na ceny roku 2020 podle míry inflace. Odvětvové třídění rozpočtové skladby. Důchody a sociální transfery: důchody, dávky, podpora v nezaměstnanosti, politika zaměstnanosti. Služby: vzdělávání (včetně platů učitelů placených přes kraje), zdravotnictví (včetně plateb za státní pojištěnce), kultura, bydlení, životní prostředí. Hospodářství a infrastruktura: doprava, zemědělství, průmysl, energetika, výzkum. Bezpečnost: obrana, policie, hasiči, soudy, vězeňství. Veřejná správa: státní a místní správa, úroky ze státního dluhu, transfery obcím a krajům."
 )
 
 # (5b) Podrobné výdaje v posledním roce: oddíly paragrafů (první dvě číslice), dávky (oddíl 41) po pododdílech;
@@ -391,7 +391,7 @@ write_chart(
                   other_source("MMF", "World Economic Outlook, October 2026 (SDMX API)", "https://data.imf.org/"),
                   inflace_source, inflace_wb_source),
     options = list(annotations = list(list(y = 0.6, tab = "podil", label = "Maastrichtské kritérium fiskální stability"))),
-    data_note = "Skutečnost z dat Eurostatu, projekce MMF. Reálné částky jsou přepočtené na ceny v roce 2020 (inflace ČSÚ, před rokem 1997 Světová banka, v letech projekce odhad MMF)." # str_glue("Hrubý (maastrichtský) dluh vládního sektoru: stát, kraje a obce, zdravotní pojišťovny. Státní dluh v užším smyslu (dluh státního rozpočtu) je o něco nižší. Do roku {rok_dluh} Eurostat, poté projekce MMF (World Economic Outlook, říjen 2026).")
+    data_note = "Skutečnost z dat Eurostatu, projekce MMF. Reálné částky jsou přepočtené na ceny roku 2020 (inflace podle ČSÚ, před rokem 1997 podle Světové banky, v letech projekce odhad MMF)." # str_glue("Hrubý (maastrichtský) dluh vládního sektoru: stát, kraje a obce, zdravotní pojišťovny. Státní dluh v užším smyslu (dluh státního rozpočtu) je o něco nižší. Do roku {rok_dluh} Eurostat, poté projekce MMF (World Economic Outlook, říjen 2026).")
 )
 
 # ---------- (7) Srovnání dluhu, % HDP: stejné země jako (2) + nejvyšší a nejnižší dluh v OECD ----------
@@ -431,7 +431,7 @@ write_chart(
     id = "rozpocet-dluh-srovnani",
     type = "bar",
     title = "Srovnání veřejného dluhu s vybranými zeměmi", # str_glue("Veřejný dluh ve srovnání se světem v roce {rok_srovnani}")
-    subtitle = str_glue("Hrubý dluh státu, samospráv a jiných státních organizací v roce {max(srovnani_dluh$year)} a jeho změna od roku {rok_rust}, % HDP"), # "Hrubý dluh vládního sektoru jako podíl na HDP; Japonsko a Turecko mají nejvyšší a nejnižší dluh v OECD"
+    subtitle = str_glue("Hrubý dluh státu, samospráv a dalších veřejných institucí v roce {max(srovnani_dluh$year)} a jeho změna od roku {rok_rust}, % HDP"), # "Hrubý dluh vládního sektoru jako podíl na HDP; Japonsko a Turecko mají nejvyšší a nejnižší dluh v OECD"
     tabs = list(list(id = "dluh", label = "Výše dluhu"), list(id = "zmena", label = str_glue("Změna od roku {rok_rust}"))),
     aes = list(
         list(type = "x", field = "zeme", label = "Země"),
@@ -442,5 +442,5 @@ write_chart(
     source = list(eurostat_source("gov_10dd_edpt1", "Government deficit/surplus, debt and associated data"), imf_source),
     options = list(horizontal = TRUE, sort = "desc",
                    annotations = list(list(y = 0.6, tab = "dluh", label = "Maastrichtské kritérium fiskální stability"))),
-    data_note = str_glue("Evropské země a EU z dat Eurostatu, ostatní z dat MMF. Svět: vážený průměr z dat MMF podle velikosti HDP. Změna: rozdíl podílu dluhu na HDP mezi lety {rok_rust} a {rok_srovnani} v procentních bodech.") # str_glue("Hrubý dluh vládního sektoru v roce {rok_srovnani}. Evropské země (bez Norska) a EU: Eurostat; ostatní: MMF (World Economic Outlook, část hodnot jsou odhady MMF; svět je průměr vážený HDP).")
+    data_note = str_glue("Evropské země a EU z dat Eurostatu, ostatní z dat MMF. Svět: průměr z dat MMF vážený podle HDP. Změna: rozdíl podílu dluhu na HDP mezi lety {rok_rust} a {rok_srovnani} v procentních bodech.") # str_glue("Hrubý dluh vládního sektoru v roce {rok_srovnani}. Evropské země (bez Norska) a EU: Eurostat; ostatní: MMF (World Economic Outlook, část hodnot jsou odhady MMF; svět je průměr vážený HDP).")
 )

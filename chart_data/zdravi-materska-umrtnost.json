@@ -3,7 +3,7 @@
   "data": "zdravi-materska-umrtnost.csv",
   "type": "line",
   "title": "Mateřská úmrtnost v ČR od roku 1985",
-  "subtitle": "Počet žen zemřelých v souvislosti těhotenství, porodu či šestinedělí na 100 000 živě narozených dětí, odhad",
+  "subtitle": "Počet žen zemřelých v souvislosti s těhotenstvím, porodem či šestinedělím na 100 000 živě narozených dětí, odhad",
   "aes": [
     {
       "type": "x",
@@ -22,10 +22,10 @@
       "name": "WHO",
       "dataset": "Maternal mortality ratio (per 100 000 live births), UN MMEIG estimates",
       "url": "https://www.who.int/data/gho/data/indicators/indicator-details/GHO/maternal-mortality-ratio-(per-100-000-live-births)",
-      "retrieved": "2026-11-21"
+      "retrieved": "2026-11-22"
     }
   ],
-  "data_note": "Modelový odhad -- případy jsou v dnes v ČR relativně vzácné a skutečné údaje by vykazovaly značný statistický šum.",
-  "last_updated": "2026-11-21",
+  "data_note": "Modelový odhad -- případy jsou dnes v ČR vzácné a skutečné počty by vykazovaly značný statistický šum.",
+  "last_updated": "2026-11-22",
   "rows": 39
 }

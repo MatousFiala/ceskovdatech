@@ -3,7 +3,7 @@
   "data": "hdp-realne.csv",
   "type": "line",
   "title": "HDP České republiky od roku 1990",
-  "subtitle": "Hrubý domácí produkt, očištěný od inflace, v cenách z roku 2020",
+  "subtitle": "Hrubý domácí produkt očištěný od inflace, v cenách roku 2020",
   "aes": [
     {
       "type": "x",
@@ -24,10 +24,10 @@
       "name": "ČSÚ",
       "dataset": "Hrubý domácí produkt - mil. Kč, srovnatelné ceny roku 2020",
       "url": "https://data.csu.gov.cz/datastat/data/VYBER/WNUC03CT01?vSet=1&vSel=1",
-      "retrieved": "2026-11-21"
+      "retrieved": "2026-11-22"
     }
   ],
   "data_note": "",
-  "last_updated": "2026-11-21",
+  "last_updated": "2026-11-22",
   "rows": 36
 }

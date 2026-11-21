@@ -3,7 +3,7 @@
   "data": "vek-kraje.csv",
   "type": "map",
   "title": "Věková struktura v krajích",
-  "subtitle": "Průměrný věk a [index závislosti::Počet dětí (0-14 let) a seniorů (nad 65 let) na 100 lidí v produktivním věku (15-64 let)] v roce 2025 po krajích",
+  "subtitle": "Průměrný věk a [index závislosti::Počet dětí (0–14 let) a seniorů (65 let a více) na 100 lidí v produktivním věku (15–64 let)] v roce 2025 podle krajů",
   "tabs": [
     {
       "id": "vek",
@@ -41,13 +41,13 @@
       "name": "ČSÚ",
       "dataset": "Ukazatele věkového složení k 31. 12.",
       "url": "https://data.csu.gov.cz/datastat/data/VYBER/OBY02FHVDT01",
-      "retrieved": "2026-11-21"
+      "retrieved": "2026-11-22"
     }
   ],
   "data_note": "",
   "options": {
     "reverse": true
   },
-  "last_updated": "2026-11-21",
+  "last_updated": "2026-11-22",
   "rows": 14
 }

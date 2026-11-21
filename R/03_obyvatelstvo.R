@@ -23,7 +23,7 @@ write_chart(
     id = "obyvatele-cr",
     type = "line",
     title = "Počet obyvatel Česka od roku 1785",
-    subtitle = "Počet obyvatel žijící na území dnešní ČR, miliony",
+    subtitle = "Počet obyvatel žijících na území dnešní ČR, miliony",
     aes = list(
         list(type = "x", field = "year", label = "Rok", format = "year"),
         list(type = "y", field = "obyvatele", label = "Počet obyvatel", unit = "mil.")
@@ -53,7 +53,7 @@ write_chart(
     id = "obyvatele-prirustek",
     type = "bar",
     title = "Populační růst ČR od roku 1947",
-    subtitle = "Růst obyvatelstva ČR rozdělený na [přirozený přírůstek::Živě narození - zemřelí] a [čistou migraci::Přistěhovalí - Vystěhovalí], %",
+    subtitle = "Růst obyvatelstva ČR rozdělený na [přirozený přírůstek::Živě narození minus zemřelí] a [čistou migraci::Přistěhovalí minus vystěhovalí], %",
     aes = list(
         list(type = "x", field = "year", label = "Rok", format = "year"),
         list(type = "y", field = "prirustek", format = "percent"),
@@ -108,7 +108,7 @@ write_chart(
         list(type = "fill", field = "zmena", label = str_glue("Změna počtu obyvatel {od}-{do}"), format = "percent")
     ),
     source = oby01b_source,
-    data_note = "Ve zkoumaných letech se několik obcí přesunulo mezi SO ORP, to vysvětluje část změny. Konrétně: 3 obce Český Brod -> Lysá nad Labem, 1 obce Turnov -> Jablonec n. Nisou, 1 obce Jihlva -> Havl. Brod, 1 obce Prostějov -> Konice.",
+    data_note = "Ve sledovaném období se několik obcí přesunulo mezi SO ORP, což vysvětluje část změny. Konkrétně: 3 obce z Českého Brodu do Lysé nad Labem, 1 obec z Turnova do Jablonce nad Nisou, 1 obec z Jihlavy do Havlíčkova Brodu a 1 obec z Prostějova do Konice.",
     options = list(geo = "orp.geojson", geo_key = "KOD_ORP", midpoint = 0,
                    scheme = c("#d6453d", "#ffffff", "#2e9a4f"), fill_domain = c(-0.12, 0.12))
 )
@@ -133,11 +133,11 @@ write_chart(
     df = velikost_obci,
     id = "obyvatele-velikost-obci",
     type = "line",
-    title = "Rozdělení obyvatel dle velikosti obcí",
-    subtitle = "Procento obyvatel s bydlištěm v obci dané velikostní kategorie, %",
+    title = "Rozdělení obyvatel podle velikosti obcí",
+    subtitle = "Podíl obyvatel s bydlištěm v obci dané velikostní kategorie, %",
     aes = list(
         list(type = "x", field = "year", label = "Rok", format = "year"),
-        list(type = "y", field = "podil", label = "Obyvatel", format = "percent"),
+        list(type = "y", field = "podil", label = "Podíl obyvatel", format = "percent"),
         list(type = "colour", field = "velikost", label = "Velikostní skupina obce")
     ),
     source = oby_source("Velikostní skupiny obcí", "RSO02A01T1"),

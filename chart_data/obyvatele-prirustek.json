@@ -3,7 +3,7 @@
   "data": "obyvatele-prirustek.csv",
   "type": "bar",
   "title": "Populační růst ČR od roku 1947",
-  "subtitle": "Růst obyvatelstva ČR rozdělený na [přirozený přírůstek::Živě narození - zemřelí] a [čistou migraci::Přistěhovalí - Vystěhovalí], %",
+  "subtitle": "Růst obyvatelstva ČR rozdělený na [přirozený přírůstek::Živě narození minus zemřelí] a [čistou migraci::Přistěhovalí minus vystěhovalí], %",
   "aes": [
     {
       "type": "x",
@@ -27,7 +27,7 @@
       "name": "ČSÚ",
       "dataset": "Obyvatelstvo - dlouhodobé časové řady za Českou republiku",
       "url": "https://data.csu.gov.cz/datastat/data/VYBER/WOBYG",
-      "retrieved": "2026-11-21"
+      "retrieved": "2026-11-22"
     }
   ],
   "data_note": "",
@@ -39,6 +39,6 @@
       }
     ]
   },
-  "last_updated": "2026-11-21",
+  "last_updated": "2026-11-22",
   "rows": 158
 }

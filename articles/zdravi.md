@@ -4,67 +4,66 @@ topic: Zdraví
 order: 1
 ---
 
-## Kolika let se Češi dožijí?
+## Kolika let se Češi dožívají?
 
-Základním údajem pro sledování dlouhověkosti je **naděje dožití**: na základě údajů o věku při úmrtí v daném roce, kolik let by se dožil novorozenec? Naděje dožití se v Česku dlouhodobě zvedá. Lidé se dnes dožívají v průměru 80 let, o dekádu déle než před rokem 1989.
+Základním údajem pro sledování dlouhověkosti je **naděje dožití**: kolika let by se v průměru dožil novorozenec, kdyby po celý jeho život platila úmrtnost podle věku z daného roku? Naděje dožití se v Česku dlouhodobě zvyšuje. Lidé se dnes dožívají v průměru 80 let, téměř o 9 let déle než před rokem 1989.
 
 <figure data-chart="zdravi-nadeje-doziti"></figure>
 
-Dokonalejší obrázek -- zvláště v minulosti -- doplní naděje dožití podle věku. Sřkoliv byla v roce 1920 naděje dožití 50 let, neznamenalo to, že bylo vzácné dožít se 60, průměr snižovala závratná dětská úmrtnost. Lze tedy vypočítat **podmíněnou naději dožití**: pokud se člověk dožil daného věku, kolika let se dožije?
+Úplnější obrázek -- zvláště pro minulost -- přináší naděje dožití podle věku. Ačkoliv byla v roce 1920 naděje dožití necelých 50 let, neznamenalo to, že by bylo vzácné dožít se šedesáti: průměr snižovala závratná dětská úmrtnost. Lze proto spočítat **podmíněnou naději dožití**: pokud se člověk dožil daného věku, kolika let se v průměru dožije?
 
-Na časové řadě vidíme, že se podmíněné naděje dožití přibližovali: díky lepší zdravotní péči umíralo méně lidí v dětském věku, snižovala se také úmrtnost na nakažlivé nemoci postihující i mladší jako např. tuberkulóza.
+Na časové řadě vidíme, že se podmíněné naděje dožití postupně sbližovaly: díky lepší zdravotní péči umíralo méně lidí v dětském věku a snižovala se také úmrtnost na nakažlivé nemoci, které postihovaly i mladší lidi, jako je např. tuberkulóza.
 
 <figure data-chart="zdravi-nadeje-vek"></figure>
 
-Naděje dožití má regionální rozdíly: je nižší v socioekonomicky slabších oblastech, vyšší v bohatších částech Republiky. Lidé v jihomoravské Kuřimi se tedy v průměru dožívají o 5 let více, než v ústecké Bílině.
+Naděje dožití se liší i mezi regiony: je nižší v socioekonomicky slabších oblastech a vyšší v bohatších částech republiky. Lidé v jihomoravské Kuřimi se v průměru dožívají o více než 6 let déle než v ústecké Bílině.
 
 <figure data-chart="zdravi-nadeje-orp"></figure>
 
-Socioekonomické rozdíly se projevují i v rámci populace. Lidé s nižšími příjmy mají obecně horší zdraví -- částečně kvůli horšímu přístupu k péči, vlivu stresu či deprivace či horšími návyky. Je však nutno zmínit že zde kauzalita může jít i obráceně: lidé s horším zdravím často nemohou pracovat a mají nižší příjem.
+Socioekonomické rozdíly se projevují i v rámci populace. Lidé s nižšími příjmy mají obecně horší zdraví -- částečně kvůli horšímu přístupu k péči, vlivu stresu či deprivace nebo horším návykům. Je však nutno zmínit, že kauzalita zde může působit i obráceně: lidé s horším zdravím často nemohou pracovat, a mají proto nižší příjem.
 
 <figure data-chart="zdravi-silc-prijem"></figure>
 
 ## Jak nebezpečné je dětství a mateřství?
 
-Historicky -- a v mnoho částech světa i dnes -- je nejnebezbečnější období života ranné dětství a období mateřství. Díky vývoji medicíny a lepšímu přístupu ke zdravotní péči klesla v uplynulém století úmrtnost v 1. roce 67x.
+Historicky -- a v mnoha částech světa i dnes -- je nejnebezpečnějším obdobím života rané dětství a období mateřství. Díky rozvoji medicíny a lepšímu přístupu ke zdravotní péči klesla od roku 1920 kojenecká úmrtnost (úmrtnost v prvním roce života) 67krát.
 
 <figure data-chart="zdravi-kojenecka-umrtnost"></figure>
 
-Podobný trend kopírovala i mateřská úmrtnost, úmrtí kvůli těhotenství, porodu či komplikacím v šestinedělí. Ta od roku 1985 klesla asi 6x.
+Podobný trend kopírovala i mateřská úmrtnost, tedy úmrtí v souvislosti s těhotenstvím, porodem či komplikacemi v šestinedělí. Ta od roku 1985 klesla zhruba šestkrát.
 
 <figure data-chart="zdravi-materska-umrtnost"></figure>
 
 ## Na co se v Česku umírá?
 
-Nejčastější příčinou úmrtí v Česku jsou dlouhodobě nepřenosné nemoci (infarkty, mozkové příhody, rakoviny atp.), které způsobily 90 % všech úmrtí.  Přesnosné nemoci se drží pod 5 % s výjimkou pandemie koronaviru. Jiné příčiny -- nehody, vraždy, sebevraždy dlouhodobě mírně klesají a drží se pod 5 %.
+Nejčastější příčinou úmrtí jsou v Česku dlouhodobě nepřenosné nemoci (infarkty, mozkové příhody, rakovina atp.), které způsobují téměř 90 % všech úmrtí. Přenosné nemoci tvořily před pandemií covidu okolo 5 % úmrtí. Ostatní příčiny -- nehody, vraždy a sebevraždy -- dlouhodobě mírně klesají, z 6,5 % úmrtí v roce 2000 na zhruba 5 %.
 
 <figure data-chart="zdravi-priciny-smrti"></figure>
 
 <figure data-chart="zdravi-priciny-pocet"></figure>
 
-K úmrtím přispívá široké spektrum rizikových faktorů. Nebezpečnost těchto faktorů lze srovnávat dvěma způsoby: přímočarým **počtem smrtí** spojených s daným faktorem, nebo pomocí **ztracených let života**. Ztracené roky života prioritizují faktory, které způsobují smrti o mnoho let dřív, než by se jinak staly. Při počítání ztracených let se často mimo smrti zohledňují i těžké postižení -- poté se mluví o **ztracených letech života ve zdraví** (*Disiablity-adjusted life years, DALY*).
-
-V Česku jsou nejnebezpečnější metabolické faktory: vysoký tlak, vysoká hladina krevního cukru, nadváha a vysoký LDL cholesterol (často se překrývající v rámci tzv. *metabolického syndromu*). Nejškodlivější chování je konzumace tabáku, nezdravá strava a alkohol. Environmentální rizika jsou v Česku relativně nízká, existuje ale prostor pro zlepšení zvláště ve vystavení populace olovu a radonu a ve znečištění ovzduší.
-
 ## Co přispívá k úmrtím?
+
+K úmrtím přispívá široké spektrum rizikových faktorů. Jejich nebezpečnost lze srovnávat dvěma způsoby: prostým **počtem úmrtí** spojených s daným faktorem, nebo pomocí **ztracených let života**. Ztracené roky života dávají větší váhu faktorům, které způsobují úmrtí o mnoho let dříve, než by jinak nastalo. Při počítání ztracených let se kromě úmrtí často zohledňují i roky prožité s nemocí či postižením (vážené podle jejich závažnosti) -- pak se mluví o **ztracených letech života ve zdraví** (*disability-adjusted life years, DALY*).
+
+V Česku jsou nejnebezpečnější metabolické faktory: vysoký krevní tlak, vysoká hladina cukru v krvi, nadváha a vysoký LDL cholesterol (často se vzájemně překrývají v rámci tzv. *metabolického syndromu*). Nejškodlivějším chováním je kouření, nezdravá strava a alkohol. Environmentální rizika jsou v Česku relativně nízká, existuje ale prostor pro zlepšení, zejména ve vystavení populace olovu a radonu a ve znečištění ovzduší.
 
 <figure data-chart="zdravi-rizika-gbd"></figure>
 
-V čase se prevalence kouření tabáku snižuje, ale poměr lidí s nadváhou či obezitou se naopak zvyšuje. 
+Podíl kuřáků v čase klesá, podíl lidí s nadváhou či obezitou se naopak zvyšuje.
 
 <figure data-chart="zdravi-obezita-koureni"></figure>
 
-Za posledních 20 let se míra vystavení nejškodlivější formě znečištění ovzduší -- jemným prachovým částicím PM2.5 přispívajícím k kardiovaskulárním onemocněním a rakovině -- snížila cca o polovinu. Stále je ale na více než dvojnásobné míře, než je maximální doporučená koncentrace udávaná WHO.
+Za posledních 20 let se vystavení nejškodlivější formě znečištění ovzduší -- jemným prachovým částicím PM2.5, které přispívají ke kardiovaskulárním onemocněním a rakovině -- snížilo zhruba o 40 %. Průměrná koncentrace je ale stále více než dvojnásobná oproti maximální koncentraci doporučené WHO.
 
 <figure data-chart="zdravi-ovzdusi"></figure>
 
-
 ## Jak se vyvíjí duševní zdraví?
 
-Léčba psychických poruch se v posledních letech zvyšuje -- zejménu u úzkostných poruch (obecná úzkost, post-traumatický stres, OCD atp.) a poruch s nástupem v dětsví a dospívání (vč. dyslexie, dysgrafie, autismu či ADHD). Je však důležité zmínit, že vyšší počet pacientů je zčásti způsoben změnou vnímání duševního zdraví ve společnosti.
+Počet lidí léčených s psychickými poruchami v posledních letech roste -- zejména u úzkostných poruch (generalizovaná úzkostná porucha, posttraumatická stresová porucha, OCD atp.) a poruch s nástupem v dětství a dospívání (vč. dyslexie, dysgrafie, autismu či ADHD). Je však důležité zmínit, že vyšší počet pacientů je zčásti způsoben změnou vnímání duševního zdraví ve společnosti.
 
 <figure data-chart="zdravi-psychiatrie"></figure>
 
-Dalším měřítkem duševního zdraví je četnost sebevražď. Ta v Česku naopak dlouhodobě klesá, od roku 1986 klesla o polovinu.
+Dalším měřítkem duševního zdraví je počet sebevražd. Ten v Česku naopak dlouhodobě klesá: od roku 1986 se snížil na polovinu.
 
 <figure data-chart="zdravi-sebevrazdy"></figure>

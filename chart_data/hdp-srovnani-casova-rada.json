@@ -3,7 +3,7 @@
   "data": "hdp-srovnani-casova-rada.csv",
   "type": "line",
   "title": "Vývoj HDP na osobu ve srovnání s vybranými zeměmi",
-  "subtitle": "HDP [PPP::Parita kupní síly: Ukazatel zohledňující, že si za stejný obnos lze v různých zemích pořídit rozdílné množství zboží] na osobu v roce 2025 v českých cenách z roku 2020",
+  "subtitle": "HDP na osobu podle [parity kupní síly::Přepočet, který zohledňuje, že si za stejnou částku lze v různých zemích pořídit různé množství zboží a služeb], očištěné od inflace, přepočteno na koruny",
   "aes": [
     {
       "type": "x",
@@ -33,10 +33,10 @@
       "name": "World Bank",
       "dataset": "World Development Indicators",
       "url": "https://databank.worldbank.org/source/world-development-indicators",
-      "retrieved": "2026-11-21"
+      "retrieved": "2026-11-22"
     }
   ],
-  "data_note": "Pro přiblížení přepočteno z mezinárodních dolarů na Koruny v poměru $1 = 12,07 Kč",
-  "last_updated": "2026-11-21",
+  "data_note": "Mezinárodní dolary v cenách roku 2021 (Světová banka), pro představu přepočtené na koruny v poměru 1 $ = 12,07 Kč.",
+  "last_updated": "2026-11-22",
   "rows": 216
 }

@@ -12,7 +12,7 @@ write_chart(
     id = "hdp-realne",
     type = "line",
     title = "HDP České republiky od roku 1990",
-    subtitle = "Hrubý domácí produkt, očištěný od inflace, v cenách z roku 2020",
+    subtitle = "Hrubý domácí produkt očištěný od inflace, v cenách roku 2020",
     aes = list(
         list(type = "x", field = "year", label = "Rok", format = "year"),
         list(type = "y", field = "gdp_mld", label = "HDP", format = "number", unit = "mld. Kč")
@@ -45,7 +45,7 @@ write_chart(
             id = "hdp-na-obyvatele",
             type = "line",
             title = "Dlouhodobý vývoj HDP na obyvatele",
-            subtitle = "Hrubý domácí produkt na obyvatele, očištěný od inflace, v cenách z roku 2020",
+            subtitle = "Hrubý domácí produkt na obyvatele očištěný od inflace, v cenách roku 2020",
             aes = list(
                        list(type = "x", field = "year", label = "Rok", format = "year"),
                        list(type = "y", field = "gdp_pc", label = "HDP na osobu", format = "number", unit = "Kč"),
@@ -56,7 +56,7 @@ write_chart(
                           list(name = "ČSÚ", dataset = "Obyvatelstvo - dlouhodobé časové řady za Českou republiku", url = "https://data.csu.gov.cz/datastat/data/VYBER/WOBYG?vSet=2&vSel=1", retrieved = format(Sys.Date())),
                           list(name = "Maddison Historical Statistics", dataset = "Maddison Project Database 2023", url = "https://www.rug.nl/ggdc/historicaldevelopment/maddison/releases/maddison-project-database-2023", retrieved = format(Sys.Date()))
                           ),
-            data_note = "Po roce 1990 data ČSÚ, předtím odhad na základě míry růstu Československé ekonomiky podle dat Maddison. Historická čísla jsou spíše hrubý odhad: Maddison používá jinou metodiku než ČSÚ; Československo kvůli dohánivému růstu Slovenska nejspíše rostlo rychleji než Česko samotné."
+            data_note = "Od roku 1990 data ČSÚ, předtím odhad na základě tempa růstu československé ekonomiky podle databáze Maddison. Historická čísla jsou spíše hrubým odhadem: Maddison používá jinou metodiku než ČSÚ a Československo kvůli dohánějícímu růstu Slovenska nejspíše rostlo rychleji než Česko samotné."
 )
 
 ## Růst HDP
@@ -70,7 +70,7 @@ write_chart(
     id = "hdp-rust",
     type = "bar",
     title = "Růst české ekonomiky od roku 1990",
-    subtitle = "[Reálný::Očištěný od inflace] růst českého HDP v %",
+    subtitle = "[Reálný::Očištěný od inflace] meziroční růst českého HDP, %",
     aes = list(
         list(type = "x", field = "year", label = "Rok", format = "year"),
         list(type = "y", field = "gdp_growth", label = "Růst HDP", format = "percent")
@@ -120,7 +120,7 @@ write_chart(
     id = "hdp-srovnani-cross-section",
     type = "bar",
     title = "HDP na osobu ve srovnání s vybranými zeměmi",
-    subtitle = str_glue("HDP [PPP::Parita kupní síly: Ukazatel zohledňující, že si za stejný obnos lze v různých zemích pořídit rozdílné množství zboží] na osobu v roce {max(srov$year)} v českých cenách z roku 2020"),
+    subtitle = str_glue("HDP na osobu v roce {max(srov$year)} podle [parity kupní síly::Přepočet, který zohledňuje, že si za stejnou částku lze v různých zemích pořídit různé množství zboží a služeb], přepočteno na koruny"),
     aes = list(
         list(type = "x", field = "country", label = "Země"),
         list(type = "y", field = "gdp_pc_ppp", label = "HDP PPP na osobu", format = "number", unit = "Kč"),
@@ -130,7 +130,7 @@ write_chart(
                   dataset = "World Development Indicators",
                   url = "https://databank.worldbank.org/source/world-development-indicators",
                   retrieved = format(Sys.Date()))),
-    data_note = "Pro přiblížení přepočteno z mezinárodních dolarů na Koruny v poměru $1 = 12,07 Kč"
+    data_note = "Mezinárodní dolary v cenách roku 2021 (Světová banka), pro představu přepočtené na koruny v poměru 1 $ = 12,07 Kč."
 )
 
 # Srovnání HDP s jinými zeměmi
@@ -145,7 +145,7 @@ write_chart(
     id = "hdp-srovnani-casova-rada",
     type = "line",
     title = "Vývoj HDP na osobu ve srovnání s vybranými zeměmi",
-    subtitle = str_glue("HDP [PPP::Parita kupní síly: Ukazatel zohledňující, že si za stejný obnos lze v různých zemích pořídit rozdílné množství zboží] na osobu v roce {max(srov$year)} v českých cenách z roku 2020"),
+    subtitle = "HDP na osobu podle [parity kupní síly::Přepočet, který zohledňuje, že si za stejnou částku lze v různých zemích pořídit různé množství zboží a služeb], očištěné od inflace, přepočteno na koruny",
     aes = list(
         list(type = "x", field = "year", label = "Rok", format = "year"),
         list(type = "y", field = "gdp_pc_ppp", label = "HDP PPP na osobu", format = "number", unit = "Kč"),
@@ -156,7 +156,7 @@ write_chart(
                   dataset = "World Development Indicators",
                   url = "https://databank.worldbank.org/source/world-development-indicators",
                   retrieved = format(Sys.Date()))),
-    data_note = "Pro přiblížení přepočteno z mezinárodních dolarů na Koruny v poměru $1 = 12,07 Kč"
+    data_note = "Mezinárodní dolary v cenách roku 2021 (Světová banka), pro představu přepočtené na koruny v poměru 1 $ = 12,07 Kč."
 )
 
 

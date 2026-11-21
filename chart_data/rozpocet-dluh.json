@@ -57,28 +57,28 @@
       "name": "Eurostat",
       "dataset": "Government deficit/surplus, debt and associated data (gov_10dd_edpt1)",
       "url": "https://ec.europa.eu/eurostat/databrowser/view/gov_10dd_edpt1/default/table",
-      "retrieved": "2026-11-21"
+      "retrieved": "2026-11-22"
     },
     {
       "name": "MMF",
       "dataset": "World Economic Outlook, October 2026 (SDMX API)",
       "url": "https://data.imf.org/",
-      "retrieved": "2026-11-21"
+      "retrieved": "2026-11-22"
     },
     {
       "name": "ČSÚ",
       "dataset": "Míra inflace (CEN0101H)",
       "url": "https://data.csu.gov.cz/datastat/data/VYBER/CEN0101HT01",
-      "retrieved": "2026-11-21"
+      "retrieved": "2026-11-22"
     },
     {
       "name": "Světová banka",
       "dataset": "Inflation, consumer prices (FP.CPI.TOTL.ZG)",
       "url": "https://data.worldbank.org/indicator/FP.CPI.TOTL.ZG?locations=CZ",
-      "retrieved": "2026-11-21"
+      "retrieved": "2026-11-22"
     }
   ],
-  "data_note": "Skutečnost z dat Eurostatu, projekce MMF. Reálné částky jsou přepočtené na ceny v roce 2020 (inflace ČSÚ, před rokem 1997 Světová banka, v letech projekce odhad MMF).",
+  "data_note": "Skutečnost z dat Eurostatu, projekce MMF. Reálné částky jsou přepočtené na ceny roku 2020 (inflace podle ČSÚ, před rokem 1997 podle Světové banky, v letech projekce odhad MMF).",
   "options": {
     "annotations": [
       {
@@ -88,6 +88,6 @@
       }
     ]
   },
-  "last_updated": "2026-11-21",
+  "last_updated": "2026-11-22",
   "rows": 38
 }

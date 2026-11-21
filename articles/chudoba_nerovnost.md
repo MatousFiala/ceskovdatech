@@ -4,15 +4,15 @@ topic: Společnost
 order: 1
 ---
 
-## Kolik je v Čecku chudých?
+## Kolik je v Česku chudých?
 
-Existují dvě základní definice chudoby: **absolutní chudoba** se určuje podle konkrétní peněžní hranice či nedostatku konkrétních potřeb; **relativní chudoba** považuje za chudé část společnosti, kteří mají o dost méně, než ostatní. Ačkoliv mohou mít relativní chudí v bohaté společnosti lepší přístup k potřebnostem než bohatí lidé v chudé společnosti, nejchudší lidé ve společnosti mají často horší přístup na trh práce a zažívají sociální vyloučení.
+Existují dvě základní definice chudoby: **absolutní chudoba** se určuje podle pevné peněžní hranice či nedostatku konkrétních potřeb; **relativní chudoba** považuje za chudé tu část společnosti, která má výrazně méně než ostatní. Relativně chudí v bohaté společnosti sice mohou mít lepší přístup k základním potřebám než bohatí lidé v chudé společnosti, nejchudší lidé ve společnosti ale mají často horší přístup na trh práce a zažívají sociální vyloučení.
 
-Relativní chudoba -- definovaná jako příjem pod 60 % mediánového příjmu -- je v Česku relativně stabilní: touto chudobou je ohroženo okolo desetiny domácností. Pokud hranici chudoby zafixujeme na pevném příjmu, tato absolutní chudoba v čase klesá. 
+Relativní chudoba -- definovaná jako příjem pod 60 % mediánového příjmu -- je v Česku poměrně stabilní: ohroženo jí je okolo desetiny obyvatel. Pokud hranici chudoby zafixujeme na pevné výši příjmu, takto měřená absolutní chudoba v čase klesá.
 
 <figure data-chart="chudoba"></figure>
 
-Panelové šetření EU-SILC sleduje široké spektrum ukazatelů spojených s nedostatkem potřeb a tvoří tak širší pojetí chudoby. Obecně je v nich znát trend klesající chudoby se znatelným zhoršením v době krize po roce 2008 a období rychlé inflace po roce 2022.
+Šetření EU-SILC sleduje široké spektrum ukazatelů spojených s nedostatkem základních potřeb, a nabízí tak širší pojetí chudoby. Obecně je v nich znát klesající trend se zřetelným zhoršením během krize po roce 2008 a v období rychlé inflace po roce 2022.
 
 <figure data-chart="chudoba-ukazatele"></figure>
 
@@ -20,36 +20,32 @@ Panelové šetření EU-SILC sleduje široké spektrum ukazatelů spojených s n
 
 <!--<figure data-chart="chudoba-isv-dimenze"></figure>-->
 
-## Kde se koncentruje chudoba?
+## Kde se soustředí chudoba?
 
-Chudoba je často koncentrovaná do konkrétních oblastí. Agentura pro sociální začleňování počítá multidimenzionální index vyloučení ze společnosti na základě počtu exekucí, příspěvků na živobytí, příspěvků na bydlení, dlouhodobé nezaměstnanosti a předčasných odchodů ze vzdělávání pro všechny obce v Česku. 
+Chudoba je často soustředěná v určitých oblastech. Ministerstvo pro místní rozvoj (dříve Agentura pro sociální začleňování) počítá pro všechny obce v Česku vícerozměrný index sociálního vyloučení na základě počtu exekucí, příspěvků na živobytí, příspěvků na bydlení, dlouhodobé nezaměstnanosti a předčasných odchodů ze vzdělávání.
 
-Na mapě sociálního vyloučení je zřetelná obyvklá horší pozice pohraničních regionů. Sociální vyloučení se však koncentruje i ve velkých městech. Ta jsou sice v průměru bohatá a na agregátních statistickách životní úrovně se umisťují vysoko, nemalá část jejich obyvatel ale žije v neutěšené situaci.
+Na mapě sociálního vyloučení je zřetelná obvykle horší pozice pohraničních regionů. Sociální vyloučení se však soustředí i ve velkých městech. Ta jsou sice v průměru bohatá a v souhrnných statistikách životní úrovně se umisťují vysoko, nemalá část jejich obyvatel ale žije v neutěšené situaci.
 
 <figure data-chart="chudoba-isv-orp"></figure>
 
 ## Jak nerovná je česká společnost?
 
-**Nerovnost** měří, do jaké míry se zdroje koncentrují u nejbohatších členů společnosti. Určitá míra nerovnosti je přirozená a může odpovídat různým dovednostem členů ve spolčnosti, vysoká míra nerovnosti však ohrožuje sociální smír a skrze nerovný přístup k příležiostem a politické moci dále prohlubovat rozdíly ve společnosti. Nerovnost lze počítat jako **nerovnost v příjmech** nebo **nerodnost v majetku**.
+**Nerovnost** měří, do jaké míry se zdroje soustředí u nejbohatších členů společnosti. Určitá míra nerovnosti je přirozená a může odrážet rozdílné dovednosti lidí, vysoká nerovnost však ohrožuje sociální smír a skrze nerovný přístup k příležitostem a politické moci může rozdíly ve společnosti dále prohlubovat. Nerovnost lze měřit jako **nerovnost v příjmech**, nebo jako **nerovnost v majetku**.
 
-V Česku vlastní pětina nejbohatších domácností polovinu všeho majetku. Nejchudší pětina obyvatel má jmění v průměru jen něco nad 100 tis. Kč.
+V Česku vlastní nejbohatší pětina domácností více než polovinu veškerého majetku. Nejchudší pětina domácností má čisté jmění v průměru jen něco přes 100 tis. Kč.
 
 <figure data-chart="nerovnost-jmeni-kvintily"></figure>
 
-Nerovnost lze měřit pomocí **Giniho koeficientu**, který vyčísluje vzdálenost skutečné distribuce příjmů či majektu od dokonale rovné distribuce (hodnota 0 značí dokonalou rovnost, 100 koncentrace u jedné osoby). Příjmová nerovnost v Česku v posledních 20 letech mírně klesá.
+Nerovnost lze vyjádřit pomocí **Giniho koeficientu**, který měří vzdálenost skutečného rozdělení příjmů či majetku od dokonale rovného rozdělení (hodnota 0 značí dokonalou rovnost, 100 soustředění všeho u jedné osoby). Příjmová nerovnost v Česku v posledních 20 letech mírně klesá.
 
 <figure data-chart="nerovnost-gini"></figure>
 
-V mezinárodním srovnání je Česko obecně považováno za společnost s relativně nízkou nerovností, jak ve srovnání se zbytkem EU, tak se světem.
+V mezinárodním srovnání je Česko obecně považováno za společnost s relativně nízkou nerovností, a to ve srovnání se zbytkem EU i se světem.
 
 <figure data-chart="nerovnost-gini-srovnani"></figure>
 
 ## Kolik vlastní nejbohatší Češi?
 
-Při sledování nerovnosti se lze zaměřit i na zlomek nejbohatších lidí, kteří mají nejsnadnější přístup ke zdrojům a největší ekonomickou a politickou moc -- typicky nejbohatší 1 % obyvatel. Příjmy těchto obyvatel jsou v Česku relativně stabilní: po nástupu tržní ekonomiky připadá na 1 % nejbohatších Čechů okolo 10 % všech příjmů. Postupem času se však zvyšuje poměr majetku, který vlastní.
+Při sledování nerovnosti se lze zaměřit i na úzkou skupinu nejbohatších lidí, kteří mají nejsnadnější přístup ke zdrojům a největší ekonomickou a politickou moc -- typicky na nejbohatší 1 % obyvatel. Jejich podíl na příjmech je v Česku poměrně stabilní: od nástupu tržní ekonomiky připadá na 1 % nejbohatších Čechů okolo 10 % všech příjmů. Podíl majetku, který vlastní, se však postupně zvyšuje.
 
 <figure data-chart="nerovnost-top1"></figure>
-
-
-
-

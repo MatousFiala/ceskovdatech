@@ -3,7 +3,7 @@
   "data": "rozpocet-velikost-srovnani.csv",
   "type": "bar",
   "title": "Srovnání velikosti veřejného sektoru s vybranými zeměmi",
-  "subtitle": "Výdaje státu, samospráv a jiných státních organizací v roce 2025",
+  "subtitle": "Výdaje státu, samospráv a dalších veřejných institucí v roce 2025, % HDP",
   "aes": [
     {
       "type": "x",
@@ -26,20 +26,20 @@
       "name": "Eurostat",
       "dataset": "Government revenue, expenditure and main aggregates (gov_10a_main)",
       "url": "https://ec.europa.eu/eurostat/databrowser/view/gov_10a_main/default/table",
-      "retrieved": "2026-11-21"
+      "retrieved": "2026-11-22"
     },
     {
       "name": "MMF",
       "dataset": "Fiscal Monitor a World Economic Outlook (DataMapper)",
       "url": "https://www.imf.org/external/datamapper/",
-      "retrieved": "2026-11-21"
+      "retrieved": "2026-11-22"
     }
   ],
-  "data_note": "Evropské země a EU z dat Eurostatu, UK a USA z dat MMF. Svět: vážený průměr dat MMF podle HDP",
+  "data_note": "Evropské země a EU z dat Eurostatu, Spojené království a USA z dat MMF. Svět: průměr z dat MMF vážený podle HDP.",
   "options": {
     "horizontal": true,
     "sort": "desc"
   },
-  "last_updated": "2026-11-21",
+  "last_updated": "2026-11-22",
   "rows": 14
 }

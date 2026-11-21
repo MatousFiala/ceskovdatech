@@ -3,7 +3,7 @@
   "data": "zdravi-rizika-gbd.csv",
   "type": "bar",
   "title": "Rizikové faktory v ČR",
-  "subtitle": "Počet úmrtí a ztracených [let zdravého života::DALY (Disability adjusted life years); Pokud se např. očekává, že daný člověk v průměru zemře v 80 letech, ale zemřel či se stal těžce postiženým v 55 letech, ztratil 25 let zdravého života] v roce 2023 z důvodu rizikových faktorů. Roky ve zdraví zdůrazňují faktory, které zabíjí v mladším věku. Odhad",
+  "subtitle": "Počet úmrtí a ztracených [let zdravého života::DALY (disability-adjusted life years): roky ztracené předčasnou smrtí a roky prožité s nemocí či postižením, vážené jejich závažností. Pokud např. člověk s očekávanou délkou života 80 let zemře v 55 letech, ztratí 25 let] v roce 2023 připisovaných rizikovým faktorům, odhad. Ztracené roky zdůrazňují faktory, které zabíjejí v mladším věku",
   "tabs": [
     {
       "id": "umrti",
@@ -43,14 +43,14 @@
       "name": "IHME",
       "dataset": "Global Burden of Disease Study 2023 (GBD 2023) Results",
       "url": "https://vizhub.healthdata.org/gbd-results/",
-      "retrieved": "2026-11-21"
+      "retrieved": "2026-11-22"
     }
   ],
-  "data_note": "Rizikové faktory se překrývají -- např. obezita je často spojená s vysokým krevním tlakem. ",
+  "data_note": "Rizikové faktory se překrývají -- např. obezita je často spojená s vysokým krevním tlakem.",
   "options": {
     "horizontal": true,
     "sort": "desc"
   },
-  "last_updated": "2026-11-21",
+  "last_updated": "2026-11-22",
   "rows": 20
 }

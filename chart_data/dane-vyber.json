@@ -57,25 +57,25 @@
       "name": "OECD",
       "dataset": "Global Revenue Statistics Database (DF_RSGLOBAL)",
       "url": "https://www.oecd.org/en/data/datasets/global-revenue-statistics-database.html",
-      "retrieved": "2026-11-21"
+      "retrieved": "2026-11-22"
     },
     {
       "name": "ČSÚ",
       "dataset": "Míra inflace (CEN0101H)",
       "url": "https://data.csu.gov.cz/datastat/data/VYBER/CEN0101HT01",
-      "retrieved": "2026-11-21"
+      "retrieved": "2026-11-22"
     },
     {
       "name": "Světová banka",
       "dataset": "Inflation, consumer prices (FP.CPI.TOTL.ZG), roky 1993–1996",
       "url": "https://data.worldbank.org/indicator/FP.CPI.TOTL.ZG?locations=CZ",
-      "retrieved": "2026-11-21"
+      "retrieved": "2026-11-22"
     }
   ],
-  "data_note": "Daně vybrané v celém veřejném sektoru, i ty proudící mimo státní rozpočet. Reálné částky jsou přepočteny na ceny v roce 2020 (ČSÚ, před rokem 1997 Světová banka).",
+  "data_note": "Daně vybrané v celém veřejném sektoru, včetně těch, které plynou mimo státní rozpočet. Reálné částky jsou přepočtené na ceny roku 2020 (inflace podle ČSÚ, před rokem 1997 podle Světové banky).",
   "options": {
     "facet": true
   },
-  "last_updated": "2026-11-21",
+  "last_updated": "2026-11-22",
   "rows": 224
 }

@@ -23,10 +23,10 @@
       "name": "ČSÚ",
       "dataset": "Základní údaje o stavu a pohybu obyvatel - roční údaje",
       "url": "https://data.csu.gov.cz/datastat/data/VYBER/OBY01BT01",
-      "retrieved": "2026-11-21"
+      "retrieved": "2026-11-22"
     }
   ],
-  "data_note": "Ve zkoumaných letech se několik obcí přesunulo mezi SO ORP, to vysvětluje část změny. Konrétně: 3 obce Český Brod -> Lysá nad Labem, 1 obce Turnov -> Jablonec n. Nisou, 1 obce Jihlva -> Havl. Brod, 1 obce Prostějov -> Konice.",
+  "data_note": "Ve sledovaném období se několik obcí přesunulo mezi SO ORP, což vysvětluje část změny. Konkrétně: 3 obce z Českého Brodu do Lysé nad Labem, 1 obec z Turnova do Jablonce nad Nisou, 1 obec z Jihlavy do Havlíčkova Brodu a 1 obec z Prostějova do Konice.",
   "options": {
     "geo": "orp.geojson",
     "geo_key": "KOD_ORP",
@@ -34,6 +34,6 @@
     "scheme": ["#d6453d", "#ffffff", "#2e9a4f"],
     "fill_domain": [-0.12, 0.12]
   },
-  "last_updated": "2026-11-21",
+  "last_updated": "2026-11-22",
   "rows": 206
 }
