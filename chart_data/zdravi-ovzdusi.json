@@ -23,7 +23,7 @@
       "name": "SatPM, Washington University in St. Louis",
       "dataset": "Outdoor air pollution exposure, population-weighted PM2.5 (via Our World in Data)",
       "url": "https://ourworldindata.org/grapher/pm25-air-pollution",
-      "retrieved": "2026-11-18"
+      "retrieved": "2026-11-21"
     }
   ],
   "data_note": "Průměrná roční koncentrace částic PM2.5, prostorové odhady na území ČR vážené podle hustoty obyvatel.",
@@ -35,6 +35,6 @@
       }
     ]
   },
-  "last_updated": "2026-11-18",
+  "last_updated": "2026-11-21",
   "rows": 27
 }

@@ -41,13 +41,13 @@
       "name": "ČSÚ",
       "dataset": "Ukazatele věkového složení k 31. 12.",
       "url": "https://data.csu.gov.cz/datastat/data/VYBER/OBY02FHVDT01",
-      "retrieved": "2026-11-18"
+      "retrieved": "2026-11-21"
     }
   ],
   "data_note": "",
   "options": {
     "reverse": true
   },
-  "last_updated": "2026-11-18",
+  "last_updated": "2026-11-21",
   "rows": 14
 }

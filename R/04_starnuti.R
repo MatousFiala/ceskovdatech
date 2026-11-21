@@ -256,8 +256,8 @@ write_chart(
     title = "Průměrný věk prvorodiček v ČR od roku 1995",
     subtitle = "Průměr věku, ve které má matka své první dítě",
     aes = list(
-        list(type = "x", field = "year", label = "", format = "year"),
-        list(type = "y", field = "vek", label = "", unit = "let")
+        list(type = "x", field = "year", label = "Rok", format = "year"),
+        list(type = "y", field = "vek", label = "Věk", unit = "let")
     ),
     source = list(eurostat_find_source, narozeni_source),
     options = list(y_zero = FALSE),
@@ -284,5 +284,6 @@ write_chart(
         list(type = "colour", field = "skupina", label = "Věková skupina")
     ),
     source = list(eurostat_fagec_source, eurostat_find_source, narozeni_vek_source, narozeni_source),
+    options = list(facet = TRUE),
     data_note = "Do roku 2000 data Eurostatu, poté ČSÚ" # "Podíl živě narozených dětí podle věku matky a podle toho, zda byla matka vdaná. Do roku 2000 Eurostat, poté ČSÚ."
 )

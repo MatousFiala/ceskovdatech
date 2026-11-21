@@ -1,0 +1,61 @@
+{
+  "id": "rozpocet-vydaje-detail",
+  "data": "rozpocet-vydaje-detail.csv",
+  "type": "bar",
+  "title": "Podrobné výdaje státního rozpočtu",
+  "subtitle": "Výdaje státního rozpočtu podle oblasti v roce 2025",
+  "tabs": [
+    {
+      "id": "mld",
+      "label": "Nominální"
+    },
+    {
+      "id": "podil",
+      "label": "% výdajů"
+    }
+  ],
+  "aes": [
+    {
+      "type": "x",
+      "field": "oblast",
+      "label": "Oblast"
+    },
+    {
+      "type": "y",
+      "field": "mld",
+      "label": "Výdaje",
+      "unit": "mld. Kč",
+      "tab": "mld"
+    },
+    {
+      "type": "y",
+      "field": "podil",
+      "label": "% výdajů",
+      "format": "percent",
+      "tab": "podil"
+    },
+    {
+      "type": "fill",
+      "field": "skupina",
+      "label": "Kategorie"
+    }
+  ],
+  "source": [
+    {
+      "name": "Monitor státní pokladny (MF ČR)",
+      "dataset": "Plnění rozpočtu ústředně řízených organizací, kapitoly státního rozpočtu",
+      "url": "https://monitor.statnipokladna.gov.cz/",
+      "retrieved": "2026-11-21"
+    }
+  ],
+  "data_note": "Ostatní: ostatní činnosti veřejné správy a oblasti, které mají každá méně než 0,5 % výdajů (ostatní hospodářství, sport a zájmová činnost, jiné veřejné služby, vodní hospodářství, krizová připravenost, spoje, dávky pro zdravotně postižené). Vzdělávání zahrnuje i platy učitelů v regionálním školství, které stát posílá přes kraje. Zdravotnictví zahrnuje i platbu státu do zdravotního pojištění za státní pojištěnce (děti, studenty, důchodce a další). Příspěvek na péči zahrnuje i státní příspěvky na penzijní spoření a další drobné dávky sociálního zabezpečení.",
+  "options": {
+    "horizontal": true,
+    "sort": "desc",
+    "sort_last": "Ostatní",
+    "facet": true,
+    "facet_columns": 2
+  },
+  "last_updated": "2026-11-21",
+  "rows": 28
+}

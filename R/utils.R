@@ -28,7 +28,9 @@ write_chart <- function(df, id, type = c("line", "bar", "map", "pyramid"), title
     #' options = optional named list of display options, see README (e.g. list(y_zero = FALSE, sort = "desc"))
     #'   options$annotations: reference lines on line and bar charts, each list(x = ...) or list(y = ...),
     #'   with label = "" (text along the line), dash = FALSE for a solid line (dashed by default) and
-    #'   align = "top" | "centre" | "bottom" (where the label sits; default top)
+    #'   align = "top" | "centre" | "bottom" (where the label sits; default top); tab = "" shows it in that tab only
+    #'   options$facet = TRUE: a toggle that splits the chart into one small chart per series (line: colour,
+    #'   bar: fill), each panel with its own y axis; options$facet_scale = "shared" puts them on one axis
     # write_chart(
     #     df = ,
     #     id = "",
@@ -77,6 +79,8 @@ write_chart <- function(df, id, type = c("line", "bar", "map", "pyramid"), title
                       all(map_lgl(annotations, ~is.list(.x) && xor(!is.null(.x$x), !is.null(.x$y))))),
               "Annotation align must be top, centre or bottom" =
                   all(map_lgl(annotations, ~is.null(.x$align) || .x$align %in% c("top", "centre", "center", "bottom"))),
+              "An annotation has a tab that is not in tabs" =
+                  all(map_lgl(annotations, ~is.null(.x$tab) || .x$tab %in% tab_ids)),
               "A pyramid's fill has exactly two values (left and right side)" =
                   type != "pyramid" || n_distinct(df[[keep(aes, ~.x$type == "fill")[[1]]$field]]) == 2
     )

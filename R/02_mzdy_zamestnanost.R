@@ -162,6 +162,7 @@ write_chart(
                        dataset = "Národní účty – zaměstnanci (osoby)",
                        url = "https://apl.czso.cz/pll/rocenka/rocenkavyber.makroek_pracov",
                        retrieved = format(Sys.Date()))),
+    options = list(facet = TRUE),
     data_note = "Podle sekcí CZ-NACE: průmysl = B–E (těžba, zpracovatelský průmysl, energetika, voda a odpady); obchod, doprava a pohostinství = G–I; veřejná správa, školství a zdravotnictví = O–Q; ostatní služby = J–N a R–T (IT, finance, nemovitosti, odborné a administrativní činnosti, kultura a další)."
 )
 
@@ -211,5 +212,6 @@ write_chart(
                        dataset = "Active population by sex, age and citizenship (lfsa_agan)",
                        url = "https://ec.europa.eu/eurostat/databrowser/view/lfsa_agan/default/table",
                        retrieved = format(Sys.Date()))),
+    options = list(facet = TRUE),
     data_note = "Míry nezaměstnanosti jsou z ČSÚ za pětileté věkové skupiny. Skupiny 25–34, 35–49 a 50–64 let vznikly jejich sloučením, váženým velikostí pracovní síly podle Eurostatu; pro roky 1993–1996 jsou použity váhy z roku 1997, hodnoty za tyto roky jsou proto přibližné. Ve skupině 15–19 let je v pracovní síle jen málo lidí, většina ještě studuje."
 )

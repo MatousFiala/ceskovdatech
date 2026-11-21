@@ -141,5 +141,6 @@ write_chart(
         list(type = "colour", field = "velikost", label = "Velikostní skupina obce")
     ),
     source = oby_source("Velikostní skupiny obcí", "RSO02A01T1"),
+    options = list(facet = TRUE),
     data_note = "" 
 )

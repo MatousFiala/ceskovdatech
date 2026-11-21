@@ -8,6 +8,10 @@ dir.create("data", showWarnings = FALSE)
 WDI(indicator = c(gdp_pc_ppp = "NY.GDP.PCAP.PP.KD"), start = 1990) |>
   write_csv("data/wdi_gdp_pc_ppp.csv")
 
+# Inflace v ČR (spotřebitelské ceny, roční průměr, %), od 1992: prodloužení řady ČSÚ (CEN0101H začíná rokem 1997)
+WDI(country = "CZ", indicator = c(inflace = "FP.CPI.TOTL.ZG"), start = 1991) |>
+  write_csv("data/wdi_inflace_cz.csv")
+
 # HDP na osobu od roku 1820 (Maddison Project Database, as published by Our World in Data)
 read_csv("https://ourworldindata.org/grapher/gdp-per-capita-maddison-project-database.csv?csvType=full",
          guess_max = 1e5, show_col_types = FALSE) |>
@@ -58,11 +62,11 @@ read_csv(weo_csv, show_col_types = FALSE) |>
 unlink(weo_csv)
 
 # OECD Global Revenue Statistics (SDMX API): daňové příjmy vládního sektoru podle druhu daně (DPFO 1100, DPPO 1200,
-# majetkové 4000, DPH 5111, spotřební 5121, pojistné 2000, celkem _T) v národní měně (mld.), % HDP a % všech daní;
-# Česko a srovnávané země, průměr OECD
+# majetkové 4000, DPH a jiné všeobecné daně ze zboží a služeb 5110, spotřební 5121, pojistné 2000, celkem _T) v národní měně (mld.), % HDP a % všech daní;
+# Česko a srovnávané země (Estonsko: nejnižší majetkové daně v OECD), průměr OECD
 oecd_url <- str_c("https://sdmx.oecd.org/public/rest/data/OECD.CTP.TPS,DSD_REV_COMP_GLOBAL@DF_RSGLOBAL,/",
-                  "CZE+DEU+AUT+SVK+POL+FRA+GBR+SWE+DNK+FIN+NOR+USA+OECD_REP.TAX_REV.S13.",
-                  "T_1100+T_1200+T_4000+T_5111+T_5121+T_2000+_T._T.XDC+PT_B1GQ+PT_OTR_SECTOR.A?format=csvfile")
+                  "CZE+DEU+AUT+SVK+POL+FRA+GBR+SWE+DNK+FIN+NOR+USA+EST+OECD_REP.TAX_REV.S13.",
+                  "T_1100+T_1200+T_4000+T_5110+T_5121+T_2000+_T._T.XDC+PT_B1GQ+PT_OTR_SECTOR.A?format=csvfile")
 read_csv(oecd_url, show_col_types = FALSE) |>
   transmute(kod = REF_AREA, dan = STANDARD_REVENUE, jednotka = UNIT_MEASURE, rok = TIME_PERIOD, hodnota = OBS_VALUE) |>
   filter(!is.na(hodnota)) |>

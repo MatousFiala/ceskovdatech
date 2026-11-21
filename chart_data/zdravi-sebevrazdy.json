@@ -22,10 +22,10 @@
       "name": "WHO",
       "dataset": "Age-standardized suicide rate per 100 000 (WHO Mortality Database, via Our World in Data)",
       "url": "https://ourworldindata.org/grapher/suicide-rate-who-mdb",
-      "retrieved": "2026-11-18"
+      "retrieved": "2026-11-21"
     }
   ],
   "data_note": "Pro mezinárodní srovnatelnost standardizováno podle věku",
-  "last_updated": "2026-11-18",
+  "last_updated": "2026-11-21",
   "rows": 38
 }

@@ -2,20 +2,20 @@
   "id": "dane-vyber",
   "data": "dane-vyber.csv",
   "type": "bar",
-  "title": "",
-  "subtitle": "",
+  "title": "Daňové příjmy ČR",
+  "subtitle": "Daňové příjmy veřejného sektoru podle druhu daně",
   "tabs": [
     {
       "id": "nominalni",
-      "label": ""
+      "label": "Nominální"
     },
     {
       "id": "realne",
-      "label": ""
+      "label": "Reálné"
     },
     {
       "id": "podil",
-      "label": ""
+      "label": "% daní"
     }
   ],
   "aes": [
@@ -28,28 +28,28 @@
     {
       "type": "y",
       "field": "mld",
-      "label": "",
+      "label": "Nominální příjmy",
       "unit": "mld. Kč",
       "tab": "nominalni"
     },
     {
       "type": "y",
       "field": "mld_2020",
-      "label": "",
+      "label": "Reálné příjmy",
       "unit": "mld. Kč",
       "tab": "realne"
     },
     {
       "type": "y",
       "field": "podil",
-      "label": "",
+      "label": "% daňových příjmů",
       "format": "percent",
       "tab": "podil"
     },
     {
       "type": "fill",
       "field": "dan",
-      "label": ""
+      "label": "Daň"
     }
   ],
   "source": [
@@ -57,16 +57,25 @@
       "name": "OECD",
       "dataset": "Global Revenue Statistics Database (DF_RSGLOBAL)",
       "url": "https://www.oecd.org/en/data/datasets/global-revenue-statistics-database.html",
-      "retrieved": "2026-11-20"
+      "retrieved": "2026-11-21"
     },
     {
       "name": "ČSÚ",
       "dataset": "Míra inflace (CEN0101H)",
       "url": "https://data.csu.gov.cz/datastat/data/VYBER/CEN0101HT01",
-      "retrieved": "2026-11-20"
+      "retrieved": "2026-11-21"
+    },
+    {
+      "name": "Světová banka",
+      "dataset": "Inflation, consumer prices (FP.CPI.TOTL.ZG), roky 1993–1996",
+      "url": "https://data.worldbank.org/indicator/FP.CPI.TOTL.ZG?locations=CZ",
+      "retrieved": "2026-11-21"
     }
   ],
-  "data_note": "",
-  "last_updated": "2026-11-20",
+  "data_note": "Daně vybrané v celém veřejném sektoru, i ty proudící mimo státní rozpočet. Reálné částky jsou přepočteny na ceny v roce 2020 (ČSÚ, před rokem 1997 Světová banka).",
+  "options": {
+    "facet": true
+  },
+  "last_updated": "2026-11-21",
   "rows": 224
 }

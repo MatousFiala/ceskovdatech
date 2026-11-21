@@ -28,10 +28,10 @@
       "name": "World Inequality Database",
       "dataset": "Top 1% income share (pre-tax national income) and wealth share, via Our World in Data",
       "url": "https://wid.world/country/czech-republic/",
-      "retrieved": "2026-11-19"
+      "retrieved": "2026-11-21"
     }
   ],
   "data_note": "Příjem před zdaněním; čistý majetek (tj. po odečtení dluhů). Před rokem 1989 se jedná o relativně hrubé odhady.",
-  "last_updated": "2026-11-19",
+  "last_updated": "2026-11-21",
   "rows": 78
 }

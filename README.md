@@ -70,8 +70,10 @@ Needs the R packages `tidyverse`, `czso2`, `eurostat`, `WDI` and `statnipokladna
 | Distribuce mezd | — | TODO: no machine-readable source found yet |
 | Výdaje a příjmy vládního sektoru (% HDP), srovnání zemí | `R/eurostat.R`, `R/world.R` | `eurostat_gov_10a_main.csv` (všechny země); USA, Spojené království a svět z `imf_datamapper.csv` (MMF Fiscal Monitor; svět = průměr vážený HDP v USD, `NGDPD`) |
 | Příjmy, výdaje a schodek státního rozpočtu, kategorie příjmů a výdajů | `R/monitor.R` | `monitor_sr.csv` (Monitor státní pokladny, 2010+, jen kapitoly státního rozpočtu, součty podle seskupení položek a skupin paragrafů) |
+| Saldo státního rozpočtu (mld. Kč, % HDP) | `R/monitor.R`, `R/eurostat.R` | `monitor_sr.csv`; nominální HDP z `eurostat_gov_10dd_edpt1_cz.csv` (notifikace EDP, `B1GQ`) |
 | Dluh vládního sektoru (Kč, % HDP), projekce, srovnání zemí | `R/eurostat.R`, `R/world.R` | `eurostat_gov_10dd_edpt1.csv`; projekce `imf_weo_cze_dluh.csv` (MMF WEO, SDMX API); země mimo EU a Norsko z `imf_datamapper.csv` (`GGXWDG_NGDP`) |
 | Výběr daní podle druhu, skladba daní ve srovnání zemí | `R/world.R` | `oecd_revenue_statistics.csv` (OECD Global Revenue Statistics, SDMX API; vybrané druhy daní, Česko, srovnávané země a průměr OECD) |
+| Inflace před rokem 1997 (ceny roku 2020 u daní) | `R/world.R` | `wdi_inflace_cz.csv` (Světová banka, FP.CPI.TOTL.ZG); od 1997 `czso_CEN0101H.csv` |
 
 Notes:
 - `czso2` workarounds: `czso_download_dataset()` currently saves metadata instead of data, so full datasets are read straight from `data.csu.gov.cz/opendata/sady/{ID}/distribuce/csv`; `czso_get_table()` is only reliable with `format = "CSV"`.
@@ -148,7 +150,7 @@ Each aesthetic can have a `format` and a `unit`. The unit is shown on the axis t
 | chart | no `colour`/`fill` | with `colour`/`fill` |
 |---|---|---|
 | `line` | highlighted line in colour, the rest grey | highlighted line thicker, the rest thin and paler |
-| `bar` | highlighted bar in colour, the rest grey | the other bars dimmed |
+| `bar` | highlighted bar in colour, the rest grey | bold category label (also in facet panels) |
 | `map` | — | dark outline around highlighted regions |
 
 For a line chart without `colour`, lines are told apart by `linetype` and `highlight` only, so several countries need a `colour` aesthetic too.
@@ -181,6 +183,7 @@ aes = list(
 | `horizontal` | bar | horizontal bars (default: when there are more than 6 text categories) |
 | `stack` | bar | `FALSE` puts `fill` groups side by side instead of stacking |
 | `sort` | bar | `"desc"` or `"asc"` by value |
+| `sort_last` | bar | categories kept at the end of a sorted chart (and of each facet panel), e.g. `"Ostatní"` |
 | `timeline` | line, bar | `FALSE` hides the year slider |
 | `frame`, `reference` | pyramid | first frame shown; a frame drawn as an outline over the others |
 | `filter_latest` | all | name of a time column; only its newest period is drawn |
@@ -189,12 +192,15 @@ aes = list(
 | `fill_domain` | map | fixed range of the colour scale, e.g. `c(-0.15, 0.15)`; values outside get the end colours |
 | `geo`, `geo_key` | map | file in `geo/` (default `kraje.geojson`) and the feature property matched to `geometry` (default `NUTS_ID`) |
 | `projection` | map | default `"mercator"` |
+| `facet` | line, bar | `TRUE` adds a toggle that splits the chart into one small chart per series (by `colour` on a line chart, by `fill` on a bar chart), three across; each panel's title shows its latest value. Bars over categories (e.g. countries) become horizontal bars in each panel, sorted highest first |
+| `facet_columns` | line, bar | at most this many panels across (default 3) |
+| `facet_scale` | line, bar | `"independent"` (default): each panel its own y axis, to show each series' trend; `"shared"`: every panel on the same axis, so sizes can be compared |
 | `height` | all | chart height in px |
 | `annotations` | line, bar | reference lines, see below |
 
 On a map, `scheme`, `reverse`, `midpoint` and `fill_domain` can also be set on a `fill` aesthetic, where they override `options`. That gives each tab its own colour scale, e.g. `list(type = "fill", field = "exekuce", tab = "exekuce", scheme = "oranges")`.
 
-`annotations` draws dashed reference lines with a label along them: `list(x = ...)` is a vertical line at a value of `x` (for bars, one of the categories), `list(y = ...)` a horizontal line at a value of `y`. A vertical line has vertical text, a horizontal one horizontal text above its right end. `dash = FALSE` makes the line solid; `label` is optional. `align` = `"top"` (default), `"centre"` or `"bottom"` places the label along a vertical line; for a horizontal line it puts the label above, on or below the line. Lines outside the years chosen with the slider are not drawn.
+`annotations` draws dashed reference lines with a label along them: `list(x = ...)` is a vertical line at a value of `x` (for bars, one of the categories), `list(y = ...)` a horizontal line at a value of `y`. A vertical line has vertical text, a horizontal one horizontal text above its right end. `dash = FALSE` makes the line solid; `label` is optional. `align` = `"top"` (default), `"centre"` or `"bottom"` places the label along a vertical line; for a horizontal line it puts the label above, on or below the line. Lines outside the years chosen with the slider are not drawn. With `tab = "..."` a line is drawn only in that tab.
 
 ```r
 options = list(annotations = list(

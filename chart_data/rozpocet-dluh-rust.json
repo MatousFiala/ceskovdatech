@@ -2,18 +2,18 @@
   "id": "rozpocet-dluh-rust",
   "data": "rozpocet-dluh-rust.csv",
   "type": "bar",
-  "title": "",
-  "subtitle": "",
+  "title": "Srovnání růstu veřejného dluhu",
+  "subtitle": "Nárůst dluhu státu, samospráv a jiných státních organizací jako % HDP mezi lety 2020 a 2025",
   "aes": [
     {
       "type": "x",
       "field": "zeme",
-      "label": ""
+      "label": "Země"
     },
     {
       "type": "y",
       "field": "zmena",
-      "label": "",
+      "label": "Změna dluhu",
       "format": "percent",
       "unit": "p. b."
     },
@@ -27,20 +27,20 @@
       "name": "Eurostat",
       "dataset": "Government deficit/surplus, debt and associated data (gov_10dd_edpt1)",
       "url": "https://ec.europa.eu/eurostat/databrowser/view/gov_10dd_edpt1/default/table",
-      "retrieved": "2026-11-20"
+      "retrieved": "2026-11-21"
     },
     {
       "name": "MMF",
       "dataset": "Fiscal Monitor a World Economic Outlook (DataMapper)",
       "url": "https://www.imf.org/external/datamapper/",
-      "retrieved": "2026-11-20"
+      "retrieved": "2026-11-21"
     }
   ],
-  "data_note": "",
+  "data_note": "Evropské země a EU z dat Eurostatu, ostatní MMF. Svět: vážený průměr z dat MMF podle velikosti HDP",
   "options": {
     "horizontal": true,
     "sort": "desc"
   },
-  "last_updated": "2026-11-20",
+  "last_updated": "2026-11-21",
   "rows": 16
 }

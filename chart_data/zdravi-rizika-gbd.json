@@ -43,7 +43,7 @@
       "name": "IHME",
       "dataset": "Global Burden of Disease Study 2023 (GBD 2023) Results",
       "url": "https://vizhub.healthdata.org/gbd-results/",
-      "retrieved": "2026-11-19"
+      "retrieved": "2026-11-21"
     }
   ],
   "data_note": "Rizikové faktory se překrývají -- např. obezita je často spojená s vysokým krevním tlakem. ",
@@ -51,6 +51,6 @@
     "horizontal": true,
     "sort": "desc"
   },
-  "last_updated": "2026-11-19",
+  "last_updated": "2026-11-21",
   "rows": 20
 }

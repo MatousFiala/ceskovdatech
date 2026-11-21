@@ -33,22 +33,22 @@
       "name": "Eurostat",
       "dataset": "Population on 1 January by age and sex (demo_pjan)",
       "url": "https://ec.europa.eu/eurostat/databrowser/view/demo_pjan/default/table",
-      "retrieved": "2026-11-18"
+      "retrieved": "2026-11-21"
     },
     {
       "name": "ČSÚ",
       "dataset": "Počet obyvatel podle pohlaví a jednotek věku k 31. 12.",
       "url": "https://data.csu.gov.cz/datastat/data/VYBER/OBY02BHVDT01",
-      "retrieved": "2026-11-18"
+      "retrieved": "2026-11-21"
     },
     {
       "name": "ČSÚ",
       "dataset": "Projektovaný počet obyvatel podle pohlaví a jednotek věku (projekce ČSÚ 2023)",
       "url": "https://data.csu.gov.cz/datastat/data/VYBER/OBY02PROJ1AT01",
-      "retrieved": "2026-11-18"
+      "retrieved": "2026-11-21"
     }
   ],
   "data_note": "Před rokem 2000 použita data Eurostatu, předtím ČSÚ. Budoucí údaje jsou střední varianta projekce  ČSÚ z roku 2023.",
-  "last_updated": "2026-11-18",
+  "last_updated": "2026-11-21",
   "rows": 426
 }

@@ -75,6 +75,7 @@ write_chart(
                   eurostat_source("ilc_mdes04", "Inability to face unexpected financial expenses"),
                   eurostat_source("ilc_mdes01", "Inability to keep home adequately warm"),
                   eurostat_source("ilc_mdes03", "Inability to afford a meal with meat, chicken, fish (or vegetarian equivalent) every second day")),
+    options = list(facet = TRUE),
     data_note = "Závažná deprivace: domácnost si nemůže dovolit aspoň 7 z 13 běžných položek (od 2015). Náklady na bydlení: domácnosti, které na bydlení vydávají víc než 40 % disponibilního příjmu. Nečekaný výdaj: částka zhruba ve výši měsíční hranice chudoby pro jednotlivce (v šetření 2025 16 800 Kč), kterou domácnost nezvládne zaplatit z vlastních zdrojů. Bílkovina: domácnosti, které nedokážou koupit maso, rybu či rostlinnou alternativu alespoň ob den."
 )
 
@@ -140,6 +141,7 @@ write_chart(
         list(type = "colour", field = "dimenze", label = "Dimenze indexu")
     ),
     source = list(isv_source, obyvatele_source),
+    options = list(facet = TRUE),
     data_note = "" # "Body za jednotlivé dimenze indexu sociálního vyloučení (MMR), každá 0–6 bodů podle podílu lidí v exekuci, příjemců příspěvku na živobytí a na bydlení, dlouhodobě nezaměstnaných a mladých s předčasným odchodem ze vzdělávání. Hodnota za Česko je průměr obcí vážený počtem obyvatel."
 )
 
@@ -225,18 +227,18 @@ zeme <- c(CZ = "Česko", SK = "Slovensko", PL = "Polsko", HU = "Maďarsko", SI =
           SE = "Švédsko", US = "USA", BR = "Brazílie", `QY-MER` = "EU", WO = "Svět")
 srovnani_gini <- read_csv("./data/wid_gini.csv") |>
     filter(year == rok_gini) |>
-    transmute(zeme = zeme[country], gini = round(value * 100, 1), cesko = country == "CZ")
+    transmute(year, zeme = zeme[country], gini = round(value * 100, 1), cesko = country == "CZ")
 stopifnot(nrow(srovnani_gini) == length(zeme), !anyNA(srovnani_gini))
 
 write_chart(
     df = srovnani_gini,
     id = "nerovnost-gini-srovnani",
     type = "bar",
-    title = "", # "Srovnání příjmové nerovnosti"
-    subtitle = "", # str_glue("Giniho koeficient disponibilních příjmů v roce {rok_gini}. 0 = všichni mají stejně, 100 = vše má jeden")
+    title = "Srovnání příjmové nerovnosti", # "Srovnání příjmové nerovnosti"
+    subtitle = str_glue("Giniho koeficient [ekvivalizovaného::Se zohledněním počtu členů domácnosti] [disponibilního::Po odečtení daní a přičtení dávek, důchodů a jiných transferů] příjmu v roce {max(srovnani_gini$year)}. 0 = všichni mají stejně, 100 = vše vlastní jeden "), # str_glue("Giniho koeficient disponibilních příjmů v roce {rok_gini}. 0 = všichni mají stejně, 100 = vše má jeden")
     aes = list(
-        list(type = "x", field = "zeme", label = ""), # "Země"
-        list(type = "y", field = "gini", label = ""), # "Gini"
+        list(type = "x", field = "zeme", label = "Země"),
+        list(type = "y", field = "gini", label = "Gini"),
         list(type = "highlight", field = "cesko")
     ),
     source = other_source("World Inequality Database", "Gini coefficient of post-tax disposable income, bulk download",

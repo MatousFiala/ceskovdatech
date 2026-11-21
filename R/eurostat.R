@@ -52,3 +52,8 @@ get_eurostat("gov_10a_main", filters = list(sector = "S13", na_item = c("TE", "T
 get_eurostat("gov_10dd_edpt1", filters = list(sector = "S13", na_item = "GD", unit = c("PC_GDP", "MIO_NAC")),
              time_format = "num", cache = FALSE) |>
   write_csv("data/eurostat_gov_10dd_edpt1.csv")
+# Česko: nominální HDP (B1GQ, mil. Kč), jmenovatel pro schodek státního rozpočtu
+get_eurostat("gov_10dd_edpt1", filters = list(geo = "CZ", sector = "S1", na_item = "B1GQ", unit = "MIO_NAC"),
+             time_format = "num", cache = FALSE) |>
+  filter(!is.na(values)) |>
+  write_csv("data/eurostat_gov_10dd_edpt1_cz.csv")

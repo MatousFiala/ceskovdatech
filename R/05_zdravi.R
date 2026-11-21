@@ -65,7 +65,7 @@ write_chart(
         list(type = "colour", field = "vek", label = "Ve věku", unit = "let")
     ),
     source = csu_source("Úmrtnostní tabulky za ČR", "OBY04BCRT02"),
-    options = list(y_zero = FALSE),
+    options = list(y_zero = FALSE, facet = TRUE),
     data_note = "Vážený průměr mužů a žen na základě poměru pohlaví -- 1028 chlapců na 1000 dívek. ČSÚ publikuje údaje jen odděleně." # "Očekávaný věk dožití člověka, který se dožil daného věku: věk + naděje dožití v tomto věku, při úmrtnosti daného roku. Muži a ženy dohromady."
 )
 
@@ -246,6 +246,7 @@ write_chart(
         list(type = "colour", field = "pricina", label = "Příčina smrti")
     ),
     source = csu_source("Zemřelí podle pohlaví, pětiletých věkových skupin a zkráceného seznamu příčin smrti", "OBY04CT01"),
+    options = list(facet = TRUE),
     data_note = "Kategorice příčin na základě kódů MKN-10: srdce a cévy I00–I99, nádory C00–D48, infekce dýchací soustavy: chřipka a záněty plic (J09–J18) a covid-19 (U07, U10), ostatní infekční A00–B99, vnější příčiny V01–Y98. Ostatní nepřenosné nemoci zahrnují i chronické nemoci dýchací soustavy (např. CHOPN) a nepřesně určené příčiny (R00–R99)."
 )
 
@@ -258,10 +259,11 @@ write_chart(
     subtitle = "Počet úmrtí podle vykázané příčiny, vlastní kategorizace, tisíce",
     aes = list(
         list(type = "x", field = "year", label = "Rok", format = "year"),
-        list(type = "y", field = "podil", label = "Úmrtí", unit = "tis."),
+        list(type = "y", field = "zemreli", label = "Úmrtí", unit = "tis."),
         list(type = "fill", field = "pricina", label = "Příčina smrti")
     ),
     source = csu_source("Zemřelí podle pohlaví, pětiletých věkových skupin a zkráceného seznamu příčin smrti", "OBY04CT01"),
+    options = list(facet = TRUE),
     data_note = "Kategorice příčin na základě kódů MKN-10: srdce a cévy I00–I99, nádory C00–D48, infekce dýchací soustavy: chřipka a záněty plic (J09–J18) a covid-19 (U07, U10), ostatní infekční A00–B99, vnější příčiny V01–Y98. Ostatní nepřenosné nemoci zahrnují i chronické nemoci dýchací soustavy (např. CHOPN) a nepřesně určené příčiny (R00–R99)."
 )
 
@@ -409,6 +411,7 @@ write_chart(
     ),
     source = other_source("ÚZIS", "Ambulantní péče v psychiatrii (NRHZS)",
                           "https://www.nzip.cz/data/2058-ambulantni-pece-psychiatrie-otevrena-data"),
+    options = list(facet = TRUE),
     data_note = "Počet pacientů ambulantní psychiatrické péče hrazené z veřejného zdravotního pojištění podle základní diagnózy (MKN-10): Poruchy nálady F30–F39, úzkostné poruchy F40–F49, demence F00–F03 a Alzheimerova nemoc G30, závislosti F10–F19, poruchy s nástupem v dětství a dospívání F70–F99 (mentální retardace, poruchy psychického vývoje včetně autismu, ADHD a poruchy chování a emocí se začátkem v dětství a dospívání). Ostatní: hlavně schizofrenie, bipolární porucha, poruchy příjmu potravy a osobnosti."
 )
 

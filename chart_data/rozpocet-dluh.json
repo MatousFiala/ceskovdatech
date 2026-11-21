@@ -2,16 +2,16 @@
   "id": "rozpocet-dluh",
   "data": "rozpocet-dluh.csv",
   "type": "line",
-  "title": "",
-  "subtitle": "",
+  "title": "Veřejný dluh ČR s projekcí do roku 2031",
+  "subtitle": "Hrubý dluh státu, samospráv a zdravotních pojišťoven",
   "tabs": [
     {
       "id": "podil",
-      "label": ""
+      "label": "% HDP"
     },
     {
       "id": "kc",
-      "label": ""
+      "label": "Nominální"
     }
   ],
   "aes": [
@@ -24,21 +24,21 @@
     {
       "type": "y",
       "field": "podil",
-      "label": "",
+      "label": "Dluh (% HDP)",
       "format": "percent",
       "tab": "podil"
     },
     {
       "type": "y",
       "field": "mld",
-      "label": "",
+      "label": "Dluh",
       "unit": "mld. Kč",
       "tab": "kc"
     },
     {
       "type": "linetype",
       "field": "data",
-      "label": ""
+      "label": "Údaj"
     }
   ],
   "source": [
@@ -46,16 +46,25 @@
       "name": "Eurostat",
       "dataset": "Government deficit/surplus, debt and associated data (gov_10dd_edpt1)",
       "url": "https://ec.europa.eu/eurostat/databrowser/view/gov_10dd_edpt1/default/table",
-      "retrieved": "2026-11-20"
+      "retrieved": "2026-11-21"
     },
     {
       "name": "MMF",
       "dataset": "World Economic Outlook, October 2026 (SDMX API)",
       "url": "https://data.imf.org/",
-      "retrieved": "2026-11-20"
+      "retrieved": "2026-11-21"
     }
   ],
-  "data_note": "",
-  "last_updated": "2026-11-20",
+  "data_note": "Skutečnost z dat Eurostatu, projekce MMF",
+  "options": {
+    "annotations": [
+      {
+        "y": 0.6,
+        "tab": "podil",
+        "label": "Maastrichtské kritérium fiskální stability"
+      }
+    ]
+  },
+  "last_updated": "2026-11-21",
   "rows": 38
 }

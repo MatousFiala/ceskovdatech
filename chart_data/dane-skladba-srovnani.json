@@ -2,24 +2,46 @@
   "id": "dane-skladba-srovnani",
   "data": "dane-skladba-srovnani.csv",
   "type": "bar",
-  "title": "",
-  "subtitle": "",
+  "title": "Srovnání skladby daní",
+  "subtitle": "Daňové příjmy podle druhu daně v roce 2023",
+  "tabs": [
+    {
+      "id": "podil",
+      "label": "% daňových příjmů"
+    },
+    {
+      "id": "hdp",
+      "label": "% HDP"
+    }
+  ],
   "aes": [
     {
       "type": "x",
       "field": "zeme",
-      "label": ""
+      "label": "Země"
     },
     {
       "type": "y",
       "field": "podil",
-      "label": "",
-      "format": "percent"
+      "label": "% daňových příjmů",
+      "format": "percent",
+      "tab": "podil"
+    },
+    {
+      "type": "y",
+      "field": "hdp",
+      "label": "% HDP",
+      "format": "percent",
+      "tab": "hdp"
     },
     {
       "type": "fill",
       "field": "dan",
-      "label": ""
+      "label": "Daň"
+    },
+    {
+      "type": "highlight",
+      "field": "cesko"
     }
   ],
   "source": [
@@ -27,13 +49,14 @@
       "name": "OECD",
       "dataset": "Global Revenue Statistics Database (DF_RSGLOBAL)",
       "url": "https://www.oecd.org/en/data/datasets/global-revenue-statistics-database.html",
-      "retrieved": "2026-11-20"
+      "retrieved": "2026-11-21"
     }
   ],
-  "data_note": "",
+  "data_note": "Daně vybrané v celém veřejném sektoru, i ty proudící mimo státní rozpočet. Průměr OECD: nevážený průměr členských zemí. DPH zahrnuje i ostatní všeobecné daně ze zboží a služeb, hlavně daň z obratu (sales tax) v USA, která DPH nahrazuje",
   "options": {
-    "horizontal": true
+    "horizontal": true,
+    "facet": true
   },
-  "last_updated": "2026-11-20",
-  "rows": 91
+  "last_updated": "2026-11-21",
+  "rows": 98
 }

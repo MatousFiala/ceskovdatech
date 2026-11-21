@@ -229,7 +229,7 @@ function barChart(spec, data, A, o, width, all) {
   let domain = cats;
   if (o.sort) {
     const total = d3.rollup(data, (v) => d3.sum(v, (d) => d[y]), (d) => d[cat]);
-    domain = d3.sort(cats, (c) => (o.sort === "asc" ? total.get(c) : -total.get(c)));
+    domain = sortLast(d3.sort(cats, (c) => (o.sort === "asc" ? total.get(c) : -total.get(c))), o);
   }
   const every = Math.ceil(cats.length / Math.min(12, Math.max(2, Math.floor(width / 60)))); // thin out crowded labels (e.g. years)
   const catScale = {
@@ -241,12 +241,12 @@ function barChart(spec, data, A, o, width, all) {
   const tops = grouped ? data.map((d) => d[y]) : d3.rollups(data, (v) => d3.sum(v, (d) => d[y]), (d) => d[cat]).map((r) => r[1]);
   tops.push(...annotationValues(o));
   const longest = d3.max(cats, (c) => String(c).length);
-  const left = horizontal ? Math.min(220, longest * 7.5 + 12) : null;
+  const left = horizontal ? Math.min(250, longest * 7.5 + 12) : null;
   const title = tipText(spec.aes);
   const mark = horizontal ? Plot.barX : Plot.barY;
   const [catCh, valCh, facetCh] = horizontal ? ["y", "x", "fy"] : ["x", "y", "fx"];
 
-  return Plot.plot({
+  const plot = Plot.plot({
     ...base(o, width),
     height: o.height ?? (horizontal ? domain.length * (grouped ? 44 : 26) + 50 : undefined),
     marginLeft: left ?? axisMargin(A.y, tops, o),
@@ -262,7 +262,6 @@ function barChart(spec, data, A, o, width, all) {
         ...(grouped ? { [catCh]: fill } : {}),
         [valCh]: y, fill, title, tip: true,
         clip: o.y_domain ? true : undefined, // a fixed axis range that leaves out zero would let bars spill out
-        ...(hi && fillA ? { fillOpacity: (d) => (hi(d) ? 1 : 0.4) } : {}),
       }),
       horizontal ? Plot.ruleX([0]) : Plot.ruleY([0]),
       ...annotationMarks(o, {
@@ -272,6 +271,17 @@ function barChart(spec, data, A, o, width, all) {
       }),
     ],
   });
+  // fill already gives the colours: the highlighted categories get a bold label instead
+  if (hi && fillA) boldTicks(plot, data.filter(hi).map((d) => d[cat]));
+  return plot;
+}
+
+// Bold tick labels for the given categories (highlight on bar charts whose fill is taken)
+function boldTicks(node, cats) {
+  const names = new Set(cats.map(String));
+  for (const t of node.querySelectorAll('g[aria-label$="tick label"] text')) {
+    if (names.has(t.textContent)) t.setAttribute("font-weight", 700);
+  }
 }
 
 const geoCache = new Map();
@@ -388,7 +398,101 @@ function pyramidChart(spec, data, A, o, width, all) {
   });
 }
 
+// options.sort_last: categories that stay at the end of a sorted bar chart (e.g. "Ostatní")
+function sortLast(cats, o) {
+  const last = [o.sort_last ?? []].flat().map(String);
+  return [...cats.filter((c) => !last.includes(String(c))), ...cats.filter((c) => last.includes(String(c)))];
+}
+
 const TYPES = { line: lineChart, bar: barChart, map: mapChart, pyramid: pyramidChart };
+
+// ---------- facets (small multiples) ----------
+// options.facet = TRUE adds a toggle that splits a line chart (by colour) or a stacked bar chart (by fill) into one
+// small chart per series, three across (two on narrow screens or for four series). Each panel has its own y scale
+// (it is there to show each series' trend); options.facet_scale = "shared" puts every panel on the same scale,
+// so sizes can be compared. Each panel's title gives the series and its latest value.
+const facetAes = (spec, A) => (spec.type === "bar" ? A.fill : spec.type === "line" ? A.colour : null);
+function facetChart(spec, data, A, o, width, all) {
+  const by = facetAes(spec, A), key = label(by), x = A.x.field, y = A.y.field;
+  const series = [...new Set(all.map((d) => d[key]))]; // order and colours of the whole dataset
+  const n = series.length;
+  const cols = Math.min(n, o.facet_columns ?? 3, width >= 720 && n !== 4 ? 3 : 2), gap = 24;
+  const pw = Math.floor((width - gap * (cols - 1)) / cols);
+  const extent = (rows) => [Math.min(0, d3.min(rows, (d) => d[y]) ?? 0), Math.max(0, d3.max(rows, (d) => d[y]) ?? 1)];
+  const shared = o.facet_scale === "shared" ? extent(data) : null;
+  const xs = d3.sort(new Set(data.map((d) => d[x])));
+  const title = tipText(spec.aes);
+  // highlight: bold category label, as in a bar chart whose fill is taken
+  const hi = highlighter(A);
+  // categories instead of years (e.g. countries): each panel is a horizontal bar chart, sorted highest first
+  const textual = typeof xs[0] === "string";
+  const horizontal = spec.type === "bar" && (o.horizontal ?? (textual && xs.length > 6));
+  if (horizontal) {
+    measure.font = `13px ${FONT}`;
+    const labelW = Math.min(160, Math.ceil(d3.max(xs, (c) => measure.measureText(String(c)).width)) + 12);
+    const panels = series.map((s, i) => {
+      const rows = data.filter((d) => d[key] === s);
+      const colour = PALETTE[i % PALETTE.length];
+      const dom = shared ?? extent(rows);
+      const order = sortLast(d3.sort(rows, (d) => -d[y]).map((d) => d[x]), o);
+      const panel = Plot.plot({
+        ...base(o, pw),
+        height: order.length * 18 + 56,
+        marginTop: 26,
+        marginLeft: labelW,
+        // ticks with the unit ("200 mld. Kč"): only as many as fit side by side
+        x: { label: null, grid: true, tickFormat: tickOf(A.y), domain: dom, nice: true,
+          ticks: Math.max(2, Math.floor((pw - labelW) / (measure.measureText(tickOf(A.y)(dom[1])).width + 24))) },
+        y: { label: null, domain: order, tickSize: 0 },
+        marks: [
+          Plot.barX(rows, { y: x, x: y, fill: colour, title, tip: true }),
+          Plot.ruleX([0]),
+          Plot.text([String(s)], { frameAnchor: "top-left", dx: -labelW, dy: -20, fontWeight: 600, fontSize: 13.5, fill: "currentColor", text: (d) => d }),
+        ],
+      });
+      if (hi) boldTicks(panel, rows.filter(hi).map((d) => d[x]));
+      return panel;
+    });
+    return h("div", { class: "chart-facets", style: `grid-template-columns: repeat(${cols}, ${pw}px); column-gap: ${gap}px` }, panels);
+  }
+  const panels = series.map((s, i) => {
+    const rows = data.filter((d) => d[key] === s);
+    const last = rows.length ? rows.reduce((a, b) => (b[x] > a[x] ? b : a)) : null;
+    // the latest value only when it fits next to the series name
+    measure.font = `600 13.5px ${FONT}`;
+    const value = last ? `  ${fmt(A.y, last[y], { unit: true })}` : "";
+    const head = value && measure.measureText(s + value).width <= pw - 4 ? s + value : String(s);
+    const colour = PALETTE[i % PALETTE.length];
+    const dom = shared ?? extent(rows);
+    // ticks with the unit; the left margin below fits the widest one
+    const yTick = tickOf(A.y);
+    const yScale = { label: null, grid: true, tickFormat: yTick, domain: dom, nice: true, ticks: 3 };
+    measure.font = `13px ${FONT}`; // the chart font size; + tick (6 px), its padding and a little room
+    const left = Math.ceil(d3.max(d3.scaleLinear(dom).nice(3).ticks(3), (t) => measure.measureText(yTick(t)).width)) + 24;
+    const every = Math.ceil(xs.length / Math.max(2, Math.floor((pw - left) / 42))); // year labels that fit
+    const marks = spec.type === "bar"
+      ? [Plot.barY(rows, { x, y, fill: colour, title, tip: true }), Plot.ruleY([0])]
+      : [Plot.ruleY([0]), Plot.line(rows, { x, y, stroke: colour, strokeWidth: 2 }),
+        Plot.dot(last ? [last] : [], { x, y, fill: colour, r: 3.5 }),
+        Plot.tip(rows, Plot.pointerX({ x, y, title }))];
+    return Plot.plot({
+      ...base(o, pw),
+      height: 170,
+      marginTop: 26,
+      marginLeft: left,
+      x: spec.type === "bar"
+        ? { label: null, domain: xs, ticks: xs.filter((_, j) => j % every === 0), tickFormat: (d) => fmt(A.x, d, { tick: true }) }
+        : { label: null, tickFormat: tickOf(A.x), ticks: Math.max(2, Math.floor(pw / 80)) },
+      y: yScale,
+      marks: [
+        ...marks,
+        // panel title inside the SVG, so it is also in the PNG
+        Plot.text([head], { frameAnchor: "top-left", dx: -left, dy: -20, fontWeight: 600, fontSize: 13.5, fill: "currentColor", text: (d) => d }),
+      ],
+    });
+  });
+  return h("div", { class: "chart-facets", style: `grid-template-columns: repeat(${cols}, ${pw}px); column-gap: ${gap}px` }, panels);
+}
 
 // ---------- card: title, tabs, table, footer ----------
 function dashLegend(data, A) {
@@ -489,16 +593,23 @@ function frameSlider(values, start, onChange) {
 
 // PNG = title + chart + source drawn on a white canvas (colour legend is not included)
 async function downloadPng(spec, body) {
-  const live = [...body.querySelectorAll("svg")].at(-1); // the chart itself; legends come before it
-  const svg = live.cloneNode(true);
-  const { width, height } = live.getBoundingClientRect();
-  svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
-  svg.setAttribute("width", width);
-  svg.setAttribute("height", height);
-  svg.style.color = "#1f1f1e";
-  const img = new Image();
-  img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(new XMLSerializer().serializeToString(svg));
-  await img.decode();
+  // the chart itself (legends come before it), or every panel of a faceted chart
+  const grid = body.querySelector(".chart-facets");
+  const lives = grid ? [...grid.querySelectorAll(":scope > svg")] : [[...body.querySelectorAll("svg")].at(-1)];
+  const frame = (grid ?? lives[0]).getBoundingClientRect();
+  const { width, height } = frame;
+  const images = await Promise.all(lives.map(async (live) => {
+    const r = live.getBoundingClientRect();
+    const svg = live.cloneNode(true);
+    svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+    svg.setAttribute("width", r.width);
+    svg.setAttribute("height", r.height);
+    svg.style.color = "#1f1f1e";
+    const img = new Image();
+    img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(new XMLSerializer().serializeToString(svg));
+    await img.decode();
+    return { img, x: r.left - frame.left, y: r.top - frame.top, w: r.width, h: r.height };
+  }));
 
   const pad = 20, top = 64, bottom = 34, scale = 2;
   const canvas = h("canvas", { width: (width + 2 * pad) * scale, height: (height + top + bottom) * scale });
@@ -512,7 +623,7 @@ async function downloadPng(spec, body) {
   ctx.fillStyle = "#52514e";
   ctx.font = `13px ${FONT}`;
   ctx.fillText(plain(spec.subtitle), pad, 50);
-  ctx.drawImage(img, pad, top, width, height);
+  for (const p of images) ctx.drawImage(p.img, pad + p.x, top + p.y, p.w, p.h);
   ctx.fillStyle = "#77756f";
   ctx.font = `12px ${FONT}`;
   const names = sourceGroups(spec).map(([name]) => name).join(", ");
@@ -572,6 +683,19 @@ export async function renderChart(el, id = el.dataset.chart) {
     const slider = ff
       ? frames.length > 1 && frameSlider(frames, start, (v) => update((d) => d[ff] === v))
       : years.length > 2 && yearSlider(years, spec.type === "line" ? 1 : 0, (a, b) => update((d) => d[xf] >= a && d[xf] <= b));
+    // Facet toggle (options.facet): one small chart per series, and back
+    let faceted = false;
+    const facetButton = o.facet && facetAes(spec, A) && h("button", {
+      class: "chart-tab chart-facet-toggle", type: "button", "aria-pressed": "false", title: "Samostatný graf pro každou řadu",
+      onclick: () => {
+        faceted = !faceted;
+        facetButton.setAttribute("aria-pressed", String(faceted));
+        stale = true;
+        draw();
+      },
+    });
+    if (facetButton) facetButton.innerHTML = '<svg width="13" height="13" viewBox="0 0 14 14" aria-hidden="true"><rect x="1" y="1" width="5" height="5" rx="1"/><rect x="8" y="1" width="5" height="5" rx="1"/><rect x="1" y="8" width="5" height="5" rx="1"/><rect x="8" y="8" width="5" height="5" rx="1"/></svg><span>Rozdělit</span>';
+    const facetWrap = facetButton && h("div", { class: "chart-tabs" }, facetButton);
     const tabs = ["Graf", "Tabulka"].map((name, i) =>
       h("button", {
         class: "chart-tab", type: "button", "aria-pressed": String(i === 0),
@@ -579,6 +703,7 @@ export async function renderChart(el, id = el.dataset.chart) {
           tabs.forEach((t, j) => t.setAttribute("aria-pressed", String(i === j)));
           body.hidden = i !== 0;
           if (switcher) switcher.hidden = i !== 0;
+          if (facetWrap) facetWrap.hidden = i !== 0;
           table.hidden = i !== 1;
         },
       }, name));
@@ -601,7 +726,7 @@ export async function renderChart(el, id = el.dataset.chart) {
         h("div", {},
           h("h3", { class: "chart-title" }, rich(spec.title)),
           spec.subtitle ? h("p", { class: "chart-subtitle" }, rich(spec.subtitle)) : null),
-        h("div", { class: "chart-tabs" }, tabs)),
+        h("div", { class: "chart-controls" }, facetWrap || null, h("div", { class: "chart-tabs" }, tabs))),
       switcher,
       body,
       table,
@@ -621,8 +746,11 @@ export async function renderChart(el, id = el.dataset.chart) {
       stale = false;
       // tabs of a line or bar chart: only the rows that have this tab's y (a tab may use its own rows)
       const has = tabList.length && A.y ? (d) => d[A.y.field] != null : null;
-      const plot = await TYPES[spec.type]({ ...spec, aes }, has ? shown.filter(has) : shown, A, o, width, has ? data.filter(has) : data);
-      body.replaceChildren(...[spec.type === "line" && dashLegend(data, A), plot].filter(Boolean));
+      const chart = faceted && facetAes(spec, A) ? facetChart : TYPES[spec.type];
+      // annotations with a `tab` are drawn in that tab only
+      const ot = o.annotations ? { ...o, annotations: o.annotations.filter((a) => a.tab == null || a.tab === tab) } : o;
+      const plot = await chart({ ...spec, aes }, has ? shown.filter(has) : shown, A, ot, width, has ? data.filter(has) : data);
+      body.replaceChildren(...[spec.type === "line" && !faceted && dashLegend(data, A), plot].filter(Boolean));
     }
     await draw();
     new ResizeObserver(() => requestAnimationFrame(draw)).observe(body);

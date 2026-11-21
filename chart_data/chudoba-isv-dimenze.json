@@ -27,16 +27,19 @@
       "name": "MMR",
       "dataset": "Index sociálního vyloučení 2016–2024",
       "url": "https://mmr.gov.cz/cs/microsites/socialni-zaclenovani/index-socialniho-vylouceni/data-a-mapy",
-      "retrieved": "2026-11-19"
+      "retrieved": "2026-11-21"
     },
     {
       "name": "ČSÚ",
       "dataset": "Základní údaje o stavu a pohybu obyvatel podle obcí a měst",
       "url": "https://data.csu.gov.cz/datastat/data/VYBER/OBY01B01T01",
-      "retrieved": "2026-11-19"
+      "retrieved": "2026-11-21"
     }
   ],
   "data_note": "",
-  "last_updated": "2026-11-19",
+  "options": {
+    "facet": true
+  },
+  "last_updated": "2026-11-21",
   "rows": 45
 }

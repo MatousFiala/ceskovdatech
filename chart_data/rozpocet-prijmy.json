@@ -2,16 +2,16 @@
   "id": "rozpocet-prijmy",
   "data": "rozpocet-prijmy.csv",
   "type": "bar",
-  "title": "",
-  "subtitle": "",
+  "title": "Příjmy státního rozpočtu od roku 2010",
+  "subtitle": "Příjmy státního rozpočtu podle kategoriem, miliardy Kč",
   "tabs": [
     {
       "id": "nominalni",
-      "label": ""
+      "label": "Nominální"
     },
     {
       "id": "realne",
-      "label": ""
+      "label": "Reálné"
     }
   ],
   "aes": [
@@ -24,21 +24,21 @@
     {
       "type": "y",
       "field": "mld",
-      "label": "",
+      "label": "Nominální příjem",
       "unit": "mld. Kč",
       "tab": "nominalni"
     },
     {
       "type": "y",
       "field": "mld_2020",
-      "label": "",
+      "label": "Reálný příjem",
       "unit": "mld. Kč",
       "tab": "realne"
     },
     {
       "type": "fill",
       "field": "kategorie",
-      "label": ""
+      "label": "Druh příjmu"
     }
   ],
   "source": [
@@ -46,16 +46,19 @@
       "name": "Monitor státní pokladny (MF ČR)",
       "dataset": "Plnění rozpočtu ústředně řízených organizací, kapitoly státního rozpočtu",
       "url": "https://monitor.statnipokladna.gov.cz/",
-      "retrieved": "2026-11-20"
+      "retrieved": "2026-11-21"
     },
     {
       "name": "ČSÚ",
       "dataset": "Míra inflace (CEN0101H)",
       "url": "https://data.csu.gov.cz/datastat/data/VYBER/CEN0101HT01",
-      "retrieved": "2026-11-20"
+      "retrieved": "2026-11-21"
     }
   ],
-  "data_note": "",
-  "last_updated": "2026-11-20",
+  "data_note": "Reálné částky jsou přepočteny na ceny v roce 2020. Do sociálního pojištění se neřadí zdravotní odvody -- ty proudí státní rozpočet pojišťovnám. Přijaté transfery jsou převážně dotace EU.",
+  "options": {
+    "facet": true
+  },
+  "last_updated": "2026-11-21",
   "rows": 64
 }

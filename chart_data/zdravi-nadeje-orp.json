@@ -23,7 +23,7 @@
       "name": "ČSÚ",
       "dataset": "Naděje dožití v SO ORP a Praze",
       "url": "https://data.csu.gov.cz/datastat/data/VYBER/OBY04BORT01",
-      "retrieved": "2026-11-18"
+      "retrieved": "2026-11-21"
     }
   ],
   "data_note": "Data udávaná za delší období pro zmírnění statistického šumu. Vážený průměr mužů a žen na základě poměru pohlaví -- 1028 chlapců na 1000 dívek. ČSÚ publikuje údaje jen odděleně.",
@@ -31,6 +31,6 @@
     "geo": "orp.geojson",
     "geo_key": "KOD_ORP"
   },
-  "last_updated": "2026-11-18",
+  "last_updated": "2026-11-21",
   "rows": 206
 }

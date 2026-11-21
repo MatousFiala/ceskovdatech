@@ -1,0 +1,56 @@
+{
+  "id": "rozpocet-schodek",
+  "data": "rozpocet-schodek.csv",
+  "type": "bar",
+  "title": "Schodek státního rozpočtu",
+  "subtitle": "Rozdíl mezi příjmy a výdaji státního rozpočtu",
+  "tabs": [
+    {
+      "id": "nominalni",
+      "label": "Nominální"
+    },
+    {
+      "id": "hdp",
+      "label": "% HDP"
+    }
+  ],
+  "aes": [
+    {
+      "type": "x",
+      "field": "year",
+      "label": "Rok",
+      "format": "year"
+    },
+    {
+      "type": "y",
+      "field": "saldo_mld",
+      "label": "Schodek",
+      "unit": "mld. Kč",
+      "tab": "nominalni"
+    },
+    {
+      "type": "y",
+      "field": "saldo_hdp",
+      "label": "Schodek (% HDP)",
+      "format": "percent",
+      "tab": "hdp"
+    }
+  ],
+  "source": [
+    {
+      "name": "Monitor státní pokladny (MF ČR)",
+      "dataset": "Plnění rozpočtu ústředně řízených organizací, kapitoly státního rozpočtu",
+      "url": "https://monitor.statnipokladna.gov.cz/",
+      "retrieved": "2026-11-21"
+    },
+    {
+      "name": "Eurostat",
+      "dataset": "Government deficit/surplus, debt and associated data (gov_10dd_edpt1)",
+      "url": "https://ec.europa.eu/eurostat/databrowser/view/gov_10dd_edpt1/default/table",
+      "retrieved": "2026-11-21"
+    }
+  ],
+  "data_note": "Nominální schodek z dat MSP, podíl na HDP z dat Eurostatu",
+  "last_updated": "2026-11-21",
+  "rows": 16
+}

@@ -1,92 +1,99 @@
-zeme,dan,podil
-Česko,Daň z příjmů fyzických osob,0.0974
-Česko,Sociální a zdravotní pojištění,0.4555
-Česko,DPH,0.2249
-Česko,Spotřební daně,0.0622
-Česko,Majetkové daně,0.0049
-Česko,Daň z příjmů právnických osob,0.1334
-Česko,Ostatní daně,0.0218
-Německo,Daň z příjmů fyzických osob,0.2641
-Německo,Sociální a zdravotní pojištění,0.384
-Německo,DPH,0.1854
-Německo,Spotřební daně,0.0417
-Německo,Majetkové daně,0.0245
-Německo,Daň z příjmů právnických osob,0.0601
-Německo,Ostatní daně,0.0401
-Rakousko,Daň z příjmů fyzických osob,0.2163
-Rakousko,Sociální a zdravotní pojištění,0.3506
-Rakousko,DPH,0.1864
-Rakousko,Spotřební daně,0.0398
-Rakousko,Majetkové daně,0.0108
-Rakousko,Daň z příjmů právnických osob,0.0767
-Rakousko,Ostatní daně,0.1195
-Slovensko,Daň z příjmů fyzických osob,0.1079
-Slovensko,Sociální a zdravotní pojištění,0.4262
-Slovensko,DPH,0.2269
-Slovensko,Spotřební daně,0.0696
-Slovensko,Majetkové daně,0.0117
-Slovensko,Daň z příjmů právnických osob,0.1035
-Slovensko,Ostatní daně,0.0542
-Polsko,Daň z příjmů fyzických osob,0.1265
-Polsko,Sociální a zdravotní pojištění,0.3783
-Polsko,DPH,0.2093
-Polsko,Spotřební daně,0.089
-Polsko,Majetkové daně,0.0329
-Polsko,Daň z příjmů právnických osob,0.0749
-Polsko,Ostatní daně,0.0892
-Francie,Daň z příjmů fyzických osob,0.2145
-Francie,Sociální a zdravotní pojištění,0.3317
-Francie,DPH,0.1659
-Francie,Spotřební daně,0.0453
-Francie,Majetkové daně,0.0788
-Francie,Daň z příjmů právnických osob,0.0535
-Francie,Ostatní daně,0.1104
-Spojené království,Daň z příjmů fyzických osob,0.3016
-Spojené království,Sociální a zdravotní pojištění,0.1909
-Spojené království,DPH,0.2056
-Spojené království,Spotřební daně,0.0492
-Spojené království,Majetkové daně,0.1051
-Spojené království,Daň z příjmů právnických osob,0.0966
-Spojené království,Ostatní daně,0.051
-Švédsko,Daň z příjmů fyzických osob,0.2691
-Švédsko,Sociální a zdravotní pojištění,0.2147
-Švédsko,DPH,0.21560000000000001
-Švédsko,Spotřební daně,0.0504
-Švédsko,Majetkové daně,0.0198
-Švédsko,Daň z příjmů právnických osob,0.0854
-Švédsko,Ostatní daně,0.1451
-Dánsko,Daň z příjmů fyzických osob,0.572
-Dánsko,Sociální a zdravotní pojištění,0.0017
-Dánsko,DPH,0.2078
-Dánsko,Spotřební daně,0.0464
-Dánsko,Majetkové daně,0.039
-Dánsko,Daň z příjmů právnických osob,0.0838
-Dánsko,Ostatní daně,0.0491
-Finsko,Daň z příjmů fyzických osob,0.2982
-Finsko,Sociální a zdravotní pojištění,0.2907
-Finsko,DPH,0.215
-Finsko,Spotřební daně,0.064
-Finsko,Majetkové daně,0.0329
-Finsko,Daň z příjmů právnických osob,0.0667
-Finsko,Ostatní daně,0.0326
-Norsko,Daň z příjmů fyzických osob,0.2305
-Norsko,Sociální a zdravotní pojištění,0.2218
-Norsko,DPH,0.1777
-Norsko,Spotřební daně,0.0338
-Norsko,Majetkové daně,0.0281
-Norsko,Daň z příjmů právnických osob,0.2882
-Norsko,Ostatní daně,0.0198
-USA,Daň z příjmů fyzických osob,0.3997
-USA,Sociální a zdravotní pojištění,0.2351
-USA,DPH,0
-USA,Spotřební daně,0.0233
-USA,Majetkové daně,0.1134
-USA,Daň z příjmů právnických osob,0.0856
-USA,Ostatní daně,0.1429
-Průměr OECD,Daň z příjmů fyzických osob,0.2374
-Průměr OECD,Sociální a zdravotní pojištění,0.2546
-Průměr OECD,DPH,0.2047
-Průměr OECD,Spotřební daně,0.0581
-Průměr OECD,Majetkové daně,0.051
-Průměr OECD,Daň z příjmů právnických osob,0.1186
-Průměr OECD,Ostatní daně,0.0756
+year,zeme,dan,podil,hdp,cesko
+2023,Dánsko,Daň z příjmů fyzických osob,0.572,0.2517,FALSE
+2023,Dánsko,Sociální a zdravotní pojištění,0.0017,8e-4,FALSE
+2023,Dánsko,DPH,0.2078,0.0914,FALSE
+2023,Dánsko,Spotřební daně,0.0464,0.0204,FALSE
+2023,Dánsko,Majetkové daně,0.039,0.0172,FALSE
+2023,Dánsko,Daň z příjmů právnických osob,0.0838,0.0369,FALSE
+2023,Dánsko,Ostatní daně,0.0491,0.0216,FALSE
+2023,USA,Daň z příjmů fyzických osob,0.3997,0.1025,FALSE
+2023,USA,Sociální a zdravotní pojištění,0.2351,0.0603,FALSE
+2023,USA,DPH,0.0836,0.0214,FALSE
+2023,USA,Spotřební daně,0.0233,0.006,FALSE
+2023,USA,Majetkové daně,0.1134,0.0291,FALSE
+2023,USA,Daň z příjmů právnických osob,0.0856,0.022,FALSE
+2023,USA,Ostatní daně,0.0593,0.0152,FALSE
+2023,Spojené království,Daň z příjmů fyzických osob,0.3016,0.1055,FALSE
+2023,Spojené království,Sociální a zdravotní pojištění,0.1909,0.0667,FALSE
+2023,Spojené království,DPH,0.2063,0.0721,FALSE
+2023,Spojené království,Spotřební daně,0.0492,0.0172,FALSE
+2023,Spojené království,Majetkové daně,0.1051,0.0368,FALSE
+2023,Spojené království,Daň z příjmů právnických osob,0.0966,0.0338,FALSE
+2023,Spojené království,Ostatní daně,0.0503,0.0176,FALSE
+2023,Finsko,Daň z příjmů fyzických osob,0.2982,0.1275,FALSE
+2023,Finsko,Sociální a zdravotní pojištění,0.2907,0.1243,FALSE
+2023,Finsko,DPH,0.215,0.0919,FALSE
+2023,Finsko,Spotřební daně,0.064,0.0273,FALSE
+2023,Finsko,Majetkové daně,0.0329,0.0141,FALSE
+2023,Finsko,Daň z příjmů právnických osob,0.0667,0.0285,FALSE
+2023,Finsko,Ostatní daně,0.0326,0.0139,FALSE
+2023,Švédsko,Daň z příjmů fyzických osob,0.2691,0.1122,FALSE
+2023,Švédsko,Sociální a zdravotní pojištění,0.2147,0.0895,FALSE
+2023,Švédsko,DPH,0.2157,0.09,FALSE
+2023,Švédsko,Spotřební daně,0.0504,0.021,FALSE
+2023,Švédsko,Majetkové daně,0.0198,0.0082,FALSE
+2023,Švédsko,Daň z příjmů právnických osob,0.0854,0.0356,FALSE
+2023,Švédsko,Ostatní daně,0.145,0.0605,FALSE
+2023,Německo,Daň z příjmů fyzických osob,0.2641,0.0985,FALSE
+2023,Německo,Sociální a zdravotní pojištění,0.384,0.1432,FALSE
+2023,Německo,DPH,0.1854,0.0692,FALSE
+2023,Německo,Spotřební daně,0.0417,0.0156,FALSE
+2023,Německo,Majetkové daně,0.0245,0.0091,FALSE
+2023,Německo,Daň z příjmů právnických osob,0.0601,0.0224,FALSE
+2023,Německo,Ostatní daně,0.0401,0.015,FALSE
+2023,Průměr OECD,Daň z příjmů fyzických osob,0.2374,0.0822,FALSE
+2023,Průměr OECD,Sociální a zdravotní pojištění,0.2546,0.0883,FALSE
+2023,Průměr OECD,DPH,0.2106,0.07,FALSE
+2023,Průměr OECD,Spotřební daně,0.0581,0.0191,FALSE
+2023,Průměr OECD,Majetkové daně,0.051,0.0168,FALSE
+2023,Průměr OECD,Daň z příjmů právnických osob,0.1186,0.0375,FALSE
+2023,Průměr OECD,Ostatní daně,0.0697,0.0233,FALSE
+2023,Norsko,Daň z příjmů fyzických osob,0.2305,0.0959,FALSE
+2023,Norsko,Sociální a zdravotní pojištění,0.2218,0.0923,FALSE
+2023,Norsko,DPH,0.1789,0.0745,FALSE
+2023,Norsko,Spotřební daně,0.0338,0.0141,FALSE
+2023,Norsko,Majetkové daně,0.0281,0.0117,FALSE
+2023,Norsko,Daň z příjmů právnických osob,0.2882,0.12,FALSE
+2023,Norsko,Ostatní daně,0.0186,0.0077,FALSE
+2023,Rakousko,Daň z příjmů fyzických osob,0.2163,0.0922,FALSE
+2023,Rakousko,Sociální a zdravotní pojištění,0.3506,0.1494,FALSE
+2023,Rakousko,DPH,0.1869,0.0796,FALSE
+2023,Rakousko,Spotřební daně,0.0398,0.0169,FALSE
+2023,Rakousko,Majetkové daně,0.0108,0.0046,FALSE
+2023,Rakousko,Daň z příjmů právnických osob,0.0767,0.0327,FALSE
+2023,Rakousko,Ostatní daně,0.119,0.0507,FALSE
+2023,Francie,Daň z příjmů fyzických osob,0.2145,0.0941,FALSE
+2023,Francie,Sociální a zdravotní pojištění,0.3317,0.1455,FALSE
+2023,Francie,DPH,0.1744,0.0765,FALSE
+2023,Francie,Spotřební daně,0.0453,0.0199,FALSE
+2023,Francie,Majetkové daně,0.0788,0.0345,FALSE
+2023,Francie,Daň z příjmů právnických osob,0.0535,0.0235,FALSE
+2023,Francie,Ostatní daně,0.1018,0.0446,FALSE
+2023,Estonsko,Daň z příjmů fyzických osob,0.1855,0.0623,FALSE
+2023,Estonsko,Sociální a zdravotní pojištění,0.3553,0.1194,FALSE
+2023,Estonsko,DPH,0.2698,0.0906,FALSE
+2023,Estonsko,Spotřební daně,0.0787,0.0264,FALSE
+2023,Estonsko,Majetkové daně,0.0046,0.0015,FALSE
+2023,Estonsko,Daň z příjmů právnických osob,0.0556,0.0187,FALSE
+2023,Estonsko,Ostatní daně,0.0505,0.017,FALSE
+2023,Polsko,Daň z příjmů fyzických osob,0.1265,0.0442,FALSE
+2023,Polsko,Sociální a zdravotní pojištění,0.3783,0.1322,FALSE
+2023,Polsko,DPH,0.2127,0.0743,FALSE
+2023,Polsko,Spotřební daně,0.089,0.0311,FALSE
+2023,Polsko,Majetkové daně,0.0329,0.0115,FALSE
+2023,Polsko,Daň z příjmů právnických osob,0.0749,0.0262,FALSE
+2023,Polsko,Ostatní daně,0.0858,0.03,FALSE
+2023,Slovensko,Daň z příjmů fyzických osob,0.1079,0.0378,FALSE
+2023,Slovensko,Sociální a zdravotní pojištění,0.4262,0.1494,FALSE
+2023,Slovensko,DPH,0.2269,0.0795,FALSE
+2023,Slovensko,Spotřební daně,0.0696,0.0244,FALSE
+2023,Slovensko,Majetkové daně,0.0117,0.0041,FALSE
+2023,Slovensko,Daň z příjmů právnických osob,0.1035,0.0363,FALSE
+2023,Slovensko,Ostatní daně,0.0542,0.019,FALSE
+2023,Česko,Daň z příjmů fyzických osob,0.0974,0.0324,TRUE
+2023,Česko,Sociální a zdravotní pojištění,0.4555,0.1514,TRUE
+2023,Česko,DPH,0.2249,0.0748,TRUE
+2023,Česko,Spotřební daně,0.0622,0.0207,TRUE
+2023,Česko,Majetkové daně,0.0049,0.0016,TRUE
+2023,Česko,Daň z příjmů právnických osob,0.1334,0.0444,TRUE
+2023,Česko,Ostatní daně,0.0218,0.0072,TRUE

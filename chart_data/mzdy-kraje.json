@@ -23,10 +23,10 @@
       "name": "ČSÚ",
       "dataset": "Průměrné hrubé měsíční mzdy (čtvrtletní zjišťování)",
       "url": "https://data.csu.gov.cz/datastat/data/VYBER/MZDRT1?vSet=1&vSel=1",
-      "retrieved": "2026-11-17"
+      "retrieved": "2026-11-21"
     }
   ],
   "data_note": "Mzda na přepočtené počty zaměstnanců. Zaměstnanci jsou zařazeni podle místa pracoviště, ne podle bydliště nebo sídla zaměstnavatele.",
-  "last_updated": "2026-11-17",
+  "last_updated": "2026-11-21",
   "rows": 14
 }

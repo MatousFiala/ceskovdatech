@@ -22,13 +22,13 @@
       "name": "Eurostat",
       "dataset": "Gini coefficient of equivalised disposable income (ilc_di12)",
       "url": "https://ec.europa.eu/eurostat/databrowser/view/ilc_di12/default/table",
-      "retrieved": "2026-11-19"
+      "retrieved": "2026-11-21"
     }
   ],
   "data_note": "",
   "options": {
     "y_zero": false
   },
-  "last_updated": "2026-11-19",
+  "last_updated": "2026-11-21",
   "rows": 21
 }

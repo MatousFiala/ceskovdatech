@@ -28,16 +28,16 @@
       "name": "Eurostat",
       "dataset": "At-risk-of-poverty rate (ilc_li02)",
       "url": "https://ec.europa.eu/eurostat/databrowser/view/ilc_li02/default/table",
-      "retrieved": "2026-11-19"
+      "retrieved": "2026-11-21"
     },
     {
       "name": "Eurostat",
       "dataset": "At-risk-of-poverty rate anchored at a fixed moment in time (2008) (ilc_li22b)",
       "url": "https://ec.europa.eu/eurostat/databrowser/view/ilc_li22b/default/table",
-      "retrieved": "2026-11-19"
+      "retrieved": "2026-11-21"
     }
   ],
   "data_note": "Pevná hranice nezávisí na příjmu zbytku společnosti -- jedná se o příjem mezní domácnosti ohrožené chudobou v roce 2008. V budoucích letech byla tato hranice pouze očištěna od inflace.",
-  "last_updated": "2026-11-19",
+  "last_updated": "2026-11-21",
   "rows": 40
 }

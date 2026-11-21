@@ -2,8 +2,8 @@
   "id": "rozpocet-velikost",
   "data": "rozpocet-velikost.csv",
   "type": "line",
-  "title": "",
-  "subtitle": "",
+  "title": "Výdaje a příjmy veřejného sektoru v ČR od roku 1995",
+  "subtitle": "Výdaje a příjmy státu, samospráv a zdravotních pojišťoven, % HDP",
   "aes": [
     {
       "type": "x",
@@ -14,13 +14,13 @@
     {
       "type": "y",
       "field": "podil",
-      "label": "",
+      "label": "% HDP",
       "format": "percent"
     },
     {
       "type": "colour",
       "field": "ukazatel",
-      "label": ""
+      "label": "Ukazatel"
     }
   ],
   "source": [
@@ -28,13 +28,13 @@
       "name": "Eurostat",
       "dataset": "Government revenue, expenditure and main aggregates (gov_10a_main)",
       "url": "https://ec.europa.eu/eurostat/databrowser/view/gov_10a_main/default/table",
-      "retrieved": "2026-11-20"
+      "retrieved": "2026-11-21"
     }
   ],
   "data_note": "",
   "options": {
     "y_zero": false
   },
-  "last_updated": "2026-11-20",
+  "last_updated": "2026-11-21",
   "rows": 60
 }

@@ -40,10 +40,10 @@
       "name": "ČSÚ",
       "dataset": "Finanční situace domácností 2022 až 2024, tab. 12: Čisté jmění domácností ČR podle kvintilů čistého jmění",
       "url": "https://csu.gov.cz/produkty/financni-situace-domacnosti-2022-az-2024-",
-      "retrieved": "2026-11-19"
+      "retrieved": "2026-11-21"
     }
   ],
   "data_note": "Čistý majetek (tj. po odečtení dluhů). Podíl na celkovém jmění všech domácností spočten z průměrů.",
-  "last_updated": "2026-11-19",
+  "last_updated": "2026-11-21",
   "rows": 5
 }

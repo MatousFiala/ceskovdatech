@@ -23,13 +23,13 @@
       "name": "ČSÚ",
       "dataset": "Úmrtnostní tabulky za ČR",
       "url": "https://data.csu.gov.cz/datastat/data/VYBER/OBY04BCRT02",
-      "retrieved": "2026-11-18"
+      "retrieved": "2026-11-21"
     }
   ],
   "data_note": "Vážený průměr mužů a žen na základě poměru pohlaví -- 1028 chlapců na 1000 dívek. ČSÚ publikuje údaje jen odděleně.",
   "options": {
     "y_zero": false
   },
-  "last_updated": "2026-11-18",
+  "last_updated": "2026-11-21",
   "rows": 106
 }

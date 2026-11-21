@@ -123,6 +123,15 @@ main > .lede, main > .breadcrumb { text-align: left; hyphens: manual; }
 }
 .chart-tab + .chart-tab { border-left: 1px solid var(--line); }
 .chart-tab[aria-pressed="true"] { background: var(--bg-2); color: var(--text-primary); font-weight: 600; }
+.chart-controls { display: flex; flex: none; gap: 8px; align-items: flex-start; }
+/* facet toggle (options$facet): one small chart per series */
+.chart-facet-toggle { display: inline-flex; align-items: center; gap: 6px; }
+.chart-facet-toggle svg { fill: currentColor; }
+.chart-tabs[hidden] { display: none; }
+.chart-facets { display: grid; row-gap: 18px; }
+/* the panel under the pointer on top, so its tooltip is not covered by the next panel */
+.chart-facets > svg { position: relative; }
+.chart-facets > svg:hover { z-index: 1; }
 /* switch between the tabs of a chart (write_chart(tabs = ...)) */
 .chart-switch { display: inline-flex; flex-wrap: wrap; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; margin: 2px 0 10px; }
 .chart-switch[hidden] { display: none; }
