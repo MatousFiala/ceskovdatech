@@ -5,7 +5,9 @@ import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7.9.0/+esm";
 const figure = document.querySelector("#orp-map");
 const ROOT = new URL("..", import.meta.url);
 const INK = "#161616", RULE = "#C9C5BC";
-const DURATION = 1600, INTERVAL = 9000;
+const DURATION = 1600, INTERVAL = 9000, FADE_IN = 350;
+// book: the link under the map leads to an article
+const BOOK = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true"><path d="M12 6.5C10 5 7 4.5 3 4.5v14c4 0 7 .5 9 2 2-1.5 5-2 9-2v-14c-4 0-7 .5-9 2z"/><path d="M12 6.5v14"/></svg>';
 
 const number = (v, digits) => v.toLocaleString("cs-CZ", { minimumFractionDigits: digits, maximumFractionDigits: digits });
 const signed = (v) => (v > 0 ? "+" : v < 0 ? "−" : "") + number(Math.abs(v * 100), 1) + " %";
@@ -24,8 +26,8 @@ const STATES = [
   {
     title: "Naděje dožití při narození", sub: "2021–2025, roky", article: "zdravi",
     csv: "zdravi-nadeje-orp.csv", field: "nadeje", format: (v) => number(v, 1) + " let",
-    colour: d3.scaleThreshold([77, 78, 79, 80], ["#D9E4F1", "#9FBADB", "#5F8DC2", "#2A5E9A", "#0B2F57"]),
-    legend: ["#D9E4F1", "#D9E4F1", "#9FBADB", "#9FBADB", "#5F8DC2", "#5F8DC2", "#2A5E9A", "#2A5E9A", "#0B2F57", "#0B2F57"],
+    colour: d3.scaleThreshold([77, 78, 79, 80], ["#E4ECF6", "#B9CEE7", "#8BACD5", "#5D88C0", "#2F62A3"]),
+    legend: ["#E4ECF6", "#E4ECF6", "#B9CEE7", "#B9CEE7", "#8BACD5", "#8BACD5", "#5D88C0", "#5D88C0", "#2F62A3", "#2F62A3"],
     lo: "< 77", mid: "78–79", hi: "80+",
   },
   {
@@ -73,9 +75,13 @@ async function start() {
 
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
   let i = 0, hover = null, paused = false, timer = null;
+  let cur = STATES[0]; // the state the caption describes: changes when the map has finished changing
+  const link = $(".orp-link");
+  link.innerHTML = `${BOOK}<span></span>`;
+  const text = d3.selectAll([$(".orp-caption"), link]);
 
   function caption() {
-    const s = STATES[i];
+    const s = cur;
     const v = hover && s.values?.get(hover.kod);
     $(".orp-title").textContent = hover ? hover.name : s.title;
     $(".orp-sub").textContent = hover ? (v != null ? `${s.title}: ${s.format(v)}` : s.title) : s.sub;
@@ -87,16 +93,25 @@ async function start() {
     hexes.transition(t).attr("fill", fill(s)).attr("stroke", stroke(s));
     kraje.transition(t).attr("opacity", s.values ? 1 : 0);
     svg.attr("aria-label", `Mapa ORP: ${s.title}`);
+    buttons.attr("aria-pressed", (_, k) => String(k === i)).select("span").style("background", (_, k) => (k === i ? INK : RULE));
+    // the caption, legend and link fade out while the map changes, and come back with the new text when it is done
+    text.interrupt("text").transition("text").duration(animate ? DURATION : 0).ease(d3.easeCubicIn).style("opacity", 0)
+      .end().then(() => {
+        describe(s);
+        text.transition("text").duration(animate ? FADE_IN : 0).style("opacity", 1);
+      }, () => {}); // interrupted by the next change: that one writes the text
+  }
+  function describe(s) {
+    cur = s;
     caption();
     $(".orp-legend").hidden = !s.legend;
     if (s.legend) {
       swatches.attr("fill", (k) => s.legend[k]);
       $(".orp-lo").textContent = s.lo; $(".orp-mid").textContent = s.mid; $(".orp-hi").textContent = s.hi;
     }
-    buttons.attr("aria-pressed", (_, k) => String(k === i)).select("span").style("background", (_, k) => (k === i ? INK : RULE));
-    const a = $(".orp-link");
-    a.href = s.href;
-    a.textContent = `${s.link} →`;
+    link.href = s.href;
+    link.querySelector("svg").hidden = !s.values; // the book only for an article
+    link.querySelector("span").textContent = `${s.link} →`;
   }
   function restart() {
     clearInterval(timer);
@@ -105,6 +120,7 @@ async function start() {
   figure.addEventListener("pointerenter", () => { paused = true; });
   figure.addEventListener("pointerleave", () => { paused = false; hover = null; caption(); });
 
+  describe(STATES[0]);
   show(0, false);
   restart();
 }
