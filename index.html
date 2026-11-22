@@ -8,34 +8,37 @@
 {% assign a_chudoba = articles | where: "name", "chudoba_nerovnost.md" | first %}
 
 <section class="hero" aria-labelledby="hero-title">
+    {% comment %} Two rows: the text sits on the bottom edge of the map; the caption and switches hang below the map {% endcomment %}
     <div class="wrap hero-inner">
         <div class="hero-text">
             <h1 id="hero-title">Česko v&#160;číslech</h1>
             <p class="hero-lede">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus, posuere velit aliquet. Donec ullamcorper nulla non metus auctor fringilla.</p>
         </div>
-        <div class="hero-map">
-            {% comment %} Drawn by assets/home.js; the links of the data views come from here {% endcomment %}
-            <figure id="orp-map" aria-label="Mapa ORP, která se střídá mezi vlajkou a daty"
-                data-href-obyvatele="{{ a_obyv.url | relative_url }}" data-link-obyvatele="{{ a_obyv.title }}"
-                data-href-zdravi="{{ a_zdravi.url | relative_url }}" data-link-zdravi="{{ a_zdravi.title }}"
-                data-href-chudoba="{{ a_chudoba.url | relative_url }}" data-link-chudoba="{{ a_chudoba.title }}">
-                <svg role="img" aria-label="Mapa ORP" xmlns="http://www.w3.org/2000/svg"></svg>
-                <figcaption class="orp-caption">
-                    <div class="orp-text" aria-live="polite">
+        {% comment %} Drawn by assets/home.js; the links of the data views come from here {% endcomment %}
+        <figure id="orp-map" aria-label="Mapa ORP, která se střídá mezi vlajkou a daty"
+            data-href-obyvatele="{{ a_obyv.url | relative_url }}" data-link-obyvatele="{{ a_obyv.title }}"
+            data-href-zdravi="{{ a_zdravi.url | relative_url }}" data-link-zdravi="{{ a_zdravi.title }}"
+            data-href-chudoba="{{ a_chudoba.url | relative_url }}" data-link-chudoba="{{ a_chudoba.title }}">
+            <div class="orp-body">
+                <svg class="orp-svg" role="img" aria-label="Mapa ORP" xmlns="http://www.w3.org/2000/svg"></svg>
+                <div class="orp-legend" aria-hidden="true">
+                    <svg width="8" height="119" viewBox="0 0 8 119"></svg>
+                    <div class="orp-legend-labels"><span class="orp-hi"></span><span class="orp-mid"></span><span class="orp-lo"></span></div>
+                </div>
+            </div>
+            <div class="orp-foot">
+                <figcaption class="orp-caption" aria-live="polite">
+                    <div class="orp-cap">
                         <div class="orp-title">206 správních obvodů ORP</div>
-                        <div class="orp-sub">Lorem ipsum dolor sit amet</div>
-                    </div>
-                    <div class="orp-legend" hidden>
-                        <svg width="160" height="8" viewBox="0 0 160 8" aria-hidden="true"></svg>
-                        <div class="orp-legend-labels"><span class="orp-lo"></span><span class="orp-mid"></span><span class="orp-hi"></span></div>
+                        <div class="orp-sub"></div>
                     </div>
                 </figcaption>
                 <div class="orp-controls">
                     <div class="orp-states" role="group" aria-label="Vybrat zobrazení mapy"></div>
                     <a class="orp-link" href="#temata">Témata →</a>
                 </div>
-            </figure>
-        </div>
+            </div>
+        </figure>
     </div>
 </section>
 

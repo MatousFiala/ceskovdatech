@@ -50,48 +50,48 @@ a:hover { color: var(--hover); }
 .site-footer-inner { padding-top: 22.5px; padding-bottom: 29px; font-size: 11px; color: var(--text-muted); }
 
 /* ---------- home page ---------- */
+/* B: two columns, two rows. Row 1: the text, sitting on the bottom edge of the map | map and legend.
+   Row 2: empty | caption and switches (the figure spans both rows through a subgrid) */
 .hero-inner {
-  padding-top: 32px; padding-bottom: 32px;
-  display: flex; flex-wrap: wrap; align-items: center; gap: 25.5px 51px;
+  padding-top: 48px; padding-bottom: 44px;
+  display: grid; grid-template-columns: minmax(0, 1fr) 380px; grid-template-rows: auto auto;
+  column-gap: 48px; row-gap: 16px;
 }
-.hero-text { flex: 1 1 352px; min-width: 0; }
-.hero h1 { margin: 0; font-size: clamp(32px, 4vw, 48px); line-height: 1.02; font-weight: 700; letter-spacing: -0.035em; }
-.hero-lede { margin: 16px 0 0; max-width: 34em; font-size: 15px; line-height: 1.5; color: var(--text-secondary); }
-.hero-map { flex: 1 1 288px; min-width: 0; display: flex; justify-content: flex-end; }
+.hero-text { grid-column: 1; grid-row: 1; align-self: end; min-width: 0; margin-bottom: -5px; } /* -5 px: the descenders of the lede */
+.hero h1 { margin: 0; font-size: 44px; line-height: 1.05; font-weight: 700; letter-spacing: -0.035em; }
+.hero-lede { margin: 16px 0 0; max-width: 30em; font-size: 15.5px; line-height: 1.55; color: var(--text-secondary); }
 
-#orp-map { margin: 0; width: 100%; max-width: 320px; }
-#orp-map > svg { display: block; width: 100%; height: auto; aspect-ratio: 225 / 136.24; }
-.orp-caption {
-  margin-top: 9.5px; padding-top: 8px; border-top: 1px solid var(--line);
-  display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 9.5px 19px;
-  min-height: 45px;
-}
-.orp-text { flex: 1 1 176px; min-width: 0; }
-.orp-title { font-size: 12px; font-weight: 600; line-height: 1.35; }
-.orp-sub { font-size: 11px; line-height: 1.5; color: var(--text-muted); }
-.orp-legend { flex: none; padding-top: 3px; }
-.orp-legend[hidden] { display: none; }
+#orp-map { grid-column: 2; grid-row: 1 / span 2; margin: 0; display: grid; grid-template-rows: subgrid; min-width: 0; }
+/* map with its legend on the right (vertical, highest on top) */
+.orp-body { align-self: end; display: flex; align-items: flex-end; justify-content: space-between; gap: 8px; }
+.orp-svg { display: block; flex: 0 1 300px; min-width: 0; height: auto; aspect-ratio: 227 / 138.24; overflow: visible; }
+.orp-legend { flex: none; display: flex; gap: 8px; }
+/* the flag view has no legend: home.js fades it out, its place is kept, so nothing moves */
 .orp-legend svg { display: block; }
 .orp-legend-labels {
-  width: 128px; display: flex; justify-content: space-between;
-  font-size: 9.5px; line-height: 1.6; color: var(--text-muted); font-variant-numeric: tabular-nums;
+  height: 119px; display: flex; flex-direction: column; justify-content: space-between;
+  font-size: 11.5px; line-height: 1; color: var(--text-muted); font-variant-numeric: tabular-nums; white-space: nowrap;
 }
-.orp-controls { display: flex; align-items: center; justify-content: space-between; gap: 13px; margin-top: 2px; }
+/* caption: a fixed two-line window, so the caption sliding in and out does not move anything */
+.orp-caption { position: relative; overflow: hidden; height: 42px; }
+.orp-cap { will-change: transform, opacity; }
+.orp-title, .orp-sub { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.orp-title { font-size: 14px; font-weight: 600; line-height: 1.35; }
+.orp-sub { font-size: 13px; line-height: 1.5; color: var(--text-muted); }
+.orp-controls { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 12px; border-top: 1px solid var(--line); }
 .orp-states { display: flex; align-items: center; }
-.orp-states button { width: 29px; height: 35px; padding: 0; background: none; border: 0; cursor: pointer; display: flex; align-items: center; }
-.orp-states span { display: block; width: 22.5px; height: 2px; background: #C9C5BC; }
-.orp-link { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 500; text-decoration: none; }
+.orp-states button { width: 28px; height: 32px; padding: 0; background: none; border: 0; cursor: pointer; display: flex; align-items: center; }
+.orp-states span { display: block; width: 22px; height: 2px; background: #C9C5BC; }
+.orp-link { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 500; text-decoration: none; white-space: nowrap; }
 .orp-link svg { display: block; flex: none; }
 .orp-link svg[hidden] { display: none; }
-/* caption and link fade while the map changes (home.js) */
-.orp-caption, .orp-link { will-change: opacity; }
 
 .band { border-top: 1px solid var(--line); }
 .band > .wrap { padding-top: 32px; padding-bottom: 70.5px; }
 .section-title { margin: 0 0 22.5px; font-size: 24px; line-height: 1.15; font-weight: 700; letter-spacing: -0.02em; scroll-margin-top: 19px; }
 
 .topic-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(166.5px, 1fr)); gap: 38.5px 29px; }
-.topic { border-top: 2px solid var(--text-primary); padding-top: 14.5px; min-width: 0; }
+.topic { border-top: 1px solid var(--line); padding-top: 14.5px; min-width: 0; }
 .topic-head { display: flex; align-items: center; gap: 8px; margin-bottom: 6.5px; color: var(--accent); }
 .topic-icon { display: block; flex: none; }
 .topic h3 { margin: 0; font-size: 13.5px; font-weight: 600; letter-spacing: -0.01em; color: var(--text-primary); }
@@ -166,9 +166,12 @@ a:hover { color: var(--hover); }
 .sidenav-sections a:hover { color: var(--text-primary); }
 .sidenav-sections a.reading { border-left-color: var(--accent); color: var(--text-primary); font-weight: 500; }
 
-/* map under the text (the hero wraps): centred */
+/* narrow: one column, the map under the text, centred */
 @media (max-width: 760px) {
-  .hero-map { justify-content: center; }
+  .hero-inner { grid-template-columns: minmax(0, 1fr); grid-template-rows: none; row-gap: 32px; }
+  .hero-text { grid-row: auto; margin-bottom: 0; }
+  #orp-map { grid-column: 1; grid-row: auto; display: block; justify-self: center; width: 100%; max-width: 380px; }
+  .orp-foot { margin-top: 16px; }
 }
 
 @media (max-width: 1000px) {
@@ -178,7 +181,7 @@ a:hover { color: var(--hover); }
 }
 
 /* ---------- chart card ---------- */
-.chart-card { margin: 38.5px 0 45px; padding-top: 14.5px; border-top: 2px solid var(--text-primary); position: relative; }
+.chart-card { margin: 38.5px 0 45px; padding-top: 14.5px; border-top: 1px solid var(--line); position: relative; }
 .chart-head { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 9.5px 25.5px; margin-bottom: 8px; }
 .chart-head > div:first-child { flex: 1 1 304px; min-width: 0; }
 .chart-title { margin: 0; font-size: 16px; line-height: 1.3; font-weight: 600; letter-spacing: -0.01em; }
@@ -289,8 +292,8 @@ a:hover { color: var(--hover); }
 
 @media (max-width: 560px) {
   :root { --gutter: 13px; }
-  .hero-inner { padding-top: 22.5px; padding-bottom: 25.5px; }
-  .hero-lede { font-size: 14.5px; }
+  .hero-inner { padding-top: 28px; padding-bottom: 32px; }
+  .hero h1 { font-size: 36px; }
   .band > .wrap, .about > .wrap { padding-top: 38.5px; padding-bottom: 51px; }
   .about-facts > div { grid-template-columns: 1fr; gap: 2px; }
   .chart-title { font-size: 14.5px; }
