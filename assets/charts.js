@@ -4,10 +4,12 @@ import * as Plot from "https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6.17/+e
 import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7.9.0/+esm";
 
 const ROOT = new URL("..", import.meta.url); // site root, wherever the page lives
-const PALETTE = ["#2a78d6", "#e34948", "#1baf7a", "#eda100", "#e87ba4", "#008300", "#6250d6", "#eb6834", "#8a5a2b", "#5c6670"];
-const MUTED = "#c9c8c2";
+// series colours of the site design first (blue and red of the flag, then green, amber, purple, pink)
+const PALETTE = ["#2F6DB5", "#D7141A", "#1E9E77", "#E3A008", "#7A5CC8", "#E87BA4", "#008300", "#eb6834", "#8a5a2b", "#5c6670"];
+const MUTED = "#c9c5bc";
+const INK = "#161616", INK_2 = "#45433E", INK_3 = "#6B675F", BG = "#FBFAF7"; // = site.css --text-*, --bg
 const DASHES = [null, "6 4", "2 3", "10 4 2 4"];
-const FONT = '"DM Sans", "Helvetica Neue", Helvetica, Arial, sans-serif';
+const FONT = '"Inter", system-ui, -apple-system, "Segoe UI", Arial, sans-serif';
 
 // ---------- formatting (Czech) ----------
 // Every aesthetic may carry a `format` (see write_chart() in R/utils.R):
@@ -147,13 +149,13 @@ function annotationMarks(o, { ch = { x: "x", y: "y" }, xValue = (v) => v } = {})
     const channel = ch[along];
     const vertical = channel === "x";
     const rule = (vertical ? Plot.ruleX : Plot.ruleY)([v], {
-      stroke: "#77756f", strokeWidth: 1, strokeDasharray: a.dash === false ? null : "4 3",
+      stroke: INK_3, strokeWidth: 1, strokeDasharray: a.dash === false ? null : "4 3",
     });
     if (!a.label) return [rule];
     const align = { center: "middle", centre: "middle", middle: "middle", bottom: "bottom" }[a.align] ?? "top";
     const text = Plot.text([{ v, label: plain(a.label) }], {
       [channel]: "v", text: "label",
-      fill: "#52514e", fontSize: 12, stroke: "white", strokeWidth: 3, paintOrder: "stroke",
+      fill: INK_2, fontSize: 12, stroke: BG, strokeWidth: 3, paintOrder: "stroke",
       ...(vertical
         ? { // reads upwards, just left of the line
           rotate: -90, lineAnchor: "bottom", dx: -3, frameAnchor: align,
@@ -219,7 +221,7 @@ function lineChart(spec, data, A, o, width, all) {
         if (lo instanceof Date) v = new Date(v);
         return v >= lo && v <= hi ? v : null; // outside the chosen years: not drawn
       } }),
-      Plot.dot(data, pointer({ x, y, fill: stroke, r: 4, stroke: "white" })),
+      Plot.dot(data, pointer({ x, y, fill: stroke, r: 4, stroke: BG })),
       Plot.tip(data, pointer({ x, y, title: tipText(spec.aes) })),
     ],
   });
@@ -325,7 +327,7 @@ function rangeChart(spec, data, A, o, width) {
         Plot.ruleX(rows, { x: "c", y1: "lo", y2: "hi", stroke, strokeWidth: 2 }),
         Plot.ruleY(rows, { y: "lo", x1: (r) => r.c - cap, x2: (r) => r.c + cap, stroke, strokeWidth: 2 }),
         Plot.ruleY(rows, { y: "hi", x1: (r) => r.c - cap, x2: (r) => r.c + cap, stroke, strokeWidth: 2 }),
-        Plot.dot(rows, { x: "c", y: "mid", fill: stroke, r: 4, stroke: "white", strokeWidth: 1 }),
+        Plot.dot(rows, { x: "c", y: "mid", fill: stroke, r: 4, stroke: BG, strokeWidth: 1 }),
         Plot.tip(rows, Plot.pointerX({ x: "c", y: "mid", title: "tip" })),
       ],
     });
@@ -343,7 +345,7 @@ function rangeChart(spec, data, A, o, width) {
         Plot.ruleY(rows, { y: "c", x1: "lo", x2: "hi", stroke, strokeWidth: 2 }),
         Plot.tickX(rows, { y: "c", x: "lo", stroke, strokeWidth: 2, insetTop: 7, insetBottom: 7 }),
         Plot.tickX(rows, { y: "c", x: "hi", stroke, strokeWidth: 2, insetTop: 7, insetBottom: 7 }),
-        Plot.dot(rows, { y: "c", x: "mid", fill: stroke, r: 5, stroke: "white", strokeWidth: 1 }),
+        Plot.dot(rows, { y: "c", x: "mid", fill: stroke, r: 5, stroke: BG, strokeWidth: 1 }),
         Plot.tip(rows, Plot.pointerY({ y: "c", x: "mid", title: "tip" })),
       ],
     });
@@ -386,7 +388,7 @@ function dotChart(spec, data, A, o, width, all) {
     marks: [
       Plot.ruleY(rows, { y: "c", x1: "lo", x2: "hi", stroke: "#d6d4cd", strokeWidth: 2 }),
       ...annotationMarks(o, { ch: { x: "y", y: "x" }, xValue: (v) => cats.find((c) => String(c) === String(v)) ?? null }),
-      Plot.dot(data, { y: cat, x: y, fill, r: 5, stroke: "white", strokeWidth: 1, title: tipText(spec.aes), tip: true }),
+      Plot.dot(data, { y: cat, x: y, fill, r: 5, stroke: BG, strokeWidth: 1, title: tipText(spec.aes), tip: true }),
     ],
   });
   // colour already gives the series: the highlighted categories get a bold label instead
@@ -398,7 +400,7 @@ function dotChart(spec, data, A, o, width, all) {
 function totalMarks(data, { cat, y, catCh, valCh, on }) {
   if (!on) return [];
   const rows = d3.rollups(data, (v) => d3.sum(v, (d) => d[y]), (d) => d[cat]).map(([c, net]) => ({ c, net }));
-  return [(valCh === "y" ? Plot.tickY : Plot.tickX)(rows, { [catCh]: "c", [valCh]: "net", stroke: "#1f1f1e", strokeWidth: 2.5 })];
+  return [(valCh === "y" ? Plot.tickY : Plot.tickX)(rows, { [catCh]: "c", [valCh]: "net", stroke: INK, strokeWidth: 2.5 })];
 }
 
 // Bold tick labels for the given categories (highlight on bar charts whose fill is taken)
@@ -452,11 +454,11 @@ async function mapChart(spec, data, A, o, width) {
     },
     marks: [
       // a two-sided scale is pale in the middle, where white borders would vanish
-      Plot.geo(fc.features, { fill: (f) => row(f)?.[A.fill.field], stroke: diverging ? "#a9a8a2" : "white", strokeWidth: diverging ? 0.5 : 1 }),
+      Plot.geo(fc.features, { fill: (f) => row(f)?.[A.fill.field], stroke: diverging ? "#a9a8a2" : BG, strokeWidth: diverging ? 0.5 : 1 }),
       // highlight: colour is the data here, so highlighted regions get a dark outline
       // (white under dark, so that the outline shows on both ends of the colour scale)
-      hi ? Plot.geo(fc.features.filter((f) => hi(row(f))), { fill: "none", stroke: "white", strokeWidth: 5 }) : null,
-      hi ? Plot.geo(fc.features.filter((f) => hi(row(f))), { fill: "none", stroke: "#1f1f1e", strokeWidth: 2.5 }) : null,
+      hi ? Plot.geo(fc.features.filter((f) => hi(row(f))), { fill: "none", stroke: BG, strokeWidth: 5 }) : null,
+      hi ? Plot.geo(fc.features.filter((f) => hi(row(f))), { fill: "none", stroke: INK, strokeWidth: 2.5 }) : null,
       // tooltip of the region whose centre is nearest to the pointer
       Plot.tip(fc.features, Plot.pointer(Plot.centroid({
         title: (f) => (row(f) ? title(row(f)) : "Bez dat"),
@@ -515,10 +517,10 @@ function pyramidChart(spec, data, A, o, width, all) {
         fill: side, fillOpacity: pale ? 0.4 : 0.9,
         title: tipText(spec.aes), tip: { pointer: "y" },
       }),
-      Plot.ruleX([0], { stroke: "white", strokeWidth: 1 }),
-      ref.length ? Plot.line(ref, { x: "x", y: "y", z: "s", stroke: "#1f1f1e", strokeWidth: 1.2 }) : null,
-      Plot.text([corner], { frameAnchor: "top-right", fontSize: 18, fontWeight: 600, fill: "#1f1f1e", dy: 4 }),
-      ref.length ? Plot.text([`Obrys: ${fmt(A.frame, o.reference)}`], { frameAnchor: "top-right", dy: 28, fill: "#52514e", fontSize: 12 }) : null,
+      Plot.ruleX([0], { stroke: BG, strokeWidth: 1 }),
+      ref.length ? Plot.line(ref, { x: "x", y: "y", z: "s", stroke: INK, strokeWidth: 1.2 }) : null,
+      Plot.text([corner], { frameAnchor: "top-right", fontSize: 18, fontWeight: 600, fill: INK, dy: 4 }),
+      ref.length ? Plot.text([`Obrys: ${fmt(A.frame, o.reference)}`], { frameAnchor: "top-right", dy: 28, fill: INK_2, fontSize: 12 }) : null,
     ],
   });
 }
@@ -717,7 +719,9 @@ function frameSlider(values, start, onChange) {
   return h("div", { class: "chart-timeline" }, track, text);
 }
 
-// PNG = title + chart + source drawn on a white canvas (colour legend is not included)
+// PNG = title + chart + source drawn on a white canvas (colour legend is not included), with the site's mark
+// in the top right corner (the version for a light background)
+const LOGO = new URL("img/cesko-v-cislech-znacka-svetla.svg", import.meta.url).href;
 async function downloadPng(spec, body) {
   // the chart itself (legends come before it), or every panel of a faceted chart
   const grid = body.querySelector(".chart-facets");
@@ -730,27 +734,33 @@ async function downloadPng(spec, body) {
     svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
     svg.setAttribute("width", r.width);
     svg.setAttribute("height", r.height);
-    svg.style.color = "#1f1f1e";
+    svg.style.color = INK;
     const img = new Image();
     img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(new XMLSerializer().serializeToString(svg));
     await img.decode();
     return { img, x: r.left - frame.left, y: r.top - frame.top, w: r.width, h: r.height };
   }));
 
+  const logo = new Image();
+  logo.src = LOGO;
+  const hasLogo = await logo.decode().then(() => true, () => false); // no logo rather than no PNG
   const pad = 20, top = 64, bottom = 34, scale = 2;
+  const logoH = 40, logoW = hasLogo ? (logoH * logo.naturalWidth) / logo.naturalHeight : 0;
+  const textW = width - (hasLogo ? logoW + 16 : 0); // title and subtitle stop short of the logo
   const canvas = h("canvas", { width: (width + 2 * pad) * scale, height: (height + top + bottom) * scale });
   const ctx = canvas.getContext("2d");
   ctx.scale(scale, scale);
-  ctx.fillStyle = "white";
+  ctx.fillStyle = BG;
   ctx.fillRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = "#1f1f1e";
+  ctx.fillStyle = INK;
   ctx.font = `600 19px ${FONT}`;
-  ctx.fillText(plain(spec.title), pad, 30);
-  ctx.fillStyle = "#52514e";
+  ctx.fillText(plain(spec.title), pad, 30, textW);
+  ctx.fillStyle = INK_2;
   ctx.font = `13px ${FONT}`;
-  ctx.fillText(plain(spec.subtitle), pad, 50);
+  ctx.fillText(plain(spec.subtitle), pad, 50, textW);
+  if (hasLogo) ctx.drawImage(logo, pad + width - logoW, 12, logoW, logoH);
   for (const p of images) ctx.drawImage(p.img, pad + p.x, top + p.y, p.w, p.h);
-  ctx.fillStyle = "#77756f";
+  ctx.fillStyle = INK_3;
   ctx.font = `12px ${FONT}`;
   const names = sourceGroups(spec).map(([name]) => name).join(", ");
   ctx.fillText(`Zdroj: ${names} · ceskovcislech`, pad, top + height + 20);

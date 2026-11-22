@@ -1,6 +1,19 @@
 ---
 layout: default
 ---
-<p class="breadcrumb"><a href="{{ '/' | relative_url }}">Všechna témata</a>{% if page.topic %} · {{ page.topic }}{% endif %}</p>
+{% comment %} The next article: the next one in the same topic, else the first of the next topic (in the order of the home page) {% endcomment %}
+{% assign articles = site.pages | where_exp: "p", "p.path contains 'articles/'" | sort: "order" %}
+{% assign topics = articles | group_by: "topic" %}
+{% assign ordered = "" | split: "" %}
+{% for topic in topics %}{% assign ordered = ordered | concat: topic.items %}{% endfor %}
+{% assign next = nil %}
+{% for a in ordered %}{% if a.url == page.url %}{% assign i = forloop.index0 | plus: 1 %}{% assign next = ordered[i] %}{% endif %}{% endfor %}
+<p class="breadcrumb"><a href="{{ '/#temata' | relative_url }}">Všechna témata</a>{% if page.topic %}<span aria-hidden="true"> / </span>{{ page.topic }}{% endif %}</p>
 <h1>{{ page.title }}</h1>
+<p class="lede">{{ page.lede | default: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus, posuere velit aliquet." }}</p>
+<p class="article-meta">Aktualizováno 21. listopadu 2026 · Lorem ipsum dolor sit amet</p>
 {{ content }}
+<nav class="next-article" aria-label="Další článek">
+    {% if next %}<a class="next-link" href="{{ next.url | relative_url }}"><span class="next-label">{% if next.topic == page.topic %}Další v tématu {{ page.topic }}{% else %}Další téma: {{ next.topic }}{% endif %}</span><span class="next-title">{{ next.title }} →</span></a>{% endif %}
+    <a class="next-all" href="{{ '/#temata' | relative_url }}">Všechna témata</a>
+</nav>

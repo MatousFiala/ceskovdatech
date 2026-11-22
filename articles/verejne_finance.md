@@ -20,7 +20,7 @@ Rozpočet se řídí základní účetní rovnicí: *výdaje = příjmy + čist�
 
 <figure data-chart="rozpocet-prijmy-vydaje"></figure>
 
-Státní rozpočet byl většinu z posledních 15 let schodkový. Do určité míry to lze vysvětlit důsledky ekonomických krizí v letech 2008, 2010, 2020 a 2022. V dobách krize se státy obecně snaží podpořit ekonomiku tím, že do ní vloží peníze -- i za cenu zadlužení. Po odeznění finanční a dluhové krize se schodek v letech 2016–2019 téměř vytratil. Podobné snížení se ale v posledních letech nekoná.
+Státní rozpočet byl většinu z posledních 15 let schodkový. Do určité míry to lze vysvětlit důsledky ekonomických krizí v letech 2008, 2010, 2020 a 2022. V dobách krize se státy obecně snaží podpořit ekonomiku tím, že do ní vloží peníze -- i za cenu zadlužení. Po odeznění finanční a dluhové krize se schodek v letech 2016–2019 téměř vytratil. Podobné snížování se ale v posledních letech nekoná.
 
 <figure data-chart="rozpocet-schodek"></figure>
 
@@ -38,7 +38,7 @@ I přes růst má Česko stále relativně malý dluh -- ten ale na rozdíl od E
 
 ## Na co se využívá státní rozpočet?
 
-Největší složkou veřejných rozpočtů je **státní rozpočet**: příjmy a výdaje centrálního státu (zbytek veřejných financí v Česku proudí přes rozpočty krajů, obcí a zdravotních pojišťoven). Státní rozpočet financuje mnoho základních funkcí státu, mj. sociální stát, služby občanům (vzdělávání, kulturu), infrastrukturu (dopravu, průmyslovou politiku), bezpečnost a vlastní provoz.
+Největší složkou veřejných rozpočtů je **státní rozpočet**: příjmy a výdaje centrálního státu (zbytek veřejných financí v Česku proudí přes rozpočty krajů, obcí a zdravotních pojišťoven). Státní rozpočet financuje mnoho základních funkcí státu, mj. sociální stát, služby občanům (vzdělávání, kulturu...), infrastrukturu (dopravu, průmyslovou politiku...), bezpečnost a vlastní provoz státu.
 
 Výdaje státního rozpočtu rostou. Objem vyplácených důchodů se kvůli demografickému vývoji pomalu zvyšuje a stát vydává více také na bezpečnost a služby. Největší nárůst nastal v covidových letech 2020 a 2021, poté výdaje mírně klesly a drží se na stabilní úrovni -- stále však vyšší než před rokem 2020.
 
@@ -54,7 +54,7 @@ V mezinárodním srovnání vydává Česko relativně velkou část rozpočtu n
 
 <figure data-chart="rozpocet-vydaje-srovnani"></figure>
 
-## Kde se berou peníze do státního rozpočtu?
+## Odkud proudí příjmy státního rozpočtu?
 
 Státní rozpočet je financován převážně daněmi a odvody, v menší míře pak transfery (typicky dotacemi z EU). Příjmy českého rozpočtu rostly až do roku 2019. Kvůli covidovému útlumu ekonomiky a změnám daňového systému poté klesly a v reálném vyjádření se dosud nevrátily na úroveň roku 2019.
 

@@ -28,6 +28,6 @@ Z odhadu historického vývoje je zřejmé, že se **materiální životní úro
 
 <figure data-chart="hdp-srovnani-cross-section"></figure>
 
-Z vývoje v čase je patrné, že si Česko po změně režimu relativně polepšilo a přiblížilo se ekonomickému výstupu nejbohatších zemí. Z dat za poslední roky ale není zřejmé, zda tato *konvergence* bude pokračovat a zda se Česku podaří zařadit se mezi nejvýkonnější ekonomiky Evropy a světa.
+Z vývoje v čase je patrné, že si Česko po roce 1989 relativně polepšilo a přiblížilo se ekonomickému výstupu nejbohatších zemí. Z dat za poslední roky ale není zřejmé, zda tato *konvergence* bude pokračovat a zda se Česku podaří zařadit se mezi nejvýkonnější ekonomiky Evropy a světa.
 
 <figure data-chart="hdp-srovnani-casova-rada"></figure>

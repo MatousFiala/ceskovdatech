@@ -12,7 +12,7 @@ Věk obyvatel se v bohatých zemích obecně zvyšuje. Česko není výjimkou: o
 
 Podrobnější pohled nabízí tzv. **věková pyramida**. Jedná se o zrcadlový sloupcový graf počtu obyvatel podle věku, rozdělený na muže a ženy. Jsou v něm zřetelné silné a slabé ročníky, rozdíl v naději dožití mužů a žen i některé historické události (např. malé ročníky narozené během první světové války).
 
-V české pyramidě jsou vidět silné ročníky tzv. *Husákových dětí* narozených v 70. letech. Tato generace se pomalu blíží důchodovému věku a její odchod z trhu práce bude v příštích dvou dekádách značnou výzvou pro důchodový systém. Vidět jsou i silnější ročníky narozené kolem roku 2008, jejichž průchod školním věkem prověřil kapacity škol.
+V české pyramidě jsou vidět silné ročníky tzv. *Husákových dětí* narozených v 70. letech. Tato generace se pomalu blíží důchodovému věku a její odchod z trhu práce bude v příštích dvou dekádách značnou výzvou pro důchodový systém. Vidět jsou i silnější ročníky narozené kolem roku 2008, jejichž průchod školním věkem prověřuje kapacity škol.
 
 <figure data-chart="vek-pyramida"></figure>
 
@@ -30,7 +30,7 @@ Mezi kraji nejsou ve věkové struktuře velké rozdíly: průměrný věk v nej
 
 ## Kolik mají Češi dětí?
 
-Základní hnací silou demografické tranzice je plodnost. Ta obecně klesá s rostoucí ekonomickou úrovní: výpadek příjmů kvůli mateřství je při vyšších mzdách v absolutním vyjádření bolestivější, lidé se nemusí spoléhat na děti jako na jediný zdroj příjmů a péče ve stáří a vyšší vzdělanost je spojena s menším počtem dětí v rodinách. V Česku se plodnost výrazně snížila po roce 1989 a dlouhodobě se pohybuje pod hranicí 2,1 dítěte na ženu, pod kterou se nerodí dost dětí na udržení počtu obyvatel (alespoň bez migrace).
+Základní hnací silou demografické tranzice je plodnost. Ta obecně klesá s rostoucí ekonomickou úrovní: výpadek příjmů kvůli mateřství je při vyšších mzdách v absolutním vyjádření bolestivější, lidé se nemusí spoléhat na děti jako na jediný zdroj příjmů a péče ve stáří. Vyšší vzdělanost je spojena s menším počtem dětí v rodinách. V Česku se plodnost výrazně snížila po roce 1989 a dlouhodobě se pohybuje pod hranicí 2,1 dítěte na ženu, pod kterou se nerodí dost dětí na udržení počtu obyvatel (alespoň bez migrace).
 
 <figure data-chart="porodnost-plodnost"></figure>
 

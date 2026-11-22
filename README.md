@@ -4,27 +4,26 @@
 ## Topics
 
 ### Obyvatelstvo
-Základní demografické údaje Věková struktura a porodnost
+Základní demografické údaje 
+Věková struktura a porodnost
 Migrace
-Vzdělání
 
-### Ekonomika
+### Veřejné finance
 HDP, růst a produktivita
 Veřejné finance a daně
 Mzdy a zaměstnanost
 Důchody
 
-### Energetika a životní prostředí
-Energetický mix 
+### Hospodářství
+Energetika
 Emise skleníkových plynů
+Doprava
 
-### Zdravotnictví
-Naděje dožití
+### Společnost
+Zdraví 
+Vzdělání
+Chudoba a nerovnost
 
-### Sociální
-Chudoba
-Nerovnost
-Exekuce
 
 ## Data
 `Rscript run_all.R` (from the project root) downloads the newest data into `data/`, one CSV per source dataset. Each script in `R/` can also be run on its own. Data is saved raw; derived series (e.g. real GDP per capita) are computed later, at the chart stage.
@@ -92,10 +91,13 @@ The site is built by Jekyll; GitHub Pages does that on every push (Settings → 
 | File | What it is |
 |---|---|
 | `_config.yml` | site title and tagline, folders left out of the site, default layouts |
-| `_layouts/default.html` | the shared `<head>`, header and footer of every page |
-| `_layouts/article.html` | title, lede and breadcrumb of an article (wraps `default`) |
-| `_includes/sidenav.html`, `assets/nav.js` | side navigation of an article: all articles by topic, plus the `##` and `###` headings of the open one |
-| `index.html` | home page: lists everything in `articles/`, grouped by `topic` |
+| `_layouts/default.html` | the shared `<head>`, header (logo, links to Témata and O projektu) and footer of every page |
+| `assets/site.css` | the whole look (light only): colours, Inter, layout; the chart cards built by `charts.js` |
+| `assets/img/` | logo: `*-hlavicka-*` (wordmark, used in the header: `svetla` = for a light background) and `*-znacka-*` (the mark alone, also in the PNG export of charts); `favicon.svg` is a square copy of the mark whose outlines turn light in a dark browser theme |
+| `_layouts/article.html` | breadcrumb, title, lede, update line and the link to the next article (wraps `default`); the lede and the update line are placeholders until filled in |
+| `_includes/sidenav.html`, `assets/nav.js` | side navigation of an article: back to the topics, plus the `##` and `###` headings of the article, marking the one being read |
+| `index.html` | home page: the ORP map, the topics (everything in `articles/`, grouped by `topic`, with an icon from `_includes/topic-icon.html`) and O projektu; texts in Latin are placeholders |
+| `assets/home.js`, `assets/orp-hex.json` | the home-page map: 206 ORP hexes (geometry from the Claude Design file, ORP codes as in `geo/orp.geojson`) that turn, with d3 transitions every 9 s, from the flag into three ORP charts (`obyvatele-zmena-orp`, `zdravi-nadeje-orp`, `chudoba-isv-orp`, read from `chart_data/`) |
 | `articles/*.md` | the articles |
 
 A new article is one Markdown file in `articles/`; it gets its layout and its place on the home page automatically:
@@ -220,30 +222,6 @@ options = list(annotations = list(
 
 `Rscript R/geo.R` downloads the kraje boundaries (Eurostat GISCO) into `geo/kraje.geojson`; its `NUTS_ID` equals the ČSÚ kraj code (`CZ010`, …). It also writes `geo/orp.geojson` (správní obvody ORP from the `RCzechia` package, simplified; needs `sf`), used with `options = list(geo = "orp.geojson", geo_key = "KOD_ORP")`; `KOD_ORP` equals the ČSÚ ORP code, Praha is `1000`.
 
-## Drafts
-
-### HDP, růst a produktivita
-ČŘ České HDP (1990+ ČSÚ, dříve maddison -- v reálných Korunách)
-ČŘ České HDP na osobu (-//-)
-ČŘ Růst HDP 
-Produktivita práce (na osobu, na hodinu práce) -- ČSÚ?
-Srovnání HDP na osobu s jinými zeměmi (PPP USD) -- WBI asi
-Srovnání vývoje HDP s jinými zeměmi (PPP USD) -- stejná data jak <-, jen focus i na minulost.
-
-### Mzdy a zaměstnanost 
-ČŘ Míra nezaměstnanosti
-ČŘ Míra zaměstnanosti
-MAPA nezaměstnanost
-SLOUP Srovnání míry z. a nz. (v rámci EU -- Eurostat?)
-ČŘ Mediánová mzda
-SLOUP distribuce mezd
-MAPA mediánová (průměrná jestli není) mzda podle Kraje
 
 
-
-
-
-
-
-
-
+https://claude.com/cai/oauth/authorize?code=true&client_id=59637612-477b-4836-a601-b0589eda7704&response_type=code&redirect_uri=https%3A%2F%2Fplatform.claude.com%2Foauth%2Fcode%2Fcallback&scope=user%3Adesign%3Aread+user%3Adesign%3Awrite&code_challenge=O4JW7d6DudDlefVGYqlon0NGvxgWnbSVtVr3kLU9NzI&code_challenge_method=S256&state=bAzdPJRuEiij0jpJ0L5Y72tgZhDVDz6y1TLi83GSRsg

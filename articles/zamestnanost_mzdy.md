@@ -16,7 +16,7 @@ Vývoj nezaměstnanosti se mezi skupinami výrazně liší. Obecně platí, že 
 
 <figure data-chart="nezamestnanost-vek"></figure>
 
-Nezaměstnanost bývá často soustředěná v určitých regionech: pokud se region dlouho specializoval na odvětví, které se dostalo do útlumu, zaměstnancům se často nedaří najít práci v jiných odvětvích. Tento vzorec je v Česku typický pro pohraniční regiony zaměřené na těžký průmysl a těžbu: Ústecký, Karlovarský a Moravskoslezský kraj.
+Nezaměstnanost bývá často soustředěná v určitých regionech: pokud se region dlouho specializoval na odvětví, které se dostalo do útlumu, zaměstnancům se mnohdy nedaří najít práci v jiných odvětvích. Tento vzorec je v Česku typický pro pohraniční regiony zaměřené na těžký průmysl a těžbu: Ústecký, Karlovarský a Moravskoslezský kraj.
 
 <figure data-chart="nezamestnanost-kraje"></figure>
 

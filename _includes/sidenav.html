@@ -1,16 +1,5 @@
-{% comment %} Side navigation of an article: every article by topic; nav.js adds the sections of the open one {% endcomment %}
-{% assign articles = site.pages | where_exp: "p", "p.path contains 'articles/'" | sort: "order" %}
-{% assign topics = articles | group_by: "topic" %}
+{% comment %} Side navigation of an article: back to the topics, and the sections of this article (filled by nav.js) {% endcomment %}
 <nav class="sidenav" aria-label="Obsah">
-    {% for topic in topics %}
-    <p class="sidenav-topic">{{ topic.name | default: "Ostatní" }}</p>
-    <ul>
-        {% for article in topic.items %}
-        <li>
-            <a href="{{ article.url | relative_url }}"{% if article.url == page.url %} class="current" aria-current="page"{% endif %}>{{ article.title }}</a>
-            {% if article.url == page.url %}<ul class="sidenav-sections" data-sections></ul>{% endif %}
-        </li>
-        {% endfor %}
-    </ul>
-    {% endfor %}
+    <a class="sidenav-back" href="{{ '/#temata' | relative_url }}">← Všechna témata</a>
+    <ul class="sidenav-sections" data-sections></ul>
 </nav>

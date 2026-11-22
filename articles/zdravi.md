@@ -6,11 +6,11 @@ order: 1
 
 ## Kolika let se Češi dožívají?
 
-Základním údajem pro sledování dlouhověkosti je **naděje dožití**: kolika let by se v průměru dožil novorozenec, kdyby po celý jeho život platila úmrtnost podle věku z daného roku? Naděje dožití se v Česku dlouhodobě zvyšuje. Lidé se dnes dožívají v průměru 80 let, téměř o 9 let déle než před rokem 1989.
+Základním údajem pro sledování dlouhověkosti je **naděje dožití**: kolika let by se v průměru dožil novorozenec, kdyby po celý jeho život platila úmrtnost podle věku z daného roku. Naděje dožití se v Česku dlouhodobě zvyšuje. Lidé se dnes dožívají v průměru 80 let, téměř o 9 let déle než před rokem 1989.
 
 <figure data-chart="zdravi-nadeje-doziti"></figure>
 
-Úplnější obrázek -- zvláště pro minulost -- přináší naděje dožití podle věku. Ačkoliv byla v roce 1920 naděje dožití necelých 50 let, neznamenalo to, že by bylo vzácné dožít se šedesáti: průměr snižovala závratná dětská úmrtnost. Lze proto spočítat **podmíněnou naději dožití**: pokud se člověk dožil daného věku, kolika let se v průměru dožije?
+Úplnější obrázek -- zvláště pro minulost -- přináší naděje dožití podle věku. Ačkoliv byla v roce 1920 naděje dožití necelých 50 let, neznamenalo to, že by bylo vzácné dožít se šedesáti: průměr snižovala závratná dětská úmrtnost. Lze proto spočítat **podmíněnou naději dožití**: pokud už se člověk dožil daného věku, kolika let se v průměru dožije?
 
 Na časové řadě vidíme, že se podmíněné naděje dožití postupně sbližovaly: díky lepší zdravotní péči umíralo méně lidí v dětském věku a snižovala se také úmrtnost na nakažlivé nemoci, které postihovaly i mladší lidi, jako je např. tuberkulóza.
 
