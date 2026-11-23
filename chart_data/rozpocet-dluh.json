@@ -2,20 +2,20 @@
   "id": "rozpocet-dluh",
   "data": "rozpocet-dluh.csv",
   "type": "line",
-  "title": "Veřejný dluh ČR s projekcí do roku 2031",
-  "subtitle": "Hrubý dluh státu, samospráv a zdravotních pojišťoven",
+  "title": "Veřejný dluh",
+  "subtitle": "Hrubý dluh [veřejného sektoru::Stát, kraje, obce, zdravotní pojišťovny a další veřejné instituce], skutečnost a projekce MMF",
   "tabs": [
     {
-      "id": "podil",
-      "label": "% HDP"
-    },
-    {
       "id": "realne",
-      "label": "Reálné (ceny z roku 2020)"
+      "label": "Reálné (ceny roku 2020)"
     },
     {
       "id": "kc",
       "label": "Nominální"
+    },
+    {
+      "id": "podil",
+      "label": "% HDP"
     }
   ],
   "aes": [
@@ -27,24 +27,24 @@
     },
     {
       "type": "y",
-      "field": "podil",
-      "label": "Dluh (% HDP)",
-      "format": "percent",
-      "tab": "podil"
-    },
-    {
-      "type": "y",
       "field": "mld_2020",
-      "label": "Dluh v cenách roku 2020",
+      "label": "Reálný dluh",
       "unit": "mld. Kč",
       "tab": "realne"
     },
     {
       "type": "y",
       "field": "mld",
-      "label": "Dluh",
+      "label": "Nominální dluh",
       "unit": "mld. Kč",
       "tab": "kc"
+    },
+    {
+      "type": "y",
+      "field": "podil",
+      "label": "Dluh (% HDP)",
+      "format": "percent",
+      "tab": "podil"
     },
     {
       "type": "linetype",
@@ -57,25 +57,25 @@
       "name": "Eurostat",
       "dataset": "Government deficit/surplus, debt and associated data (gov_10dd_edpt1)",
       "url": "https://ec.europa.eu/eurostat/databrowser/view/gov_10dd_edpt1/default/table",
-      "retrieved": "2026-11-22"
+      "retrieved": "2026-11-23"
     },
     {
       "name": "MMF",
       "dataset": "World Economic Outlook, October 2026 (SDMX API)",
       "url": "https://data.imf.org/",
-      "retrieved": "2026-11-22"
+      "retrieved": "2026-11-23"
     },
     {
       "name": "ČSÚ",
       "dataset": "Míra inflace (CEN0101H)",
       "url": "https://data.csu.gov.cz/datastat/data/VYBER/CEN0101HT01",
-      "retrieved": "2026-11-22"
+      "retrieved": "2026-11-23"
     },
     {
       "name": "Světová banka",
       "dataset": "Inflation, consumer prices (FP.CPI.TOTL.ZG)",
       "url": "https://data.worldbank.org/indicator/FP.CPI.TOTL.ZG?locations=CZ",
-      "retrieved": "2026-11-22"
+      "retrieved": "2026-11-23"
     }
   ],
   "data_note": "Skutečnost z dat Eurostatu, projekce MMF. Reálné částky jsou přepočtené na ceny roku 2020 (inflace podle ČSÚ, před rokem 1997 podle Světové banky, v letech projekce odhad MMF).",
@@ -84,10 +84,10 @@
       {
         "y": 0.6,
         "tab": "podil",
-        "label": "Maastrichtské kritérium fiskální stability"
+        "label": "Maastrichtské kritérium (60 % HDP)"
       }
     ]
   },
-  "last_updated": "2026-11-22",
+  "last_updated": "2026-11-23",
   "rows": 38
 }

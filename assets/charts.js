@@ -1,7 +1,7 @@
 // Renders every <figure data-chart="id"> from chart_data/{id}.json + its CSV.
 // The JSON is written by write_chart() in R/utils.R.
-import * as Plot from "https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6.17/+esm";
-import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7.9.0/+esm";
+// d3 7.9.0 and Observable Plot 0.6.17 are served from this site (assets/vendor/, loaded in _layouts/default.html)
+const { d3, Plot } = window;
 
 const ROOT = new URL("..", import.meta.url); // site root, wherever the page lives
 // series colours of the site design first (blue and red of the flag, then green, amber, purple, pink)
@@ -35,10 +35,29 @@ function fmt(a, v, { unit = false, tick = false } = {}) {
   const text = (FORMATS[a?.format] ?? FORMATS.number)(v, tick);
   return unit && text && unitOf(a) ? text + NBSP + unitOf(a) : text;
 }
-const tickOf = (a) => (v) => fmt(a, v, { unit: true, tick: true });
-const withUnit = (a) => (unitOf(a) ? `${a.label} (${unitOf(a)})` : a.label);
+// a long unit ("na 100 000 obyvatel") would crowd every tick: it goes to the axis title instead
+const longUnit = (a) => (unitOf(a)?.length ?? 0) > 8;
+const tickOf = (a) => (v) => fmt(a, v, { unit: !longUnit(a), tick: true });
+const axisLabel = (a) => (longUnit(a) ? `${a.label} (${unitOf(a)})` : a.label);
+// a label that already says "%" ("% HDP", "Výdaje (% HDP)") does not get the default "(%)" again
+const withUnit = (a) => (unitOf(a) && (a.unit || !String(a.label).includes("%")) ? `${a.label} (${unitOf(a)})` : a.label);
 // Columns no aesthetic describes are shown as they are
 const raw = (v) => (v == null || v === "" ? "–" : v instanceof Date ? date(v) : String(v));
+
+// Ticks of a horizontal value axis, labels side by side: as many as fit `avail` px (a count would only be a
+// hint, and d3 may return more ticks than that)
+function fitTicks(a, values, o, avail, zero = true) {
+  if (o.y_log) return Math.max(2, Math.floor(avail / (axisMargin(a, values, o) + 10)));
+  let [lo, hi] = o.y_domain ?? d3.extent(values);
+  if (lo == null) return 2;
+  if (!o.y_domain && zero) [lo, hi] = [Math.min(0, lo), Math.max(0, hi)];
+  measure.font = `13px ${FONT}`;
+  for (let n = Math.max(2, Math.floor(avail / 60)); n >= 1; n--) {
+    const ticks = d3.ticks(lo, hi, n);
+    const widest = d3.max(ticks, (t) => measure.measureText(tickOf(a)(t)).width) ?? 0;
+    if (ticks.length * (widest + 16) <= avail || n === 1) return ticks;
+  }
+}
 
 // Left margin that fits the widest tick label of a value axis
 const measure = document.createElement("canvas").getContext("2d");
@@ -100,6 +119,7 @@ const label = (a) => a.labeller ?? a.field; // column shown to the reader
 const base = (o, width) => ({
   width,
   height: o.height,
+  marginTop: 32, // room for the y-axis label above the chart
   style: { fontFamily: FONT, fontSize: "13px", overflow: "visible" },
 });
 
@@ -116,10 +136,15 @@ function tipText(aes) {
 const isOn = (v) => v === true || v === 1 || /^(true|1)$/i.test(String(v));
 const highlighter = (A) => (A.highlight ? (d) => isOn(d?.[A.highlight.field]) : null);
 
-// Colour scale for a categorical column, with optional highlighting
-function colourScale(data, a, o) {
+// Colour scale for a categorical column, with optional highlighting. `hi` (line charts): series whose rows are
+// all highlighted come first, so they get the first palette colour
+function colourScale(data, a, o, hi) {
   const field = label(a);
-  const all = [...new Set(data.map((d) => d[field]))];
+  let all = [...new Set(data.map((d) => d[field]))];
+  if (hi) {
+    const whole = (v) => data.every((d) => d[field] !== v || hi(d));
+    all = [...all.filter(whole), ...all.filter((v) => !whole(v))];
+  }
   const domain = o.highlight ? all.filter((v) => [o.highlight].flat().includes(v)) : all;
   return { domain, range: gradient(o, domain.length) ?? PALETTE, unknown: MUTED, legend: all.length > 1 && shown(a) };
 }
@@ -186,7 +211,7 @@ function lineChart(spec, data, A, o, width, all) {
   const years = A.x.format === "year" ? d3.extent(data, (d) => d[x]) : null;
   // highlight: in colour among grey lines, or thicker among thin ones when colour is taken
   const stroke = colour ?? (hi ? (d) => (hi(d) ? PALETTE[0] : MUTED) : PALETTE[0]);
-  const weight = hi && colour ? { strokeWidth: (d) => (hi(d) ? 3.5 : 1.5), strokeOpacity: (d) => (hi(d) ? 1 : 0.6) } : { strokeWidth: hi ? (d) => (hi(d) ? 2.5 : 1.5) : 2 };
+  const weight = hi && colour ? { strokeWidth: (d) => (hi(d) ? 3.5 : 2.5), strokeOpacity: (d) => (hi(d) ? 1 : 0.75) } : { strokeWidth: hi ? (d) => (hi(d) ? 2.5 : 1.5) : 2 };
   const pointer = multi ? Plot.pointer : Plot.pointerX;
   if (hi) data = d3.sort(data, hi); // highlighted lines last, on top
   if (o.highlight && colour) {
@@ -198,17 +223,17 @@ function lineChart(spec, data, A, o, width, all) {
     ...base(o, width),
     marginLeft: axisMargin(A.y, [...data.map((d) => d[y]), ...annotationValues(o)], o, zero),
     x: {
-      label: years || !shown(A.x) ? null : A.x.label, tickFormat: tickOf(A.x),
+      label: years || !shown(A.x) ? null : axisLabel(A.x), tickFormat: tickOf(A.x),
       // whole years only, however short the chosen range is
       ticks: years ? Math.max(1, Math.min(years[1] - years[0], Math.floor(width / 70))) : undefined,
     },
     y: {
-      label: shown(A.y) ? A.y.label : null, grid: true, tickFormat: tickOf(A.y),
+      label: shown(A.y) ? axisLabel(A.y) : null, grid: true, tickFormat: tickOf(A.y),
       type: o.y_log ? "log" : undefined,
       zero: o.y_log ? undefined : o.y_zero ?? true,
       domain: o.y_domain,
     },
-    color: colour ? colourScale(all, A.colour, o) : undefined,
+    color: colour ? colourScale(all, A.colour, o, hi) : undefined,
     marks: [
       zero ? Plot.ruleY([0]) : null,
       ...dashValues.map((v, i) =>
@@ -235,7 +260,10 @@ function barChart(spec, data, A, o, width, all) {
   const fill = fillA ? label(fillA) : hi ? (d) => (hi(d) ? PALETTE[0] : MUTED) : PALETTE[0];
   const cats = [...new Set(data.map((d) => d[cat]))];
   const textual = typeof cats[0] === "string";
-  const horizontal = o.horizontal ?? (textual && cats.length > 6);
+  // text categories lie down when there are many, or when their labels would not fit side by side under the bars
+  measure.font = `13px ${FONT}`;
+  const crowded = textual && d3.max(cats, (c) => measure.measureText(fmt(A.x, c, { tick: true })).width) > width / cats.length - 12;
+  const horizontal = o.horizontal ?? (textual && (cats.length > 6 || crowded));
   const grouped = fillA && o.stack === false;
 
   let domain = cats;
@@ -248,7 +276,7 @@ function barChart(spec, data, A, o, width, all) {
     label: null, domain,
     tickFormat: (d, i) => (textual || horizontal || i % every === 0 ? fmt(A.x, d, { tick: true }) : ""),
   };
-  const valScale = { label: shown(A.y) ? A.y.label : null, grid: true, tickFormat: tickOf(A.y), domain: o.y_domain };
+  const valScale = { label: shown(A.y) ? axisLabel(A.y) : null, grid: true, tickFormat: tickOf(A.y), domain: o.y_domain };
   // stacked bars reach the sum of their category
   const tops = grouped ? data.map((d) => d[y]) : d3.rollups(data, (v) => d3.sum(v, (d) => d[y]), (d) => d[cat]).map((r) => r[1]);
   tops.push(...annotationValues(o));
@@ -266,7 +294,7 @@ function barChart(spec, data, A, o, width, all) {
     [catCh]: grouped ? { axis: null } : catScale,
     [facetCh]: grouped ? catScale : undefined,
     // under horizontal bars the tick labels sit side by side: only as many as fit
-    [valCh]: horizontal ? { ...valScale, ticks: Math.max(2, Math.floor((width - left) / (axisMargin(A.y, tops, o) + 10))) } : valScale,
+    [valCh]: horizontal ? { ...valScale, ticks: fitTicks(A.y, tops, o, width - left) } : valScale,
     color: fillA ? colourScale(all, fillA, o) : undefined,
     marks: [
       mark(data, {
@@ -310,7 +338,7 @@ function rangeChart(spec, data, A, o, width) {
   }, (d) => d[cat]).map(([c, r]) => ({ c, ...r })).filter((r) => r.lo != null && r.hi != null);
   const stroke = (r) => (r.on ? PALETTE[0] : "#9b9993"); // darker than MUTED: thin lines in light grey are hard to see
   const values = [...rows.flatMap((r) => [r.lo, r.hi]), ...annotationValues(o)];
-  const valAxis = { label: shown(A.y) ? A.y.label : null, grid: true, tickFormat: tickOf(A.y), domain: o.y_domain, zero: o.y_zero ?? false };
+  const valAxis = { label: shown(A.y) ? axisLabel(A.y) : null, grid: true, tickFormat: tickOf(A.y), domain: o.y_domain, zero: o.y_zero ?? false };
   const key = h("div", { class: "chart-legend" },
     `${A.colour.label}: čára ${fmt(A.colour, from)} až ${fmt(A.colour, to)}, bod ${fmt(A.colour, mid)}`);
   let plot;
@@ -339,7 +367,7 @@ function rangeChart(spec, data, A, o, width) {
       marginLeft: left,
       marginBottom: 48,
       y: { label: null, domain: cats, tickFormat: (d) => fmt(A.x, d, { tick: true }) },
-      x: { ...valAxis, ticks: Math.max(2, Math.floor((width - left) / (axisMargin(A.y, values, o) + 10))) },
+      x: { ...valAxis, ticks: fitTicks(A.y, values, o, width - left, o.y_zero ?? false) },
       marks: [
         ...annotationMarks(o, { ch: { x: "y", y: "x" }, xValue: (v) => cats.find((c) => String(c) === String(v)) ?? null }),
         Plot.ruleY(rows, { y: "c", x1: "lo", x2: "hi", stroke, strokeWidth: 2 }),
@@ -380,9 +408,9 @@ function dotChart(spec, data, A, o, width, all) {
     marginBottom: 48,
     y: { label: null, domain: cats, tickFormat: (d) => fmt(A.x, d, { tick: true }) },
     x: {
-      label: shown(A.y) ? A.y.label : null, grid: true, tickFormat: tickOf(A.y), domain: o.y_domain,
+      label: shown(A.y) ? axisLabel(A.y) : null, grid: true, tickFormat: tickOf(A.y), domain: o.y_domain,
       zero: o.y_zero ?? false,
-      ticks: Math.max(2, Math.floor((width - left) / (axisMargin(A.y, values, o) + 10))),
+      ticks: fitTicks(A.y, values, o, width - left, o.y_zero ?? false),
     },
     color: colour ? colourScale(all, A.colour, o) : undefined,
     marks: [
@@ -448,13 +476,16 @@ async function mapChart(spec, data, A, o, width) {
     color: {
       // midpoint: two-sided scale around that value (e.g. 0 for a change); scheme: a name, or a list of colours
       type: diverging ? "diverging" : "linear", pivot: diverging ? c.midpoint : undefined,
-      ...(Array.isArray(c.scheme) ? { interpolate: d3.piecewise(d3.interpolateRgb, c.scheme) } : { scheme: c.scheme ?? (diverging ? "rdylgn" : "viridis") }),
+      ...(Array.isArray(c.scheme) ? { interpolate: d3.piecewise(d3.interpolateRgb, c.scheme) }
+        : paleStart(c.scheme ?? (diverging ? null : "blues"), diverging) ? { interpolate: paleStart(c.scheme ?? "blues", diverging) }
+        : { scheme: c.scheme ?? "rdylgn" }), // default: blues, or red–yellow–green around a midpoint
       domain: c.fill_domain, clamp: c.fill_domain ? true : undefined, // values outside get the end colours
       reverse: c.reverse, unknown: "#eeede8",
     },
     marks: [
       // a two-sided scale is pale in the middle, where white borders would vanish
-      Plot.geo(fc.features, { fill: (f) => row(f)?.[A.fill.field], stroke: diverging ? "#a9a8a2" : BG, strokeWidth: diverging ? 0.5 : 1 }),
+      // thin dark borders keep neighbours with similar colours apart and pale areas off the page
+      Plot.geo(fc.features, { fill: (f) => row(f)?.[A.fill.field], stroke: INK, strokeWidth: 0.4 }),
       // highlight: colour is the data here, so highlighted regions get a dark outline
       // (white under dark, so that the outline shows on both ends of the colour scale)
       hi ? Plot.geo(fc.features.filter((f) => hi(row(f))), { fill: "none", stroke: BG, strokeWidth: 5 }) : null,
@@ -520,7 +551,7 @@ function pyramidChart(spec, data, A, o, width, all) {
       Plot.ruleX([0], { stroke: BG, strokeWidth: 1 }),
       ref.length ? Plot.line(ref, { x: "x", y: "y", z: "s", stroke: INK, strokeWidth: 1.2 }) : null,
       Plot.text([corner], { frameAnchor: "top-right", fontSize: 18, fontWeight: 600, fill: INK, dy: 4 }),
-      ref.length ? Plot.text([`Obrys: ${fmt(A.frame, o.reference)}`], { frameAnchor: "top-right", dy: 28, fill: INK_2, fontSize: 12 }) : null,
+      ref.length ? Plot.text([`Obrys: ${fmt(A.frame, o.reference)}`], { frameAnchor: "top-right", dy: 30, fill: INK_2, fontSize: 12 }) : null,
     ],
   });
 }
@@ -539,6 +570,22 @@ const TYPES = { line: lineChart, bar: barChart, dot: dotChart, map: mapChart, py
 // (it is there to show each series' trend); options.facet_scale = "shared" puts every panel on the same scale,
 // so sizes can be compared. Each panel's title gives the series and its latest value.
 const facetAes = (spec, A) => (spec.type === "bar" ? A.fill : spec.type === "line" || spec.type === "dot" ? A.colour : null);
+// A one-hue scheme ("reds", "blues"…) starts almost white, which vanishes into the page: on maps it starts at a
+// visible tint instead (the palest 20 % of the scheme is skipped)
+const ONE_HUE = ["blues", "greens", "greys", "oranges", "purples", "reds"];
+function paleStart(scheme, diverging) {
+  if (diverging || typeof scheme !== "string" || !ONE_HUE.includes(scheme.toLowerCase())) return null;
+  const f = d3[`interpolate${scheme[0].toUpperCase()}${scheme.slice(1).toLowerCase()}`];
+  return (t) => f(0.2 + 0.8 * t);
+}
+
+// `text` shortened with "…" to at most `max` px (in the current font of `measure`)
+function clip(text, max) {
+  if (measure.measureText(text).width <= max) return text;
+  while (text.length > 1 && measure.measureText(text + "…").width > max) text = text.slice(0, -1);
+  return text.trimEnd() + "…";
+}
+
 function facetChart(spec, data, A, o, width, all) {
   const by = facetAes(spec, A), key = label(by), x = A.x.field, y = A.y.field;
   const series = [...new Set(all.map((d) => d[key]))]; // order and colours of the whole dataset
@@ -557,25 +604,30 @@ function facetChart(spec, data, A, o, width, all) {
   const horizontal = spec.type === "dot" || (spec.type === "bar" && (o.horizontal ?? (textual && xs.length > 6)));
   if (horizontal) {
     measure.font = `13px ${FONT}`;
-    const labelW = Math.min(160, Math.ceil(d3.max(xs, (c) => measure.measureText(String(c)).width)) + 12);
+    // row labels get up to half a panel; longer ones are shortened with "…"
+    const labelW = Math.min(Math.max(160, Math.floor(pw / 2)), Math.ceil(d3.max(xs, (c) => measure.measureText(String(c)).width)) + 12);
+    const rowLabel = (c) => { measure.font = `13px ${FONT}`; return clip(String(c), labelW - 12); };
     const panels = series.map((s, i) => {
       const rows = data.filter((d) => d[key] === s);
       const colour = PALETTE[i % PALETTE.length];
+      measure.font = `600 13.5px ${FONT}`;
+      const head = clip(String(s), pw - 4);
       const dom = shared ?? extent(rows);
       const order = sortLast(d3.sort(rows, (d) => -d[y]).map((d) => d[x]), o);
       const panel = Plot.plot({
         ...base(o, pw),
-        height: order.length * 18 + 56,
-        marginTop: 26,
+        height: order.length * 18 + 62,
+        marginTop: 32,
         marginLeft: labelW,
+        marginRight: 30, // room for half of the last tick label
         // ticks with the unit ("200 mld. Kč"): only as many as fit side by side
         x: { label: null, grid: true, tickFormat: tickOf(A.y), domain: dom, nice: true,
-          ticks: Math.max(2, Math.floor((pw - labelW) / (measure.measureText(tickOf(A.y)(dom[1])).width + 24))) },
-        y: { label: null, domain: order, tickSize: 0 },
+          ticks: fitTicks(A.y, dom, { ...o, y_domain: dom }, pw - labelW) },
+        y: { label: null, domain: order, tickSize: 0, tickFormat: rowLabel },
         marks: [
           Plot.barX(rows, { y: x, x: y, fill: colour, title, tip: true }),
           Plot.ruleX([0]),
-          Plot.text([String(s)], { frameAnchor: "top-left", dx: -labelW, dy: -20, fontWeight: 600, fontSize: 13.5, fill: "currentColor", text: (d) => d }),
+          Plot.text([head], { frameAnchor: "top-left", dx: -labelW, dy: -26, fontWeight: 600, fontSize: 13.5, fill: "currentColor", text: (d) => d }),
         ],
       });
       if (hi) boldTicks(panel, rows.filter(hi).map((d) => d[x]));
@@ -586,10 +638,8 @@ function facetChart(spec, data, A, o, width, all) {
   const panels = series.map((s, i) => {
     const rows = data.filter((d) => d[key] === s);
     const last = rows.length ? rows.reduce((a, b) => (b[x] > a[x] ? b : a)) : null;
-    // the latest value only when it fits next to the series name
     measure.font = `600 13.5px ${FONT}`;
-    const value = last ? `  ${fmt(A.y, last[y], { unit: true })}` : "";
-    const head = value && measure.measureText(s + value).width <= pw - 4 ? s + value : String(s);
+    const head = clip(String(s), pw - 4); // the series name only (its latest value is in the tooltip)
     const colour = PALETTE[i % PALETTE.length];
     const dom = shared ?? extent(rows);
     // ticks with the unit; the left margin below fits the widest one
@@ -605,8 +655,8 @@ function facetChart(spec, data, A, o, width, all) {
         Plot.tip(rows, Plot.pointerX({ x, y, title }))];
     return Plot.plot({
       ...base(o, pw),
-      height: 170,
-      marginTop: 26,
+      height: 176,
+      marginTop: 32,
       marginLeft: left,
       x: spec.type === "bar"
         ? { label: null, domain: xs, ticks: xs.filter((_, j) => j % every === 0), tickFormat: (d) => fmt(A.x, d, { tick: true }) }
@@ -615,7 +665,7 @@ function facetChart(spec, data, A, o, width, all) {
       marks: [
         ...marks,
         // panel title inside the SVG, so it is also in the PNG
-        Plot.text([head], { frameAnchor: "top-left", dx: -left, dy: -20, fontWeight: 600, fontSize: 13.5, fill: "currentColor", text: (d) => d }),
+        Plot.text([head], { frameAnchor: "top-left", dx: -left, dy: -26, fontWeight: 600, fontSize: 13.5, fill: "currentColor", text: (d) => d }),
       ],
     });
   });
@@ -634,15 +684,28 @@ function dashLegend(data, A) {
   }));
 }
 
+// Table columns: the aesthetics (keys first: x, geometry, frame; then categories; then values) and the extra
+// columns of options.table (each {field, label, unit, format}). Highlight flags, geometry codes that have a
+// labeller and columns nobody described are left out.
+function tableColumns(spec, data) {
+  const isText = (f) => typeof data.find((d) => d[f] != null)?.[f] === "string";
+  const col = (a) => ({ field: a.labeller ?? a.field, a: a.labeller ? null : a, label: a.label });
+  const aes = spec.aes.filter((a) => a.type !== "highlight" && data.columns.includes(a.labeller ?? a.field));
+  const keys = aes.filter((a) => ["x", "geometry", "frame"].includes(a.type));
+  const rest = aes.filter((a) => !keys.includes(a));
+  const cols = [...keys, ...rest.filter((a) => isText(a.field)), ...rest.filter((a) => !isText(a.field))].map(col);
+  for (const a of spec.options?.table ?? []) if (data.columns.includes(a.field)) cols.push({ field: a.field, a, label: a.label });
+  return cols.filter((c, i) => cols.findIndex((d) => d.field === c.field) === i);
+}
+
 function dataTable(spec, data) {
-  const cols = data.columns;
-  const aes = (c) => spec.aes.find((a) => a.field === c);
-  const head = (c) => (aes(c) ? withUnit(aes(c)) : spec.aes.find((a) => a.labeller === c)?.label ?? c);
-  const cell = (c, v) => (aes(c) ? fmt(aes(c), v) : raw(v));
+  const cols = tableColumns(spec, data);
+  const head = (c) => (c.a ? withUnit(c.a) : c.label);
+  const cell = (c, v) => (c.a ? fmt(c.a, v) : raw(v));
   return h("table", { class: "chart-table" },
     h("thead", {}, h("tr", {}, cols.map((c) => h("th", {}, head(c))))),
     h("tbody", {}, data.map((d) =>
-      h("tr", {}, cols.map((c) => h("td", { class: typeof d[c] === "number" ? "num" : null }, cell(c, d[c])))))));
+      h("tr", {}, cols.map((c) => h("td", { class: typeof d[c.field] === "number" ? "num" : null }, cell(c, d[c.field])))))));
 }
 
 // Sources grouped by publisher: "ČSÚ (1, 2), Maddison Project". Each link opens one dataset.
@@ -719,52 +782,152 @@ function frameSlider(values, start, onChange) {
   return h("div", { class: "chart-timeline" }, track, text);
 }
 
-// PNG = title + chart + source drawn on a white canvas (colour legend is not included), with the site's mark
-// in the top right corner (the version for a light background)
+// PNG = title, subtitle, legends, chart and source, with the site's mark in the top right corner (the version for
+// a light background). The chart is drawn again off screen at a fixed width, so every export has the same
+// proportions whatever the size of the screen it came from
 const LOGO = new URL("img/cesko-v-cislech-znacka-svetla.svg", import.meta.url).href;
-async function downloadPng(spec, body) {
-  // the chart itself (legends come before it), or every panel of a faceted chart
-  const grid = body.querySelector(".chart-facets");
-  const lives = grid ? [...grid.querySelectorAll(":scope > svg")] : [[...body.querySelectorAll("svg")].at(-1)];
-  const frame = (grid ?? lives[0]).getBoundingClientRect();
-  const { width, height } = frame;
-  const images = await Promise.all(lives.map(async (live) => {
-    const r = live.getBoundingClientRect();
-    const svg = live.cloneNode(true);
-    svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
-    svg.setAttribute("width", r.width);
-    svg.setAttribute("height", r.height);
-    svg.style.color = INK;
-    const img = new Image();
-    img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(new XMLSerializer().serializeToString(svg));
-    await img.decode();
-    return { img, x: r.left - frame.left, y: r.top - frame.top, w: r.width, h: r.height };
-  }));
+const EXPORT_WIDTH = 760;
 
-  const logo = new Image();
-  logo.src = LOGO;
-  const hasLogo = await logo.decode().then(() => true, () => false); // no logo rather than no PNG
-  const pad = 20, top = 64, bottom = 34, scale = 2;
-  const logoH = 40, logoW = hasLogo ? (logoH * logo.naturalWidth) / logo.naturalHeight : 0;
-  const textW = width - (hasLogo ? logoW + 16 : 0); // title and subtitle stop short of the logo
-  const canvas = h("canvas", { width: (width + 2 * pad) * scale, height: (height + top + bottom) * scale });
-  const ctx = canvas.getContext("2d");
-  ctx.scale(scale, scale);
-  ctx.fillStyle = BG;
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = INK;
-  ctx.font = `600 19px ${FONT}`;
-  ctx.fillText(plain(spec.title), pad, 30, textW);
-  ctx.fillStyle = INK_2;
-  ctx.font = `13px ${FONT}`;
-  ctx.fillText(plain(spec.subtitle), pad, 50, textW);
-  if (hasLogo) ctx.drawImage(logo, pad + width - logoW, 12, logoW, logoH);
-  for (const p of images) ctx.drawImage(p.img, pad + p.x, top + p.y, p.w, p.h);
-  ctx.fillStyle = INK_3;
-  ctx.font = `12px ${FONT}`;
-  const names = sourceGroups(spec).map(([name]) => name).join(", ");
-  ctx.fillText(`Zdroj: ${names} · ceskovcislech`, pad, top + height + 20);
-  h("a", { href: canvas.toDataURL("image/png"), download: `${spec.id}.png` }).click();
+// Splits `text` into lines no wider than `max` (in the current font of `ctx`)
+function wrapLines(ctx, text, max) {
+  const lines = [];
+  let line = "";
+  for (const word of String(text ?? "").split(/\s+/).filter(Boolean)) {
+    const next = line ? `${line} ${word}` : word;
+    if (line && ctx.measureText(next).width > max) { lines.push(line); line = word; } else line = next;
+  }
+  return line ? [...lines, line] : lines;
+}
+
+// An SVG drawn as an image cannot reach the page's web fonts: the Inter of the page (assets/fonts/inter.css) goes in
+// as data (once)
+let fontCss;
+const embeddedFont = () => (fontCss ??= (async () => {
+  const link = document.querySelector('link[rel="stylesheet"][href*="fonts/inter.css"]');
+  if (!link) return "";
+  const css = await (await fetch(link.href)).text();
+  const rules = css.split("}").filter((r) => /@font-face/.test(r));
+  const out = await Promise.all(rules.map(async (rule) => {
+    const url = rule.match(/url\(["']?([^"')]+)["']?\)/)?.[1];
+    if (!url) return "";
+    const blob = await (await fetch(new URL(url, link.href))).blob();
+    const data = await new Promise((resolve) => { const r = new FileReader(); r.onload = () => resolve(r.result); r.readAsDataURL(blob); });
+    return rule.replace(url, data) + "}";
+  }));
+  return out.join("\n");
+})().catch(() => "")); // the system font rather than no PNG
+
+const svgImage = async (svg, w, h) => {
+  const copy = svg.cloneNode(true);
+  const font = await embeddedFont();
+  if (font) copy.prepend(Object.assign(document.createElementNS("http://www.w3.org/2000/svg", "style"), { textContent: font }));
+  copy.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+  copy.setAttribute("width", w);
+  copy.setAttribute("height", h);
+  copy.style.color = INK;
+  const src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(new XMLSerializer().serializeToString(copy));
+  // the embedded font loads only once the image exists: the first copy can still show the fallback font,
+  // so it is drawn once and thrown away, and the second copy is used
+  let img;
+  for (let i = 0; i < (font ? 2 : 1); i++) {
+    img = new Image();
+    img.src = src;
+    await img.decode();
+    if (font && i === 0) {
+      document.createElement("canvas").getContext("2d").drawImage(img, 0, 0);
+      await new Promise((r) => setTimeout(r, 60));
+    }
+  }
+  return img;
+};
+
+// `render(width)` returns the nodes of the chart (legends and plot) drawn at that width
+async function downloadPng(spec, render, host) {
+  const stage = h("div", { class: "chart-body", "aria-hidden": "true",
+    style: `position: absolute; left: -100000px; top: 0; width: ${EXPORT_WIDTH}px` });
+  document.body.append(stage); // not inside the card, whose zoom would scale the export
+  try {
+    stage.replaceChildren(...(await render(EXPORT_WIDTH)));
+    await document.fonts?.ready;
+    const frame = stage.getBoundingClientRect();
+    const at = (r) => ({ x: r.left - frame.left, y: r.top - frame.top, w: r.width, h: r.height });
+    // every svg (plot, panels, legend swatches and colour ramps) where the browser laid it out
+    const svgs = await Promise.all([...stage.querySelectorAll("svg")]
+      .filter((svg) => !svg.parentElement.closest("svg") && svg.getBoundingClientRect().width > 0)
+      .map(async (svg) => { const r = at(svg.getBoundingClientRect()); return { ...r, img: await svgImage(svg, r.w, r.h) }; }));
+    // the text of HTML legends (swatch labels, facet titles), each line where the browser put it
+    const lines = [];
+    const fit = document.createElement("canvas").getContext("2d");
+    const walker = document.createTreeWalker(stage, NodeFilter.SHOW_TEXT);
+    for (let node; (node = walker.nextNode());) {
+      if (!node.data.trim() || node.parentElement.closest("svg")) continue;
+      const style = getComputedStyle(node.parentElement);
+      if (style.visibility === "hidden") continue;
+      const range = document.createRange();
+      range.selectNodeContents(node);
+      const rects = [...range.getClientRects()].filter((r) => r.width > 0);
+      const font = `${style.fontWeight} ${style.fontSize} ${FONT}`;
+      const words = node.data.trim().split(/\s+/);
+      fit.font = font;
+      rects.forEach((r, i) => { // a text that wraps has one rect per line: give each line the words that fit it
+        let line = words.shift() ?? "";
+        while (words.length && (i === rects.length - 1 || fit.measureText(`${line} ${words[0]}`).width <= r.width + 2)) line += ` ${words.shift()}`;
+        lines.push({ ...at(r), text: line, font, color: style.color });
+      });
+    }
+
+    const logo = new Image();
+    logo.src = LOGO;
+    const hasLogo = await logo.decode().then(() => true, () => false); // no logo rather than no PNG
+    const width = EXPORT_WIDTH, height = frame.height, pad = 28, scale = 2;
+    const logoH = 40, logoW = hasLogo ? (logoH * logo.naturalWidth) / logo.naturalHeight : 0;
+    const measure = document.createElement("canvas").getContext("2d");
+    measure.font = `600 22px ${FONT}`;
+    const titleLines = wrapLines(measure, plain(spec.title), width - (hasLogo ? logoW + 20 : 0));
+    measure.font = `15px ${FONT}`;
+    const subLines = wrapLines(measure, plain(spec.subtitle), width - (hasLogo ? logoW + 20 : 0));
+    measure.font = `13px ${FONT}`;
+    const names = sourceGroups(spec).map(([name]) => name).join(", ");
+    // the page the chart is on, e.g. ceskovcislech.org/hdp_rust (set in _layouts/default.html)
+    const address = document.documentElement.dataset.address || "ceskovcislech.org";
+    const sourceLines = wrapLines(measure, `Zdroj: ${names} · ${address.replace(/\/$/, "")}`, width);
+    const top = pad + titleLines.length * 28 + subLines.length * 21 + 14;
+    const bottom = 16 + sourceLines.length * 18 + pad - 6;
+
+    const canvas = h("canvas", { width: (width + 2 * pad) * scale, height: Math.ceil(top + height + bottom) * scale });
+    const ctx = canvas.getContext("2d");
+    ctx.scale(scale, scale);
+    ctx.fillStyle = BG;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.textBaseline = "alphabetic";
+    let y = pad + 20;
+    ctx.fillStyle = INK;
+    ctx.font = `600 22px ${FONT}`;
+    for (const line of titleLines) { ctx.fillText(line, pad, y); y += 28; }
+    ctx.fillStyle = INK_2;
+    ctx.font = `15px ${FONT}`;
+    y -= 4;
+    for (const line of subLines) { ctx.fillText(line, pad, y); y += 21; }
+    // the top of the logo on the top of the title's letters
+    ctx.font = `600 22px ${FONT}`;
+    const titleTop = pad + 20 - (ctx.measureText(titleLines[0] ?? "").actualBoundingBoxAscent || 15);
+    if (hasLogo) ctx.drawImage(logo, pad + width - logoW, titleTop, logoW, logoH);
+    for (const p of svgs) ctx.drawImage(p.img, pad + p.x, top + p.y, p.w, p.h);
+    ctx.textBaseline = "middle";
+    for (const t of lines) {
+      ctx.font = t.font;
+      ctx.fillStyle = t.color;
+      ctx.fillText(t.text, pad + t.x, top + t.y + t.h / 2);
+    }
+    ctx.textBaseline = "alphabetic";
+    ctx.fillStyle = INK_3;
+    ctx.font = `13px ${FONT}`;
+    y = top + height + 24;
+    for (const line of sourceLines) { ctx.fillText(line, pad, y); y += 18; }
+    h("a", { href: canvas.toDataURL("image/png"), download: `${spec.id}.png` }).click();
+  } finally {
+    stage.remove();
+  }
 }
 
 export async function renderChart(el, id = el.dataset.chart) {
@@ -856,7 +1019,8 @@ export async function renderChart(el, id = el.dataset.chart) {
         },
       }, plain(t.label))));
     // the PNG shows the tab on screen, named after the subtitle
-    const pngSpec = () => ({ ...spec, subtitle: [plain(spec.subtitle), tabList.find((t) => t.id === tab)?.label].filter(Boolean).join(" – ") });
+    // a full stop at the end of the subtitle would sit before the tab name ("… práce. – Mzda")
+    const pngSpec = () => ({ ...spec, subtitle: [plain(spec.subtitle).replace(/\.\s*$/, ""), tabList.find((t) => t.id === tab)?.label].filter(Boolean).join(" – ") });
 
     el.classList.add("chart-card");
     el.replaceChildren(...[
@@ -873,7 +1037,7 @@ export async function renderChart(el, id = el.dataset.chart) {
         sourceLine(spec),
         h("div", { class: "chart-actions" },
           h("a", { class: "chart-action", href: csvUrl, download: `${id}.csv` }, "Stáhnout data (CSV)"),
-          h("button", { class: "chart-action", type: "button", onclick: () => downloadPng(pngSpec(), body) }, "Stáhnout PNG"))),
+          h("button", { class: "chart-action", type: "button", onclick: () => downloadPng(pngSpec(), nodesAt, el) }, "Stáhnout PNG"))),
     ].filter(Boolean));
 
     let drawn = 0;
@@ -882,6 +1046,9 @@ export async function renderChart(el, id = el.dataset.chart) {
       if (!width || (width === drawn && !stale)) return; // zero width = the table tab is open
       drawn = width;
       stale = false;
+      body.replaceChildren(...(await nodesAt(width)));
+    }
+    async function nodesAt(width) { // the chart (with its legends) as drawn at `width`
       // tabs of a line or bar chart: only the rows that have this tab's y (a tab may use its own rows)
       const has = tabList.length && A.y ? (d) => d[A.y.field] != null : null;
       // a tab may draw as another chart type (tabs = list(list(id, label, type = "bar")))
@@ -891,7 +1058,10 @@ export async function renderChart(el, id = el.dataset.chart) {
       // annotations with a `tab` are drawn in that tab only
       const ot = o.annotations ? { ...o, annotations: o.annotations.filter((a) => a.tab == null || a.tab === tab) } : o;
       const plot = await chart(tspec, has ? shown.filter(has) : shown, A, ot, width, has ? data.filter(has) : data);
-      body.replaceChildren(...[type === "line" && !faceted && dashLegend(data, A), plot].filter(Boolean));
+      // gridlines: Plot draws them at 10 % opacity, barely visible on the tinted background; set on the elements
+      // (not in CSS) so the PNG export has them too
+      for (const g of plot.querySelectorAll?.('[aria-label$="-grid"]') ?? []) g.setAttribute("stroke-opacity", 0.22);
+      return [type === "line" && !faceted && dashLegend(data, A), plot].filter(Boolean);
     }
     await draw();
     new ResizeObserver(() => requestAnimationFrame(draw)).observe(body);

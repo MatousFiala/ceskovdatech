@@ -1,15 +1,24 @@
 <!doctype html>
-<html lang="{{ site.lang }}">
+<html lang="{{ site.lang }}" data-address="{{ site.domain }}{{ page.url | remove: 'index.html' }}">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>{% if page.title %}{{ page.title }} · {% endif %}{{ site.title }}</title>
-        <meta name="description" content="{{ page.lede | default: site.tagline | strip_html }}">
+        {% assign description = page.description | default: site.description | strip_html %}
+        <meta name="description" content="{{ description }}">
+        {% if page.status == "tbd" %}<meta name="robots" content="noindex">{% endif %}
+        <meta property="og:title" content="{% if page.title %}{{ page.title }} · {% endif %}{{ site.title }}">
+        <meta property="og:description" content="{{ description }}">
+        <meta property="og:type" content="{% if page.layout == "article" %}article{% else %}website{% endif %}">
+        <meta property="og:locale" content="cs_CZ">
         <link rel="icon" type="image/svg+xml" href="{{ '/assets/img/favicon.svg' | relative_url }}">
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+        {% comment %} Inter is served from this site (assets/fonts/), not from Google: no visitor data goes to a third party {% endcomment %}
+        <link rel="preload" href="{{ '/assets/fonts/inter-latin.woff2' | relative_url }}" as="font" type="font/woff2" crossorigin>
+        <link rel="stylesheet" href="{{ '/assets/fonts/inter.css' | relative_url }}">
         <link rel="stylesheet" href="{{ '/assets/site.css' | relative_url }}">
+        {% comment %} Libraries served from this site, no CDN (licences in assets/vendor/); they run before the modules below {% endcomment %}
+        <script src="{{ '/assets/vendor/d3.min.js' | relative_url }}"></script>
+        <script src="{{ '/assets/vendor/plot.umd.min.js' | relative_url }}"></script>
         <script type="module" src="{{ '/assets/charts.js' | relative_url }}"></script>
         <script type="module" src="{{ '/assets/nav.js' | relative_url }}"></script>
     </head>
@@ -36,7 +45,7 @@
         </main>
         {% endif %}
         <footer class="site-footer">
-            <div class="wrap site-footer-inner">{{ site.title }} · grafy i data lze volně stáhnout a použít</div>
+            <div class="wrap site-footer-inner">{{ site.title }} · Grafy lze volně šířit pod licencí <a href="https://creativecommons.org/licenses/by/4.0/deed.cs">CC BY 4.0</a></div>
         </footer>
     </body>
 </html>

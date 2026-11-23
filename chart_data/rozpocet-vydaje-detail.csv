@@ -2,7 +2,7 @@ oblast,skupina,mld,podil,year
 Důchody,Důchody a sociální transfery,716.3,0.302,2025
 Sociální služby,Důchody a sociální transfery,65.2,0.0275,2025
 Státní sociální podpora,Důchody a sociální transfery,63.3,0.0267,2025
-Příspěvek na péči,Důchody a sociální transfery,52.9,0.0223,2025
+Příspěvky na péči aj.,Důchody a sociální transfery,52.9,0.0223,2025
 Nemocenské dávky,Důchody a sociální transfery,49.3,0.0208,2025
 Politika zaměstnanosti,Důchody a sociální transfery,32.2,0.0136,2025
 Pomoc v hmotné nouzi,Důchody a sociální transfery,15,0.0063,2025
@@ -15,10 +15,10 @@ Bydlení a územní rozvoj,Služby,28.9,0.0122,2025
 Životní prostředí,Služby,24.7,0.0104,2025
 "Kultura, církve a média",Služby,21,0.0089,2025
 Ostatní,Služby,9.8,0.0041,2025
-Doprava,Hospodářství a infrastruktura,128.8,0.0543,2025
-Zemědělství a lesnictví,Hospodářství a infrastruktura,60,0.0253,2025
-"Průmysl, obchod a služby",Hospodářství a infrastruktura,55,0.0232,2025
-Ostatní,Hospodářství a infrastruktura,21.2,0.0089,2025
+Doprava,Hospodářství a doprava,128.8,0.0543,2025
+Zemědělství a lesnictví,Hospodářství a doprava,60,0.0253,2025
+"Průmysl, obchod a služby",Hospodářství a doprava,55,0.0232,2025
+Ostatní,Hospodářství a doprava,21.2,0.0089,2025
 Obrana,Bezpečnost státu,148.8,0.0627,2025
 Policie a veřejný pořádek,Bezpečnost státu,69.3,0.0292,2025
 Soudy a vězeňství,Bezpečnost státu,39.5,0.0167,2025

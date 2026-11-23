@@ -3,11 +3,11 @@
   "data": "rozpocet-schodek.csv",
   "type": "bar",
   "title": "Schodek státního rozpočtu",
-  "subtitle": "Rozdíl mezi příjmy a výdaji státního rozpočtu",
+  "subtitle": "Saldo státního rozpočtu, tedy rozdíl mezi příjmy a výdaji; záporné saldo je schodek, kladné přebytek",
   "tabs": [
     {
       "id": "realne",
-      "label": "Reálné (ceny z roku 2020)"
+      "label": "Reálné (ceny roku 2020)"
     },
     {
       "id": "nominalni",
@@ -28,46 +28,46 @@
     {
       "type": "y",
       "field": "mld_2020",
-      "label": "Schodek v cenách roku 2020",
+      "label": "Reálné saldo",
       "unit": "mld. Kč",
       "tab": "realne"
     },
     {
       "type": "y",
       "field": "mld",
-      "label": "Schodek",
+      "label": "Nominální saldo",
       "unit": "mld. Kč",
       "tab": "nominalni"
     },
     {
       "type": "y",
       "field": "podil",
-      "label": "Schodek (% HDP)",
+      "label": "Saldo (% HDP)",
       "format": "percent",
       "tab": "hdp"
     }
   ],
   "source": [
     {
-      "name": "Monitor státní pokladny (MF ČR)",
-      "dataset": "Plnění rozpočtu ústředně řízených organizací, kapitoly státního rozpočtu",
+      "name": "MF ČR",
+      "dataset": "Monitor státní pokladny – Plnění rozpočtu ústředně řízených organizací, kapitoly státního rozpočtu",
       "url": "https://monitor.statnipokladna.gov.cz/",
-      "retrieved": "2026-11-22"
+      "retrieved": "2026-11-23"
     },
     {
       "name": "ČSÚ",
       "dataset": "Míra inflace (CEN0101H)",
       "url": "https://data.csu.gov.cz/datastat/data/VYBER/CEN0101HT01",
-      "retrieved": "2026-11-22"
+      "retrieved": "2026-11-23"
     },
     {
       "name": "Eurostat",
       "dataset": "Government deficit/surplus, debt and associated data (gov_10dd_edpt1)",
       "url": "https://ec.europa.eu/eurostat/databrowser/view/gov_10dd_edpt1/default/table",
-      "retrieved": "2026-11-22"
+      "retrieved": "2026-11-23"
     }
   ],
-  "data_note": "Schodek z Monitoru státní pokladny (MF ČR), HDP z dat Eurostatu. Reálné částky jsou přepočtené na ceny roku 2020.",
-  "last_updated": "2026-11-22",
+  "data_note": "Saldo z Monitoru státní pokladny (MF ČR), HDP z dat Eurostatu. Reálné částky jsou přepočtené na ceny roku 2020 (inflace podle ČSÚ).",
+  "last_updated": "2026-11-23",
   "rows": 16
 }

@@ -3,7 +3,7 @@
   "data": "obyvatele-kraje.csv",
   "type": "map",
   "title": "Počet obyvatel v krajích",
-  "subtitle": "Počet obyvatel k 31. 12. 2025 podle kraje, tisíce",
+  "subtitle": "Počet obyvatel podle kraje k 31. 12. 2025",
   "aes": [
     {
       "type": "geometry",
@@ -15,18 +15,25 @@
       "type": "fill",
       "field": "obyvatele",
       "label": "Počet obyvatel",
-      "unit": "tis."
+      "unit": "tis.",
+      "scheme": "blues"
     }
   ],
   "source": [
     {
       "name": "ČSÚ",
-      "dataset": "Základní údaje o stavu a pohybu obyvatel - roční údaje",
+      "dataset": "Základní údaje o stavu a pohybu obyvatel – roční údaje",
       "url": "https://data.csu.gov.cz/datastat/data/VYBER/OBY01BT01",
-      "retrieved": "2026-11-22"
+      "retrieved": "2026-11-23"
+    },
+    {
+      "name": "Eurostat GISCO",
+      "dataset": "Hranice krajů (NUTS 2021) © EuroGeographics",
+      "url": "https://ec.europa.eu/eurostat/web/gisco/geodata/statistical-units/territorial-units-statistics",
+      "retrieved": "2026-11-23"
     }
   ],
   "data_note": "",
-  "last_updated": "2026-11-22",
+  "last_updated": "2026-11-23",
   "rows": 14
 }

@@ -3,15 +3,15 @@
   "data": "dane-klin-vyvoj.csv",
   "type": "line",
   "title": "Vývoj zdanění práce",
-  "subtitle": "Daně a odvody jako podíl na [nákladech práce::Vše, co zaměstnavatel platí za zaměstnance: hrubá mzda a odvody], daňové sazby v různých násobcích průměrné mzdy",
+  "subtitle": "Daň z příjmů a odvody jako podíl na [nákladech práce::Vše, co zaměstnavatel platí za zaměstnance: hrubá mzda a odvody] při mzdě od 67 % do 167 % průměrné mzdy",
   "tabs": [
     {
       "id": "klin",
-      "label": "Celkové sazby"
+      "label": "Celková sazba"
     },
     {
       "id": "rozdil",
-      "label": "Rozdíl v sazbě pro 67 % a 167 % průměrné mzdy"
+      "label": "Rozdíl v sazbě mezi 67 % a 167 % průměrné mzdy"
     }
   ],
   "aes": [
@@ -31,7 +31,7 @@
     {
       "type": "y",
       "field": "rozdil",
-      "label": "Rozdíl v sazbě",
+      "label": "Rozdíl v sazbě mezi 67 % a 167 % průměrné mzdy",
       "format": "percent",
       "unit": "p. b.",
       "tab": "rozdil"
@@ -39,7 +39,7 @@
     {
       "type": "colour",
       "field": "mzda",
-      "label": "Mzda (% průměrné mzdy)",
+      "label": "% průměrné mzdy",
       "tab": "klin"
     }
   ],
@@ -48,7 +48,7 @@
       "name": "OECD",
       "dataset": "Taxing Wages",
       "url": "https://www.oecd.org/en/topics/sub-issues/tax-policy/taxing-wages.html",
-      "retrieved": "2026-11-22"
+      "retrieved": "2026-11-23"
     }
   ],
   "data_note": "Náklady práce = hrubá mzda + odvody placené zaměstnavatelem. Počítá se se svobodným pracovníkem bez dětí.",
@@ -66,6 +66,6 @@
       }
     ]
   },
-  "last_updated": "2026-11-22",
+  "last_updated": "2026-11-23",
   "rows": 130
 }

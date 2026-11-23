@@ -2,12 +2,12 @@
   "id": "rozpocet-prijmy-vydaje",
   "data": "rozpocet-prijmy-vydaje.csv",
   "type": "bar",
-  "title": "Příjmy a výdaje státního rozpočtu od roku 2010",
-  "subtitle": "Výdaje a jejich krytí příjmy a schodkem, nominální i očištěné od inflace, miliardy Kč",
+  "title": "Příjmy a výdaje státního rozpočtu",
+  "subtitle": "Výdaje státního rozpočtu a jejich krytí příjmy a schodkem",
   "tabs": [
     {
       "id": "realne",
-      "label": "Reálné (ceny z roku 2020)"
+      "label": "Reálné (ceny roku 2020)"
     },
     {
       "id": "nominalni",
@@ -23,17 +23,17 @@
     },
     {
       "type": "y",
-      "field": "mld",
-      "label": "Nominální částka",
-      "unit": "mld. Kč",
-      "tab": "nominalni"
-    },
-    {
-      "type": "y",
       "field": "mld_2020",
       "label": "Reálná částka",
       "unit": "mld. Kč",
       "tab": "realne"
+    },
+    {
+      "type": "y",
+      "field": "mld",
+      "label": "Nominální částka",
+      "unit": "mld. Kč",
+      "tab": "nominalni"
     },
     {
       "type": "fill",
@@ -43,19 +43,19 @@
   ],
   "source": [
     {
-      "name": "Monitor státní pokladny (MF ČR)",
-      "dataset": "Plnění rozpočtu ústředně řízených organizací, kapitoly státního rozpočtu",
+      "name": "MF ČR",
+      "dataset": "Monitor státní pokladny – Plnění rozpočtu ústředně řízených organizací, kapitoly státního rozpočtu",
       "url": "https://monitor.statnipokladna.gov.cz/",
-      "retrieved": "2026-11-22"
+      "retrieved": "2026-11-23"
     },
     {
       "name": "ČSÚ",
       "dataset": "Míra inflace (CEN0101H)",
       "url": "https://data.csu.gov.cz/datastat/data/VYBER/CEN0101HT01",
-      "retrieved": "2026-11-22"
+      "retrieved": "2026-11-23"
     }
   ],
-  "data_note": "Reálné částky jsou přepočtené na ceny roku 2020. Příjmy a schodek jsou z účetního pohledu pod osou -- z příjmových a dluhových účtů odcházejí peníze na financování výdajů.",
-  "last_updated": "2026-11-22",
+  "data_note": "Výdaje jsou nad osou, zdroje jejich krytí (příjmy a schodek) pod ní. Reálné částky jsou přepočtené na ceny roku 2020 (inflace podle ČSÚ).",
+  "last_updated": "2026-11-23",
   "rows": 48
 }

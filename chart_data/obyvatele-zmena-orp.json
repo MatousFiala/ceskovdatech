@@ -3,7 +3,7 @@
   "data": "obyvatele-zmena-orp.csv",
   "type": "map",
   "title": "Změna počtu obyvatel v posledních 10 letech",
-  "subtitle": "Procentní změna v počtu obyvatel mezi roky 2015 a 2025 podle [SO ORP::Správní obvod obce s rozšířenou působností], %",
+  "subtitle": "Změna počtu obyvatel podle [SO ORP::Správní obvod obce s rozšířenou působností: území, pro které jedno větší město vykonává část státní správy (např. vydává občanské a řidičské průkazy). Česko se dělí na 206 SO ORP včetně Prahy] mezi roky 2015 a 2025",
   "aes": [
     {
       "type": "geometry",
@@ -14,26 +14,44 @@
     {
       "type": "fill",
       "field": "zmena",
-      "label": "Změna počtu obyvatel 2015-2025",
+      "label": "Změna počtu obyvatel 2015–2025",
       "format": "percent"
     }
   ],
   "source": [
     {
       "name": "ČSÚ",
-      "dataset": "Základní údaje o stavu a pohybu obyvatel - roční údaje",
+      "dataset": "Základní údaje o stavu a pohybu obyvatel – roční údaje",
       "url": "https://data.csu.gov.cz/datastat/data/VYBER/OBY01BT01",
-      "retrieved": "2026-11-22"
+      "retrieved": "2026-11-23"
+    },
+    {
+      "name": "ČÚZK",
+      "dataset": "Hranice správních obvodů ORP (RÚIAN, přes balíček RCzechia)",
+      "url": "https://cuzk.gov.cz/ruian/",
+      "retrieved": "2026-11-23"
     }
   ],
-  "data_note": "Ve sledovaném období se několik obcí přesunulo mezi SO ORP, což vysvětluje část změny. Konkrétně: 3 obce z Českého Brodu do Lysé nad Labem, 1 obec z Turnova do Jablonce nad Nisou, 1 obec z Jihlavy do Havlíčkova Brodu a 1 obec z Prostějova do Konice.",
+  "data_note": "Část změny způsobily přesuny obcí mezi SO ORP: 3 obce z Českého Brodu do Lysé nad Labem, 1 obec z Turnova do Jablonce nad Nisou, 1 obec z Jihlavy do Havlíčkova Brodu a 1 obec z Prostějova do Konice.",
   "options": {
     "geo": "orp.geojson",
     "geo_key": "KOD_ORP",
     "midpoint": 0,
+    "table": [
+      {
+        "field": "obyvatele_od",
+        "label": "Obyvatelé 2015",
+        "unit": "tis."
+      },
+      {
+        "field": "obyvatele_do",
+        "label": "Obyvatelé 2025",
+        "unit": "tis."
+      }
+    ],
     "scheme": ["#d6453d", "#ffffff", "#2e9a4f"],
     "fill_domain": [-0.12, 0.12]
   },
-  "last_updated": "2026-11-22",
+  "last_updated": "2026-11-23",
   "rows": 206
 }

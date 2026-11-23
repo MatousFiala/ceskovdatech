@@ -79,11 +79,11 @@ write_chart(
     df = vek_median,
     id = "vek-median",
     type = "line",
-    title = "Mediánový věk v ČR od roku 1960 s projekcí do roku 2100",
+    title = "Mediánový věk",
     subtitle = "[Medián::Polovina obyvatel je mladší než tento věk, polovina starší] věku obyvatel, skutečnost a projekce ČSÚ",
     aes = list(
         list(type = "x", field = "year", label = "Rok", format = "year"),
-        list(type = "y", field = "median", label = "Medián věku", unit = "let"),
+        list(type = "y", field = "median", label = "Mediánový věk", unit = "let"),
         list(type = "linetype", field = "data", label = "Údaj")
     ),
     source = sources,
@@ -101,8 +101,8 @@ write_chart(
     df = pyramida,
     id = "vek-pyramida",
     type = "pyramid",
-    title = "Věková pyramida ČR od roku 1960 s projekcí do roku 2100",
-    subtitle = "Počet mužů a žen daného věku, skutečnost a projekce ČSÚ, tisíce",
+    title = "Věková pyramida",
+    subtitle = "Počet mužů a žen daného věku, skutečnost a projekce ČSÚ",
     aes = list(
         list(type = "x", field = "vek", label = "Věk"),
         list(type = "y", field = "obyvatele", label = "Počet obyvatel", unit = "tis."),
@@ -126,8 +126,8 @@ write_chart(
     df = skupiny,
     id = "vek-skupiny",
     type = "line",
-    title = "Věková struktura obyvatel ČR od roku 1960 s projekcí do roku 2100",
-    subtitle = "Skutečnost a projekce ČSÚ, miliony",
+    title = "Věková struktura obyvatel",
+    subtitle = "Počet obyvatel podle věkových skupin, skutečnost a projekce ČSÚ",
     aes = list(
         list(type = "x", field = "year", label = "Rok", format = "year"),
         list(type = "y", field = "obyvatele", label = "Počet obyvatel", unit = "mil."),
@@ -147,6 +147,7 @@ zavislost <- vek1 |>
               `Děti (0–14)` = deti / aktivni,
               `Senioři (65+)` = seniori / aktivni) |>
     pivot_longer(-c(year, data), names_to = "zavislost", values_to = "index") |>
+    mutate(index = round(100 * index, 1)) |> # na 100 osob v produktivním věku
     navaz() |>
     arrange(zavislost, data, year)
 
@@ -154,11 +155,11 @@ write_chart(
     df = zavislost,
     id = "vek-zavislost",
     type = "line",
-    title = "Index závislosti v ČR od roku 1960 s projekcí do roku 2100",
-    subtitle = "Počet [dětí::0–14 let] a [seniorů::65 let a více] na 100 lidí v [produktivním věku::15–64 let], skutečnost a projekce ČSÚ",
+    title = "Index závislosti",
+    subtitle = "Počet [dětí::0–14 let] a [seniorů::65+ let] na 100 lidí v [produktivním věku::15–64 let], skutečnost a projekce ČSÚ",
     aes = list(
         list(type = "x", field = "year", label = "Rok", format = "year"),
-        list(type = "y", field = "index", label = "Index závislosti", format = "percent"),
+        list(type = "y", field = "index", label = "Index závislosti", unit = "na 100 osob"),
         list(type = "colour", field = "zavislost", label = "Skupina"),
         list(type = "linetype", field = "data", label = "Údaj")
     ),
@@ -166,36 +167,35 @@ write_chart(
     data_note = "Do roku 1999 data Eurostatu, poté ČSÚ. Budoucí údaje: střední varianta projekce ČSÚ z roku 2023." # "Index závislosti: počet dětí (0–14 let) a seniorů (65+) na 100 lidí v produktivním věku (15–64 let), k 31. 12. Od roku 2026 střední varianta projekce ČSÚ z roku 2023."
 )
 
-# ---------- (5) Průměrný věk a index závislosti v krajích ----------
-# ČSÚ publikuje průměrný věk krajů přímo (z jednotek věku), není třeba počítat z pětiletých skupin
+# ---------- (5) Mediánový věk a index závislosti v krajích ----------
+# ČSÚ publikuje mediánový věk krajů přímo (z jednotek věku), není třeba počítat z pětiletých skupin
 slozeni <- read_csv("./data/czso_OBY02FHVD.csv") |>
     filter(str_detect(Uz012, "^CZ0\\d\\d$"), Pohlaví == "Celkem", Rok == max(Rok)) |>
     select(year = Rok, kraj_kod = Uz012, kraj_nazev = `ČR, Reg. soudržnosti, Kraje`, IndicatorType, Hodnota) |>
     pivot_wider(names_from = IndicatorType, values_from = Hodnota) |>
     transmute(year, kraj_kod, kraj_nazev,
-              prumerny_vek = `5436`,
-              zavislost = (`2406VP014` + `2406VP65AV`) / `2406VP1564`) # stejná definice jako v grafu (4)
+              median = round(`3475`, 1),
+              zavislost = round(100 * (`2406VP014` + `2406VP65AV`) / `2406VP1564`, 1)) # stejná definice jako v grafu (4)
 
 write_chart(
     df = slozeni,
     id = "vek-kraje",
     type = "map",
     title = "Věková struktura v krajích",
-    subtitle = str_glue("Průměrný věk a [index závislosti::Počet dětí (0–14 let) a seniorů (65 let a více) na 100 lidí v produktivním věku (15–64 let)] v roce {max(slozeni$year)} podle krajů"),
-    tabs = list(list(id = "vek", label = "Průměrný věk"), list(id = "zavislost", label = "Index závislosti")),
+    subtitle = str_glue("[Mediánový věk::Polovina obyvatel je mladší než tento věk, polovina starší] a [index závislosti::Počet dětí (0–14 let) a seniorů (65+ let) na 100 lidí v produktivním věku (15–64 let)] podle kraje v roce {max(slozeni$year)}"),
+    tabs = list(list(id = "vek", label = "Mediánový věk"), list(id = "zavislost", label = "Index závislosti")),
     aes = list(
         list(type = "geometry", field = "kraj_kod", label = "Kraj", labeller = "kraj_nazev"),
-        list(type = "fill", field = "prumerny_vek", label = "Průměrný věk", unit = "let", tab = "vek"),
-        list(type = "fill", field = "zavislost", label = "Index závislosti", format = "percent", tab = "zavislost")
+        list(type = "fill", field = "median", label = "Mediánový věk", unit = "let", tab = "vek", scheme = "purples"),
+        list(type = "fill", field = "zavislost", label = "Index závislosti", unit = "na 100 osob", tab = "zavislost", scheme = "oranges")
     ),
     source = slozeni_source,
-    options = list(reverse = TRUE), # mladší / méně závislých = světlejší
-    data_note = "" # "Průměrný věk obyvatel a index závislosti (děti 0–14 let a senioři 65+ na 100 lidí ve věku 15–64 let) k 31. 12. {max(slozeni$year)}."
+    data_note = "" # "Mediánový věk obyvatel a index závislosti (děti 0–14 let a senioři 65+ na 100 lidí ve věku 15–64 let) k 31. 12. {max(slozeni$year)}."
 )
 
 # ---------- Porodnost ----------
 # Řady: Eurostat do roku 2000, ČSÚ od 2001 (podle jednotek věku matky má ČSÚ data až od roku 2001)
-narozeni_source <- csu_source("Narození - vybrané souhrnné údaje", "OBY03HVDT01")
+narozeni_source <- csu_source("Narození – vybrané souhrnné údaje", "OBY03HVDT01")
 narozeni_vek_source <- csu_source("Živě narození podle pořadí, jednotek věku a rodinného stavu matky", "OBY03BT02")
 eurostat_find_source <- list(name = "Eurostat", dataset = "Fertility indicators (demo_find)",
                              url = "https://ec.europa.eu/eurostat/databrowser/view/demo_find/default/table",
@@ -231,11 +231,11 @@ write_chart(
     df = plodnost,
     id = "porodnost-plodnost",
     type = "line",
-    title = "Míra plodnosti v ČR od roku 1960",
-    subtitle = "[Úhrnná plodnost::Odhad, kolik dětí by se narodilo jedné ženě, kdyby po celý její život platily míry plodnosti z daného roku], počet dětí na ženu",
+    title = "Úhrnná plodnost",
+    subtitle = "Průměrný počet dětí na jednu ženu ([úhrnná plodnost::Odhad, kolik dětí by se narodilo jedné ženě, kdyby po celý její život platily míry plodnosti z daného roku])",
     aes = list(
         list(type = "x", field = "year", label = "Rok", format = "year"),
-        list(type = "y", field = "plodnost", label = "Plodnost")
+        list(type = "y", field = "plodnost", label = "Úhrnná plodnost")
     ),
     source = list(eurostat_find_source, narozeni_source),
     options = list(annotations = list(list(y = 2.1, label = "Hranice udržení stabilní populace bez migrace"))), # label: "Prostá reprodukce (2,1)"
@@ -253,7 +253,7 @@ write_chart(
     df = prvni_vek,
     id = "porodnost-vek-prvni",
     type = "line",
-    title = "Průměrný věk prvorodiček v ČR od roku 1995",
+    title = "Průměrný věk prvorodiček",
     subtitle = "Průměrný věk, ve kterém má matka své první dítě",
     aes = list(
         list(type = "x", field = "year", label = "Rok", format = "year"),
@@ -276,7 +276,7 @@ write_chart(
     df = podil_narozeni,
     id = "porodnost-skupiny",
     type = "line",
-    title = "Věk matek v ČR od roku 1960",
+    title = "Věk matek",
     subtitle = "Podíl dětí narozených matkám v dané věkové skupině",
     aes = list(
         list(type = "x", field = "year", label = "Rok", format = "year"),

@@ -2,12 +2,12 @@
   "id": "rozpocet-vydaje",
   "data": "rozpocet-vydaje.csv",
   "type": "bar",
-  "title": "Výdaje státního rozpočtu od roku 2010",
-  "subtitle": "Výdaje státního rozpočtu podle kategorie, miliardy Kč",
+  "title": "Výdaje státního rozpočtu",
+  "subtitle": "Výdaje státního rozpočtu podle kategorie",
   "tabs": [
     {
       "id": "realne",
-      "label": "Reálné (ceny z roku 2020)"
+      "label": "Reálné (ceny roku 2020)"
     },
     {
       "id": "nominalni",
@@ -27,13 +27,6 @@
     },
     {
       "type": "y",
-      "field": "mld",
-      "label": "Nominální výdaje",
-      "unit": "mld. Kč",
-      "tab": "nominalni"
-    },
-    {
-      "type": "y",
       "field": "mld_2020",
       "label": "Reálné výdaje",
       "unit": "mld. Kč",
@@ -41,8 +34,15 @@
     },
     {
       "type": "y",
+      "field": "mld",
+      "label": "Nominální výdaje",
+      "unit": "mld. Kč",
+      "tab": "nominalni"
+    },
+    {
+      "type": "y",
       "field": "podil",
-      "label": "Podíl na výdajích",
+      "label": "% výdajů",
       "format": "percent",
       "tab": "podil"
     },
@@ -54,22 +54,22 @@
   ],
   "source": [
     {
-      "name": "Monitor státní pokladny (MF ČR)",
-      "dataset": "Plnění rozpočtu ústředně řízených organizací, kapitoly státního rozpočtu",
+      "name": "MF ČR",
+      "dataset": "Monitor státní pokladny – Plnění rozpočtu ústředně řízených organizací, kapitoly státního rozpočtu",
       "url": "https://monitor.statnipokladna.gov.cz/",
-      "retrieved": "2026-11-22"
+      "retrieved": "2026-11-23"
     },
     {
       "name": "ČSÚ",
       "dataset": "Míra inflace (CEN0101H)",
       "url": "https://data.csu.gov.cz/datastat/data/VYBER/CEN0101HT01",
-      "retrieved": "2026-11-22"
+      "retrieved": "2026-11-23"
     }
   ],
-  "data_note": "Reálné částky jsou přepočtené na ceny roku 2020. Důchody a sociální transfery: veškeré důchody, sociální dávky a příspěvky. Služby: vzdělávání, zdravotnictví, kultura, bydlení, životní prostředí. Hospodářství: doprava, zemědělství, průmysl, energetika, výzkum. Bezpečnost: obrana, bezpečnostní složky. Veřejná správa: státní a místní správa, obsluha dluhu, transfery samosprávám.",
+  "data_note": "Důchody a sociální transfery: veškeré důchody, sociální dávky a příspěvky. Služby: vzdělávání, zdravotnictví, kultura, bydlení, životní prostředí. Hospodářství a doprava: doprava, zemědělství, průmysl, energetika, výzkum. Bezpečnost státu: obrana, bezpečnostní složky. Veřejná správa: státní a místní správa, obsluha dluhu, transfery samosprávám. Reálné částky jsou přepočtené na ceny roku 2020 (inflace podle ČSÚ).",
   "options": {
     "facet": true
   },
-  "last_updated": "2026-11-22",
+  "last_updated": "2026-11-23",
   "rows": 80
 }

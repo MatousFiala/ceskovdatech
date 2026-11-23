@@ -2,7 +2,7 @@
   "id": "chudoba",
   "data": "chudoba.csv",
   "type": "line",
-  "title": "Míra chudoby v ČR",
+  "title": "Míra chudoby",
   "subtitle": "Podíl obyvatel ohrožených chudobou podle příjmu jejich domácnosti",
   "aes": [
     {
@@ -28,16 +28,16 @@
       "name": "Eurostat",
       "dataset": "At-risk-of-poverty rate (ilc_li02)",
       "url": "https://ec.europa.eu/eurostat/databrowser/view/ilc_li02/default/table",
-      "retrieved": "2026-11-22"
+      "retrieved": "2026-11-23"
     },
     {
       "name": "Eurostat",
       "dataset": "At-risk-of-poverty rate anchored at a fixed moment in time (2008) (ilc_li22b)",
       "url": "https://ec.europa.eu/eurostat/databrowser/view/ilc_li22b/default/table",
-      "retrieved": "2026-11-22"
+      "retrieved": "2026-11-23"
     }
   ],
-  "data_note": "Pevná hranice nezávisí na příjmech zbytku společnosti -- odpovídá hranici chudoby z roku 2008, která se v dalších letech pouze upravuje o inflaci.",
-  "last_updated": "2026-11-22",
+  "data_note": "Pevná hranice nezávisí na příjmech zbytku společnosti – odpovídá hranici chudoby z roku 2008, která se v dalších letech pouze upravuje o inflaci.",
+  "last_updated": "2026-11-23",
   "rows": 40
 }

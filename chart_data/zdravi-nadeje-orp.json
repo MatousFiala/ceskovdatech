@@ -3,7 +3,7 @@
   "data": "zdravi-nadeje-orp.csv",
   "type": "map",
   "title": "Naděje dožití podle SO ORP",
-  "subtitle": "Naděje dožití při narození v období 2021-2025",
+  "subtitle": "Naděje dožití při narození podle [SO ORP::Správní obvod obce s rozšířenou působností: území, pro které jedno větší město vykonává část státní správy (např. vydává občanské a řidičské průkazy). Česko se dělí na 206 SO ORP včetně Prahy] v období 2021–2025",
   "aes": [
     {
       "type": "geometry",
@@ -15,7 +15,8 @@
       "type": "fill",
       "field": "nadeje",
       "label": "Naděje dožití",
-      "unit": "let"
+      "unit": "let",
+      "scheme": "greens"
     }
   ],
   "source": [
@@ -23,14 +24,32 @@
       "name": "ČSÚ",
       "dataset": "Naděje dožití v SO ORP a Praze",
       "url": "https://data.csu.gov.cz/datastat/data/VYBER/OBY04BORT01",
-      "retrieved": "2026-11-22"
+      "retrieved": "2026-11-23"
+    },
+    {
+      "name": "ČÚZK",
+      "dataset": "Hranice správních obvodů ORP (RÚIAN, přes balíček RCzechia)",
+      "url": "https://cuzk.gov.cz/ruian/",
+      "retrieved": "2026-11-23"
     }
   ],
   "data_note": "Data za pětileté období kvůli zmírnění statistického šumu. Vážený průměr mužů a žen podle poměru pohlaví při narození (1 028 chlapců na 1 000 dívek). ČSÚ publikuje údaje jen zvlášť za muže a ženy.",
   "options": {
     "geo": "orp.geojson",
-    "geo_key": "KOD_ORP"
+    "geo_key": "KOD_ORP",
+    "table": [
+      {
+        "field": "ženy",
+        "label": "Ženy",
+        "unit": "let"
+      },
+      {
+        "field": "muži",
+        "label": "Muži",
+        "unit": "let"
+      }
+    ]
   },
-  "last_updated": "2026-11-22",
+  "last_updated": "2026-11-23",
   "rows": 206
 }

@@ -2,8 +2,8 @@
   "id": "zdravi-psychiatrie",
   "data": "zdravi-psychiatrie.csv",
   "type": "line",
-  "title": "Výskyt duševních poruch v ČR",
-  "subtitle": "Počet pacientů v [ambulantní::Pacienti docházející k lékaři, nikoli hospitalizovaní] péči psychiatra podle diagnózy, vlastní kategorizace",
+  "title": "Pacienti v psychiatrické péči",
+  "subtitle": "Počet pacientů v [ambulantní::Pacienti docházející k lékaři, nikoli hospitalizovaní] péči psychiatra podle diagnózy",
   "aes": [
     {
       "type": "x",
@@ -28,13 +28,13 @@
       "name": "ÚZIS",
       "dataset": "Ambulantní péče v psychiatrii (NRHZS)",
       "url": "https://www.nzip.cz/data/2058-ambulantni-pece-psychiatrie-otevrena-data",
-      "retrieved": "2026-11-22"
+      "retrieved": "2026-11-23"
     }
   ],
-  "data_note": "Počet pacientů ambulantní psychiatrické péče hrazené z veřejného zdravotního pojištění podle základní diagnózy (MKN-10): poruchy nálady F30–F39, úzkostné poruchy F40–F49, demence F00–F03 a Alzheimerova nemoc G30, závislosti F10–F19, poruchy s nástupem v dětství a dospívání F70–F99 (mentální retardace, poruchy psychického vývoje včetně autismu, ADHD a poruchy chování a emocí se začátkem v dětství a dospívání). Ostatní: hlavně schizofrenie, poruchy příjmu potravy a poruchy osobnosti.",
+  "data_note": "Pacienti ambulantní psychiatrické péče hrazené z veřejného zdravotního pojištění podle základní diagnózy, vlastní kategorizace. Poruchy s nástupem v dětství a dospívání: mentální postižení, poruchy psychického vývoje (včetně autismu), ADHD a poruchy chování a emocí. Ostatní: hlavně schizofrenie, poruchy příjmu potravy a poruchy osobnosti. Kódy MKN-10: poruchy nálady F30–F39; úzkostné poruchy F40–F49; demence F00–F03 a G30; závislosti F10–F19; poruchy s nástupem v dětství a dospívání F70–F99.",
   "options": {
     "facet": true
   },
-  "last_updated": "2026-11-22",
+  "last_updated": "2026-11-23",
   "rows": 96
 }

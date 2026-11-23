@@ -2,8 +2,8 @@
   "id": "nezamestnanost-vek",
   "data": "nezamestnanost-vek.csv",
   "type": "line",
-  "title": "Míra nezaměstnanosti podle věku od roku 1993",
-  "subtitle": "Obecná [míra nezaměstnanosti::Podíl lidí v pracovní síle, kteří si hledají práci, ale v danou chvíli žádnou nemají. Nezapočítává ty, kteří pracovat nemohou nebo si práci nehledají] podle věkových skupin, %",
+  "title": "Míra nezaměstnanosti podle věku",
+  "subtitle": "Obecná [míra nezaměstnanosti::Podíl lidí v pracovní síle, kteří si hledají práci, ale v danou chvíli žádnou nemají] podle věkových skupin",
   "aes": [
     {
       "type": "x",
@@ -28,19 +28,19 @@
       "name": "ČSÚ",
       "dataset": "Specifické míry nezaměstnanosti podle věkových skupin (VŠPS)",
       "url": "https://data.csu.gov.cz/datastat/data/VYBER/ZAM04T5?vSet=3&vSel=1",
-      "retrieved": "2026-11-22"
+      "retrieved": "2026-11-23"
     },
     {
       "name": "Eurostat",
       "dataset": "Active population by sex, age and citizenship (lfsa_agan)",
       "url": "https://ec.europa.eu/eurostat/databrowser/view/lfsa_agan/default/table",
-      "retrieved": "2026-11-22"
+      "retrieved": "2026-11-23"
     }
   ],
-  "data_note": "Míry nezaměstnanosti jsou z ČSÚ za pětileté věkové skupiny. Skupiny 25–34, 35–49 a 50–64 let vznikly jejich sloučením, váženým velikostí pracovní síly podle Eurostatu; pro roky 1993–1996 jsou použity váhy z roku 1997, hodnoty za tyto roky jsou proto přibližné. Ve skupině 15–19 let je v pracovní síle jen málo lidí, většina ještě studuje.",
+  "data_note": "ČSÚ publikuje míry za pětileté skupiny; širší skupiny jsou jejich průměr vážený velikostí pracovní síly (Eurostat). Hodnoty 1993–1996 jsou přibližné. Ve skupině 15–19 let většina lidí studuje, v pracovní síle je jich málo.",
   "options": {
     "facet": true
   },
-  "last_updated": "2026-11-22",
+  "last_updated": "2026-11-23",
   "rows": 195
 }

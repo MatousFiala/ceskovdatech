@@ -3,7 +3,7 @@
   "data": "mzdy-kraje.csv",
   "type": "map",
   "title": "Průměrná mzda v krajích",
-  "subtitle": "Průměrná hrubá měsíční mzda v roce 2025 podle kraje, nominální",
+  "subtitle": "Průměrná nominální hrubá měsíční mzda podle kraje v roce 2025",
   "aes": [
     {
       "type": "geometry",
@@ -15,7 +15,8 @@
       "type": "fill",
       "field": "mzda",
       "label": "Průměrná mzda",
-      "unit": "Kč"
+      "unit": "Kč",
+      "scheme": "greens"
     }
   ],
   "source": [
@@ -23,10 +24,16 @@
       "name": "ČSÚ",
       "dataset": "Průměrné hrubé měsíční mzdy (čtvrtletní zjišťování)",
       "url": "https://data.csu.gov.cz/datastat/data/VYBER/MZDRT1?vSet=1&vSel=1",
-      "retrieved": "2026-11-22"
+      "retrieved": "2026-11-23"
+    },
+    {
+      "name": "Eurostat GISCO",
+      "dataset": "Hranice krajů (NUTS 2021) © EuroGeographics",
+      "url": "https://ec.europa.eu/eurostat/web/gisco/geodata/statistical-units/territorial-units-statistics",
+      "retrieved": "2026-11-23"
     }
   ],
-  "data_note": "Mzda na přepočtené počty zaměstnanců. Zaměstnanci jsou zařazeni podle místa pracoviště, nikoli podle bydliště nebo sídla zaměstnavatele.",
-  "last_updated": "2026-11-22",
+  "data_note": "Mzda přepočtená na plné úvazky. Zaměstnanci jsou zařazeni podle místa pracoviště, nikoli podle bydliště nebo sídla zaměstnavatele.",
+  "last_updated": "2026-11-23",
   "rows": 14
 }

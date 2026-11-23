@@ -2,7 +2,7 @@
   "id": "porodnost-skupiny",
   "data": "porodnost-skupiny.csv",
   "type": "line",
-  "title": "Věk matek v ČR od roku 1960",
+  "title": "Věk matek",
   "subtitle": "Podíl dětí narozených matkám v dané věkové skupině",
   "aes": [
     {
@@ -28,31 +28,31 @@
       "name": "Eurostat",
       "dataset": "Live births by mother's age (demo_fagec)",
       "url": "https://ec.europa.eu/eurostat/databrowser/view/demo_fagec/default/table",
-      "retrieved": "2026-11-22"
+      "retrieved": "2026-11-23"
     },
     {
       "name": "Eurostat",
       "dataset": "Fertility indicators (demo_find)",
       "url": "https://ec.europa.eu/eurostat/databrowser/view/demo_find/default/table",
-      "retrieved": "2026-11-22"
+      "retrieved": "2026-11-23"
     },
     {
       "name": "ČSÚ",
       "dataset": "Živě narození podle pořadí, jednotek věku a rodinného stavu matky",
       "url": "https://data.csu.gov.cz/datastat/data/VYBER/OBY03BT02",
-      "retrieved": "2026-11-22"
+      "retrieved": "2026-11-23"
     },
     {
       "name": "ČSÚ",
-      "dataset": "Narození - vybrané souhrnné údaje",
+      "dataset": "Narození – vybrané souhrnné údaje",
       "url": "https://data.csu.gov.cz/datastat/data/VYBER/OBY03HVDT01",
-      "retrieved": "2026-11-22"
+      "retrieved": "2026-11-23"
     }
   ],
   "data_note": "Do roku 2000 data Eurostatu, poté ČSÚ.",
   "options": {
     "facet": true
   },
-  "last_updated": "2026-11-22",
+  "last_updated": "2026-11-23",
   "rows": 330
 }

@@ -35,8 +35,8 @@ write_chart(
     df = nadeje,
     id = "zdravi-nadeje-doziti",
     type = "line",
-    title = "Naděje dožití v ČR od roku 1920",
-    subtitle = "[Naděje dožití při narození::Kolik let by v průměru prožil novorozenec, kdyby po celý život platila úmrtnost daného roku]",
+    title = "Naděje dožití",
+    subtitle = "[Naděje dožití při narození::Kolika let by se v průměru dožil novorozenec, kdyby po celý jeho život platila úmrtnost podle věku z daného roku]",
     aes = list(
         list(type = "x", field = "year", label = "Rok", format = "year"),
         list(type = "y", field = "nadeje", label = "Naděje dožití", unit = "let")
@@ -57,12 +57,12 @@ write_chart(
     df = nadeje_vek,
     id = "zdravi-nadeje-vek",
     type = "line",
-    title = "Naděje dožití podle věku v ČR od roku 1920",
-    subtitle = "Podmíněná naděje dožití: kolika let se v průměru dožije člověk daného věku",
+    title = "Naděje dožití podle věku",
+    subtitle = "Očekávaný věk dožití podle dosaženého věku ([podmíněná naděje dožití::Pokud se člověk dožil daného věku, kolika let se v průměru dožije])",
     aes = list(
         list(type = "x", field = "year", label = "Rok", format = "year"),
-        list(type = "y", field = "vek_umrti", label = "Naděje dožití", unit = "let"),
-        list(type = "colour", field = "vek", label = "Ve věku", unit = "let")
+        list(type = "y", field = "vek_umrti", label = "Očekávaný věk dožití", unit = "let"),
+        list(type = "colour", field = "vek", label = "Ve věku")
     ),
     source = csu_source("Úmrtnostní tabulky za ČR", "OBY04BCRT02"),
     options = list(y_zero = FALSE, facet = TRUE),
@@ -85,19 +85,20 @@ write_chart(
     id = "zdravi-nadeje-orp",
     type = "map",
     title = "Naděje dožití podle SO ORP",
-    subtitle = str_glue("Naděje dožití při narození v období {max(orp$obdobi)}"),
+    subtitle = str_glue("Naděje dožití při narození podle [SO ORP::Správní obvod obce s rozšířenou působností: území, pro které jedno větší město vykonává část státní správy (např. vydává občanské a řidičské průkazy). Česko se dělí na 206 SO ORP včetně Prahy] v období {str_replace(max(orp$obdobi), '-', '–')}"),
     aes = list(
         list(type = "geometry", field = "orp_kod", label = "ORP", labeller = "orp_nazev"),
-        list(type = "fill", field = "nadeje", label = "Naděje dožití", unit = "let")
+        list(type = "fill", field = "nadeje", label = "Naděje dožití", unit = "let", scheme = "greens")
     ),
     source = csu_source("Naděje dožití v SO ORP a Praze", "OBY04BORT01"),
-    options = list(geo = "orp.geojson", geo_key = "KOD_ORP"),
+    options = list(geo = "orp.geojson", geo_key = "KOD_ORP",
+                   table = list(list(field = "ženy", label = "Ženy", unit = "let"), list(field = "muži", label = "Muži", unit = "let"))),
     data_note = "Data za pětileté období kvůli zmírnění statistického šumu. Vážený průměr mužů a žen podle poměru pohlaví při narození (1 028 chlapců na 1 000 dívek). ČSÚ publikuje údaje jen zvlášť za muže a ženy." # "Očekávaný věk dožití člověka, který se dožil daného věku: věk + naděje dožití v tomto věku, při úmrtnosti daného roku. Muži a ženy dohromady."
 )
 
 # ---------- (3) Subjektivně vnímané zdraví podle příjmu (EU-SILC) ----------
-kvintily <- c(QU1 = "1. kvintil (nejnižší příjmy)", QU2 = "2. kvintil", QU3 = "3. kvintil",
-              QU4 = "4. kvintil", QU5 = "5. kvintil (nejvyšší příjmy)")
+kvintily <- c(QU1 = "1. pětina (nejnižší příjmy)", QU2 = "2. pětina", QU3 = "3. pětina",
+              QU4 = "4. pětina", QU5 = "5. pětina (nejvyšší příjmy)")
 silc_vse <- read_csv("./data/eurostat_hlth_silc_10.csv") |>
     filter(levels == "VG_G", sex == "T", quant_inc %in% names(kvintily), !is.na(values)) |>
     mutate(kvintil = factor(kvintily[quant_inc], kvintily))
@@ -131,13 +132,13 @@ write_chart(
     df = filter(silc, year == max(year)),
     id = "zdravi-silc-prijem",
     type = "bar",
-    title = "Zdravotní stav podle příjmů v ČR",
+    title = "Zdravotní stav podle příjmů",
     subtitle = str_glue("Podíl dotázaných, kteří hodnotí své zdraví jako dobré nebo velmi dobré, podle příjmové pětiny v roce {max(silc$year)}"),
-    tabs = list(list(id = "ocisteno", label = "Očištěno od věku"), list(id = "skutecnost", label = "Neočištěno")),
+    tabs = list(list(id = "ocisteno", label = "Dobré zdraví, očištěno od věku"), list(id = "skutecnost", label = "Dobré zdraví, neočištěno")),
     aes = list(
-        list(type = "x", field = "kvintil", label = "Kvintil příjmů"),
-        list(type = "y", field = "dobre_zdravi_vek", label = "Dobré zdraví", format = "percent", tab = "ocisteno"),
-        list(type = "y", field = "dobre_zdravi", label = "Dobré zdraví", format = "percent", tab = "skutecnost")
+        list(type = "x", field = "kvintil", label = "Příjmová pětina"),
+        list(type = "y", field = "dobre_zdravi_vek", label = "Dobré zdraví, očištěno od věku", format = "percent", tab = "ocisteno"),
+        list(type = "y", field = "dobre_zdravi", label = "Dobré zdraví, neočištěno", format = "percent", tab = "skutecnost")
     ),
     source = list(
         other_source("Eurostat", "Self-perceived health by sex, age and income quintile (hlth_silc_10)",
@@ -145,7 +146,7 @@ write_chart(
         other_source("Eurostat", "Population on 1 January by age and sex (demo_pjan)",
                      "https://ec.europa.eu/eurostat/databrowser/view/demo_pjan/default/table")
     ),
-    data_note = "Ekvivalizované příjmy podle počtu členů domácnosti. Starší lidé mají obvykle nižší příjmy, nižší příjmové pětiny tedy mají horší zdraví zčásti kvůli vyššímu věku. Čísla očištěná od věku jsou průměry respondentů převážené tak, aby měla každá pětina stejnou věkovou strukturu." # "Podíl lidí ve věku 16 a více let, kteří své zdraví hodnotí jako dobré nebo velmi dobré, podle pětiny (kvintilu) ekvivalizovaného příjmu domácnosti. Šetření EU-SILC (Životní podmínky). V nižších kvintilech je víc starších lidí. Údaje očištěné o věk ukazují, jaký by byl podíl v každém kvintilu, kdyby měl stejnou věkovou strukturu jako všichni obyvatelé ČR ve věku 16+ (přímá standardizace v sedmi věkových skupinách 16–24 až 75+)."
+    data_note = "Ekvivalizované příjmy podle počtu členů domácnosti. Starší lidé mají obvykle nižší příjmy, nižší příjmové pětiny tedy mají horší zdraví zčásti kvůli vyššímu věku. Čísla očištěná od věku jsou přepočtená tak, jako by každá pětina měla stejnou věkovou strukturu." # "Podíl lidí ve věku 16 a více let, kteří své zdraví hodnotí jako dobré nebo velmi dobré, podle pětiny (kvintilu) ekvivalizovaného příjmu domácnosti. Šetření EU-SILC (Životní podmínky). V nižších kvintilech je víc starších lidí. Údaje očištěné o věk ukazují, jaký by byl podíl v každém kvintilu, kdyby měl stejnou věkovou strukturu jako všichni obyvatelé ČR ve věku 16+ (přímá standardizace v sedmi věkových skupinách 16–24 až 75+)."
 )
 
 # ---------- (4) Kojenecká úmrtnost, od roku 1919 ----------
@@ -160,9 +161,9 @@ narozeni <- read_csv("./data/czso_OBY03HVD.csv") |>
 kojenecka <- bind_rows(
     read_csv("./data/czso_pohyb_1919.csv") |>
         filter(rok <= 2000) |>
-        transmute(year = rok, umrtnost = kojenecka_umrtnost / 1000),
+        transmute(year = rok, umrtnost = round(kojenecka_umrtnost, 2)), # na 1 000 živě narozených
     inner_join(kojenci, narozeni, by = "Roky") |>
-        transmute(year = Roky, umrtnost = zemreli / narozeni)
+        transmute(year = Roky, umrtnost = round(1000 * zemreli / narozeni, 2))
 ) |>
     filter(!is.na(umrtnost)) |>
     arrange(year)
@@ -171,17 +172,17 @@ write_chart(
     df = kojenecka,
     id = "zdravi-kojenecka-umrtnost",
     type = "line",
-    title = "Kojenecká úmrtnost v ČR od roku 1919",
-    subtitle = "Podíl živě narozených dětí, které zemřely do jednoho roku věku",
+    title = "Kojenecká úmrtnost",
+    subtitle = "Počet dětí zemřelých do jednoho roku věku na 1 000 živě narozených",
     aes = list(
         list(type = "x", field = "year", label = "Rok", format = "year"),
-        list(type = "y", field = "umrtnost", label = "Kojenecká úmrtnost", format = "percent")
+        list(type = "y", field = "umrtnost", label = "Kojenecká úmrtnost", unit = "‰")
     ),
     source = list(
         other_source("ČSÚ", "Pohyb obyvatel České republiky v letech 1919–2023 – relativní údaje",
                      "https://csu.gov.cz/produkty/pocet-a-pohyb-obyvatel-ceske-republiky-v-letech-1919-2023"),
         csu_source("Zemřelí kojenci do 1 roku", "OBY04HT02"),
-        csu_source("Narození - vybrané souhrnné údaje", "OBY03HVDT01")
+        csu_source("Narození – vybrané souhrnné údaje", "OBY03HVDT01")
     ),
     data_note = "" # "Kojenecká úmrtnost: podíl živě narozených dětí, které zemřely do jednoho roku věku. Území dnešní ČR."
 )
@@ -199,15 +200,16 @@ write_chart(
     df = materska,
     id = "zdravi-materska-umrtnost",
     type = "line",
-    title = "Mateřská úmrtnost v ČR od roku 1985",
+    title = "Mateřská úmrtnost",
     subtitle = "Počet žen zemřelých v souvislosti s těhotenstvím, porodem či šestinedělím na 100 000 živě narozených dětí, odhad",
     aes = list(
         list(type = "x", field = "year", label = "Rok", format = "year"),
-        list(type = "y", field = "umrtnost", label = "Mateřská úmrtnost")
+        list(type = "y", field = "umrtnost", label = "Mateřská úmrtnost", unit = "na 100 000 živě narozených")
     ),
+    options = list(table = list(list(field = "dolni", label = "Dolní odhad", unit = "na 100 000 živě narozených"), list(field = "horni", label = "Horní odhad", unit = "na 100 000 živě narozených"))),
     source = other_source("WHO", "Maternal mortality ratio (per 100 000 live births), UN MMEIG estimates",
                           "https://www.who.int/data/gho/data/indicators/indicator-details/GHO/maternal-mortality-ratio-(per-100-000-live-births)"),
-    data_note = "Modelový odhad -- případy jsou dnes v ČR vzácné a skutečné počty by vykazovaly značný statistický šum." # "Mateřská úmrtnost: počet žen zemřelých v souvislosti s těhotenstvím, porodem nebo do 42 dnů po něm na 100 000 živě narozených dětí. Modelové odhady WHO a OSN (UN MMEIG); případů je v Česku několik ročně, proto jde o odhad s nejistotou."
+    data_note = "Modelový odhad – případy jsou dnes v Česku vzácné a skutečné počty by vykazovaly značný statistický šum." # "Mateřská úmrtnost: počet žen zemřelých v souvislosti s těhotenstvím, porodem nebo do 42 dnů po něm na 100 000 živě narozených dětí. Modelové odhady WHO a OSN (UN MMEIG); případů je v Česku několik ročně, proto jde o odhad s nejistotou."
 )
 
 # ---------- (6) a (7) Příčiny smrti ----------
@@ -225,46 +227,32 @@ skupiny <- priciny |>
         `Nemoci srdce a cév` = I00TI99,
         `Rakovina a jiné nádory` = C00TD48,
         `Ostatní nepřenosné nemoci` = `0` - I00TI99 - C00TD48 - J09TJ11 - J12TJ18 - U07U10 - A00TB99 - V01TY98,
-        `Infekce dýchací soustavy (vč. covidu)` = J09TJ11 + J12TJ18 + U07U10, # chřipka, záněty plic, covid-19
-        `Ostatní infekční nemoci` = A00TB99,
-        `Úrazy, nehody, sebevraždy a násilí` = V01TY98
+        `Infekce dýchací soustavy` = J09TJ11 + J12TJ18 + U07U10, # chřipka, záněty plic, covid-19
+        `Ostatní přenosné nemoci` = A00TB99,
+        `Vnější příčiny` = V01TY98 # úrazy, nehody, sebevraždy a násilí
     ) |>
     pivot_longer(-year, names_to = "pricina", values_to = "zemreli") |>
     mutate(podil = zemreli / sum(zemreli), .by = year) |>
     mutate(pricina = fct_inorder(pricina)) |>
     arrange(pricina, year)
 
+# Podíl na úmrtích (čárový graf) a počet úmrtí (skládaný sloupcový graf) jako dvě záložky
 write_chart(
-    df = skupiny,
+    df = mutate(skupiny, zemreli = round(zemreli / 1e3, 3)),
     id = "zdravi-priciny-smrti",
     type = "line",
-    title = "Příčiny úmrtí v ČR od roku 2000",
-    subtitle = "Podíl úmrtí podle vykázané příčiny, vlastní kategorizace",
+    title = "Příčiny úmrtí",
+    subtitle = "Úmrtí podle vykázané příčiny",
+    tabs = list(list(id = "podil", label = "Podíl na úmrtích"), list(id = "pocet", label = "Počet úmrtí", type = "bar")),
     aes = list(
         list(type = "x", field = "year", label = "Rok", format = "year"),
-        list(type = "y", field = "podil", label = "Podíl", format = "percent"),
-        list(type = "colour", field = "pricina", label = "Příčina smrti")
+        list(type = "y", field = "podil", label = "Podíl na úmrtích", format = "percent", tab = "podil"),
+        list(type = "y", field = "zemreli", label = "Počet úmrtí", unit = "tis.", tab = "pocet"),
+        list(type = "colour", field = "pricina", label = "Příčina úmrtí")
     ),
     source = csu_source("Zemřelí podle pohlaví, pětiletých věkových skupin a zkráceného seznamu příčin smrti", "OBY04CT01"),
     options = list(facet = TRUE),
-    data_note = "Kategorizace příčin podle kódů MKN-10: srdce a cévy I00–I99, nádory C00–D48, infekce dýchací soustavy: chřipka a záněty plic (J09–J18) a covid-19 (U07, U10), ostatní infekční A00–B99, vnější příčiny V01–Y98. Ostatní nepřenosné nemoci zahrnují i chronické nemoci dýchací soustavy (např. CHOPN) a nepřesně určené příčiny (R00–R99)."
-)
-
-# Počet zemřelých podle příčiny (skládaný sloupcový graf)
-write_chart(
-    df = skupiny |> transmute(year, pricina, zemreli = zemreli / 1e3),
-    id = "zdravi-priciny-pocet",
-    type = "bar",
-    title = "Úmrtí v ČR od roku 2000",
-    subtitle = "Počet úmrtí podle vykázané příčiny, vlastní kategorizace, tisíce",
-    aes = list(
-        list(type = "x", field = "year", label = "Rok", format = "year"),
-        list(type = "y", field = "zemreli", label = "Úmrtí", unit = "tis."),
-        list(type = "fill", field = "pricina", label = "Příčina smrti")
-    ),
-    source = csu_source("Zemřelí podle pohlaví, pětiletých věkových skupin a zkráceného seznamu příčin smrti", "OBY04CT01"),
-    options = list(facet = TRUE),
-    data_note = "Kategorizace příčin podle kódů MKN-10: srdce a cévy I00–I99, nádory C00–D48, infekce dýchací soustavy: chřipka a záněty plic (J09–J18) a covid-19 (U07, U10), ostatní infekční A00–B99, vnější příčiny V01–Y98. Ostatní nepřenosné nemoci zahrnují i chronické nemoci dýchací soustavy (např. CHOPN) a nepřesně určené příčiny (R00–R99)."
+    data_note = "Vlastní kategorizace příčin. Ostatní nepřenosné nemoci zahrnují i chronické nemoci dýchací soustavy (např. CHOPN) a nepřesně určené příčiny. Kódy MKN-10: nemoci srdce a cév I00–I99; rakovina a jiné nádory C00–D48; infekce dýchací soustavy = chřipka a záněty plic (J09–J18) a covid-19 (U07, U10); ostatní přenosné nemoci A00–B99; vnější příčiny (úrazy, nehody, sebevraždy a násilí) V01–Y98; nepřesně určené příčiny R00–R99."
 )
 
 # ---------- (8) Nadváha, obezita a kouření ----------
@@ -280,7 +268,7 @@ write_chart(
     df = obezita_koureni,
     id = "zdravi-obezita-koureni",
     type = "line",
-    title = "Rizikové faktory v ČR",
+    title = "Vývoj rizikových faktorů",
     subtitle = "Odhadovaný podíl kuřáků a dospělých s nadváhou a obezitou",
     aes = list(
         list(type = "x", field = "year", label = "Rok", format = "year"),
@@ -295,7 +283,7 @@ write_chart(
         other_source("WHO", "Estimate of current tobacco smoking prevalence, age-standardized",
                      "https://www.who.int/data/gho/data/indicators/indicator-details/GHO/gho-tobacco-control-monitor-current-tobaccosmoking-prevalence-ages-15plus-age-standardized")
     ),
-    data_note = "Modelové odhady WHO, standardizované podle věku kvůli mezinárodní srovnatelnosti."
+    data_note = "Modelové odhady WHO. Původní dataset je standardizovaný podle věku kvůli mezinárodní srovnatelnosti."
 )
 
 # ---------- (8b) Znečištění ovzduší (PM2.5) ----------
@@ -308,16 +296,16 @@ write_chart(
     df = ovzdusi,
     id = "zdravi-ovzdusi",
     type = "line",
-    title = "Znečištění vzduchu v ČR od roku 1998",
-    subtitle = "Koncentrace škodlivých prachových částic (PM2.5) ve vzduchu, satelitní odhad",
+    title = "Znečištění ovzduší",
+    subtitle = "Koncentrace škodlivých prachových částic (PM2.5) v ovzduší, odhad",
     aes = list(
         list(type = "x", field = "year", label = "Rok", format = "year"),
         list(type = "y", field = "pm25", label = "Koncentrace PM2.5", unit = "µg/m³")
     ),
     options = list(annotations = list(list(y = 5, label = "Doporučení WHO"))), # label: "Doporučení WHO (5 µg/m³)"
-    source = other_source("SatPM, Washington University in St. Louis", "Outdoor air pollution exposure, population-weighted PM2.5 (via Our World in Data)",
+    source = other_source("Washington University", "Outdoor air pollution exposure, population-weighted PM2.5, SatPM (via Our World in Data)",
                           "https://ourworldindata.org/grapher/pm25-air-pollution"),
-    data_note = "Průměrná roční koncentrace částic PM2.5, prostorové odhady na území ČR vážené podle hustoty obyvatel."
+    data_note = "Satelitní odhad průměrné roční koncentrace částic PM2.5 na území Česka, vážený podle hustoty obyvatel."
 )
 
 # ---------- (8c) Úmrtí a ztracené roky zdravého života (DALY) podle rizikových faktorů (GBD 2023) ----------
@@ -370,18 +358,18 @@ write_chart(
     df = gbd,
     id = "zdravi-rizika-gbd",
     type = "bar",
-    title = "Rizikové faktory v ČR",
-    subtitle = str_glue("Počet úmrtí a ztracených [let zdravého života::DALY (disability-adjusted life years): roky ztracené předčasnou smrtí a roky prožité s nemocí či postižením, vážené jejich závažností. Pokud např. člověk s očekávanou délkou života 80 let zemře v 55 letech, ztratí 25 let] v roce {max(gbd$year)} připisovaných rizikovým faktorům, odhad. Ztracené roky zdůrazňují faktory, které zabíjejí v mladším věku"),
-    tabs = list(list(id = "umrti", label = "Úmrtí"), list(id = "daly", label = "Ztracené roky zdravého života")), # "Úmrtí", "Ztracené roky zdravého života (DALY)"
+    title = "Rizikové faktory",
+    subtitle = str_glue("Počet úmrtí a ztracených [let života ve zdraví::DALY (disability-adjusted life years): roky ztracené předčasnou smrtí a roky prožité s nemocí či postižením, vážené jejich závažností. Pokud např. člověk s očekávanou délkou života 80 let zemře v 55 letech, ztratí 25 let] připisovaných rizikovým faktorům v roce {max(gbd$year)}, odhad"),
+    tabs = list(list(id = "umrti", label = "Úmrtí"), list(id = "daly", label = "Ztracené roky života ve zdraví")), # "Úmrtí", "Ztracené roky zdravého života (DALY)"
     aes = list(
         list(type = "x", field = "riziko", label = "Rizikový faktor"),
-        list(type = "y", field = "umrti", label = "Počet úmrtí", tab = "umrti"),
-        list(type = "y", field = "daly", label = "Ztracené roky ve zdraví", tab = "daly"),
+        list(type = "y", field = "umrti", label = "Úmrtí", tab = "umrti"),
+        list(type = "y", field = "daly", label = "Ztracené roky života ve zdraví", tab = "daly"),
         list(type = "fill", field = "skupina", label = "Druh rizikového faktoru")
     ),
     options = list(horizontal = TRUE, sort = "desc"),
     source = other_source("IHME", "Global Burden of Disease Study 2023 (GBD 2023) Results", "https://vizhub.healthdata.org/gbd-results/"),
-    data_note = "Rizikové faktory se překrývají -- např. obezita je často spojená s vysokým krevním tlakem." # "Podíl všech úmrtí a všech ztracených let zdravého života (DALY) v ČR v roce 2023, které lze podle modelu Global Burden of Disease přičíst danému rizikovému faktoru. DALY = roky ztracené předčasnou smrtí a roky prožité s nemocí nebo postižením. Rizika se překrývají (např. obezita zvyšuje krevní tlak), podíly proto nelze sčítat."
+    data_note = "Ztracené roky zdůrazňují faktory, které zabíjejí v mladším věku. Rizikové faktory se překrývají – např. obezita je často spojená s vysokým krevním tlakem." # "Podíl všech úmrtí a všech ztracených let zdravého života (DALY) v ČR v roce 2023, které lze podle modelu Global Burden of Disease přičíst danému rizikovému faktoru. DALY = roky ztracené předčasnou smrtí a roky prožité s nemocí nebo postižením. Rizika se překrývají (např. obezita zvyšuje krevní tlak), podíly proto nelze sčítat."
 )
 
 # ---------- (9) Pacienti ambulantní psychiatrie podle základní diagnózy ----------
@@ -402,8 +390,8 @@ write_chart(
     df = psychiatrie,
     id = "zdravi-psychiatrie",
     type = "line",
-    title = "Výskyt duševních poruch v ČR",
-    subtitle = "Počet pacientů v [ambulantní::Pacienti docházející k lékaři, nikoli hospitalizovaní] péči psychiatra podle diagnózy, vlastní kategorizace",
+    title = "Pacienti v psychiatrické péči",
+    subtitle = "Počet pacientů v [ambulantní::Pacienti docházející k lékaři, nikoli hospitalizovaní] péči psychiatra podle diagnózy",
     aes = list(
         list(type = "x", field = "year", label = "Rok", format = "year"),
         list(type = "y", field = "pacienti", label = "Počet pacientů", unit = "tis."),
@@ -412,7 +400,7 @@ write_chart(
     source = other_source("ÚZIS", "Ambulantní péče v psychiatrii (NRHZS)",
                           "https://www.nzip.cz/data/2058-ambulantni-pece-psychiatrie-otevrena-data"),
     options = list(facet = TRUE),
-    data_note = "Počet pacientů ambulantní psychiatrické péče hrazené z veřejného zdravotního pojištění podle základní diagnózy (MKN-10): poruchy nálady F30–F39, úzkostné poruchy F40–F49, demence F00–F03 a Alzheimerova nemoc G30, závislosti F10–F19, poruchy s nástupem v dětství a dospívání F70–F99 (mentální retardace, poruchy psychického vývoje včetně autismu, ADHD a poruchy chování a emocí se začátkem v dětství a dospívání). Ostatní: hlavně schizofrenie, poruchy příjmu potravy a poruchy osobnosti."
+    data_note = "Pacienti ambulantní psychiatrické péče hrazené z veřejného zdravotního pojištění podle základní diagnózy, vlastní kategorizace. Poruchy s nástupem v dětství a dospívání: mentální postižení, poruchy psychického vývoje (včetně autismu), ADHD a poruchy chování a emocí. Ostatní: hlavně schizofrenie, poruchy příjmu potravy a poruchy osobnosti. Kódy MKN-10: poruchy nálady F30–F39; úzkostné poruchy F40–F49; demence F00–F03 a G30; závislosti F10–F19; poruchy s nástupem v dětství a dospívání F70–F99."
 )
 
 # ---------- (10) Sebevraždy ----------
@@ -425,13 +413,13 @@ write_chart(
     df = sebevrazdy,
     id = "zdravi-sebevrazdy",
     type = "line",
-    title = "Míra sebevražd v ČR od roku 1986",
+    title = "Míra sebevražd",
     subtitle = "Počet sebevražd na 100 000 obyvatel",
     aes = list(
         list(type = "x", field = "year", label = "Rok", format = "year"),
-        list(type = "y", field = "sebevrazdy", label = "Sebevražd na 100 000 obyvatel")
+        list(type = "y", field = "sebevrazdy", label = "Sebevraždy", unit = "na 100 000 obyvatel")
     ),
-    source = other_source("WHO", "Age-standardized suicide rate per 100 000 (WHO Mortality Database, via Our World in Data)",
+    source = other_source("WHO", "Age-standardized suicide rate per 100 000, WHO Mortality Database (via Our World in Data)",
                           "https://ourworldindata.org/grapher/suicide-rate-who-mdb"),
-    data_note = "Standardizováno podle věku kvůli mezinárodní srovnatelnosti."
+    data_note = "Původní dataset je standardizovaný podle věku kvůli mezinárodní srovnatelnosti."
 )

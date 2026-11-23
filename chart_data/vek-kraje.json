@@ -3,11 +3,11 @@
   "data": "vek-kraje.csv",
   "type": "map",
   "title": "Věková struktura v krajích",
-  "subtitle": "Průměrný věk a [index závislosti::Počet dětí (0–14 let) a seniorů (65 let a více) na 100 lidí v produktivním věku (15–64 let)] v roce 2025 podle krajů",
+  "subtitle": "[Mediánový věk::Polovina obyvatel je mladší než tento věk, polovina starší] a [index závislosti::Počet dětí (0–14 let) a seniorů (65+ let) na 100 lidí v produktivním věku (15–64 let)] podle kraje v roce 2025",
   "tabs": [
     {
       "id": "vek",
-      "label": "Průměrný věk"
+      "label": "Mediánový věk"
     },
     {
       "id": "zavislost",
@@ -23,17 +23,19 @@
     },
     {
       "type": "fill",
-      "field": "prumerny_vek",
-      "label": "Průměrný věk",
+      "field": "median",
+      "label": "Mediánový věk",
       "unit": "let",
-      "tab": "vek"
+      "tab": "vek",
+      "scheme": "purples"
     },
     {
       "type": "fill",
       "field": "zavislost",
       "label": "Index závislosti",
-      "format": "percent",
-      "tab": "zavislost"
+      "unit": "na 100 osob",
+      "tab": "zavislost",
+      "scheme": "oranges"
     }
   ],
   "source": [
@@ -41,13 +43,16 @@
       "name": "ČSÚ",
       "dataset": "Ukazatele věkového složení k 31. 12.",
       "url": "https://data.csu.gov.cz/datastat/data/VYBER/OBY02FHVDT01",
-      "retrieved": "2026-11-22"
+      "retrieved": "2026-11-23"
+    },
+    {
+      "name": "Eurostat GISCO",
+      "dataset": "Hranice krajů (NUTS 2021) © EuroGeographics",
+      "url": "https://ec.europa.eu/eurostat/web/gisco/geodata/statistical-units/territorial-units-statistics",
+      "retrieved": "2026-11-23"
     }
   ],
   "data_note": "",
-  "options": {
-    "reverse": true
-  },
-  "last_updated": "2026-11-22",
+  "last_updated": "2026-11-23",
   "rows": 14
 }

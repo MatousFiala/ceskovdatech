@@ -2,35 +2,35 @@
   "id": "zdravi-silc-prijem",
   "data": "zdravi-silc-prijem.csv",
   "type": "bar",
-  "title": "Zdravotní stav podle příjmů v ČR",
+  "title": "Zdravotní stav podle příjmů",
   "subtitle": "Podíl dotázaných, kteří hodnotí své zdraví jako dobré nebo velmi dobré, podle příjmové pětiny v roce 2025",
   "tabs": [
     {
       "id": "ocisteno",
-      "label": "Očištěno od věku"
+      "label": "Dobré zdraví, očištěno od věku"
     },
     {
       "id": "skutecnost",
-      "label": "Neočištěno"
+      "label": "Dobré zdraví, neočištěno"
     }
   ],
   "aes": [
     {
       "type": "x",
       "field": "kvintil",
-      "label": "Kvintil příjmů"
+      "label": "Příjmová pětina"
     },
     {
       "type": "y",
       "field": "dobre_zdravi_vek",
-      "label": "Dobré zdraví",
+      "label": "Dobré zdraví, očištěno od věku",
       "format": "percent",
       "tab": "ocisteno"
     },
     {
       "type": "y",
       "field": "dobre_zdravi",
-      "label": "Dobré zdraví",
+      "label": "Dobré zdraví, neočištěno",
       "format": "percent",
       "tab": "skutecnost"
     }
@@ -40,16 +40,16 @@
       "name": "Eurostat",
       "dataset": "Self-perceived health by sex, age and income quintile (hlth_silc_10)",
       "url": "https://ec.europa.eu/eurostat/databrowser/view/hlth_silc_10/default/table",
-      "retrieved": "2026-11-22"
+      "retrieved": "2026-11-23"
     },
     {
       "name": "Eurostat",
       "dataset": "Population on 1 January by age and sex (demo_pjan)",
       "url": "https://ec.europa.eu/eurostat/databrowser/view/demo_pjan/default/table",
-      "retrieved": "2026-11-22"
+      "retrieved": "2026-11-23"
     }
   ],
-  "data_note": "Ekvivalizované příjmy podle počtu členů domácnosti. Starší lidé mají obvykle nižší příjmy, nižší příjmové pětiny tedy mají horší zdraví zčásti kvůli vyššímu věku. Čísla očištěná od věku jsou průměry respondentů převážené tak, aby měla každá pětina stejnou věkovou strukturu.",
-  "last_updated": "2026-11-22",
+  "data_note": "Ekvivalizované příjmy podle počtu členů domácnosti. Starší lidé mají obvykle nižší příjmy, nižší příjmové pětiny tedy mají horší zdraví zčásti kvůli vyššímu věku. Čísla očištěná od věku jsou přepočtená tak, jako by každá pětina měla stejnou věkovou strukturu.",
+  "last_updated": "2026-11-23",
   "rows": 5
 }

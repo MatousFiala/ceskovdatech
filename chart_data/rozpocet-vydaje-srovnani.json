@@ -2,8 +2,8 @@
   "id": "rozpocet-vydaje-srovnani",
   "data": "rozpocet-vydaje-srovnani.csv",
   "type": "bar",
-  "title": "Srovnání skladby výdajů s vybranými zeměmi OECD",
-  "subtitle": "Výdaje vládního sektoru podle oblasti v roce 2024",
+  "title": "Skladba výdajů ve srovnání s vybranými zeměmi",
+  "subtitle": "Výdaje [veřejného sektoru::Stát, kraje, obce, zdravotní pojišťovny a další veřejné instituce] podle oblasti v roce 2024",
   "tabs": [
     {
       "id": "podil",
@@ -49,20 +49,20 @@
       "name": "OECD",
       "dataset": "Annual government expenditure by function (COFOG), Table 11",
       "url": "https://data-explorer.oecd.org/?df[ds]=dsDisseminateFinalDMZ&df[id]=DSD_NASEC10%40DF_TABLE11&df[ag]=OECD.SDD.NAD",
-      "retrieved": "2026-11-22"
+      "retrieved": "2026-11-23"
     },
     {
       "name": "OECD",
       "dataset": "Gross domestic product (Table 1)",
       "url": "https://data-explorer.oecd.org/?df[ds]=dsDisseminateFinalDMZ&df[id]=DSD_NAMAIN10%40DF_TABLE1_EXPENDITURE&df[ag]=OECD.SDD.NAD",
-      "retrieved": "2026-11-22"
+      "retrieved": "2026-11-23"
     }
   ],
-  "data_note": "Výdaje celého vládního sektoru (stát, kraje, obce, zdravotní pojišťovny a další) podle mezinárodní klasifikace funkcí vlády (COFOG), proto se skladba liší od státního rozpočtu. Důchody a sociální transfery odpovídají oblasti sociální ochrany v COFOG: oproti stejnojmenné kategorii státního rozpočtu zahrnují i sociální služby a dávky placené kraji a obcemi (domovy pro seniory, pečovatelská služba), nejen výdaje státu. Veřejná správa zahrnuje i úroky z dluhu. Obrana a bezpečnost: armáda, policie, hasiči, soudy, vězeňství. Ostatní: životní prostředí, bydlení, kultura a sport. EU: souhrn 27 členských zemí. Průměr OECD: nevážený průměr 32 z 38 členských zemí OECD, které mají data za rok 2024.",
+  "data_note": "Výdaje celého veřejného sektoru (stát, kraje, obce, zdravotní pojišťovny a další) podle mezinárodní klasifikace COFOG, proto se skladba liší od státního rozpočtu. Důchody a sociální transfery zahrnují i sociální služby a dávky krajů a obcí (např. domovy pro seniory). Veřejná správa zahrnuje i úroky z dluhu. Bezpečnost státu: armáda, policie, hasiči, soudy, vězeňství. Ostatní: životní prostředí, bydlení, kultura a sport. EU: souhrn 27 členských zemí. Průměr OECD: nevážený průměr 32 z 38 členských zemí OECD, které mají data za rok 2024.",
   "options": {
     "horizontal": true,
     "facet": true
   },
-  "last_updated": "2026-11-22",
+  "last_updated": "2026-11-23",
   "rows": 105
 }

@@ -3,7 +3,7 @@
   "data": "obyvatele-velikost-obci.csv",
   "type": "line",
   "title": "Rozdělení obyvatel podle velikosti obcí",
-  "subtitle": "Podíl obyvatel s bydlištěm v obci dané velikostní kategorie, %",
+  "subtitle": "Podíl obyvatel s bydlištěm v obci dané velikostní kategorie",
   "aes": [
     {
       "type": "x",
@@ -28,13 +28,20 @@
       "name": "ČSÚ",
       "dataset": "Velikostní skupiny obcí",
       "url": "https://data.csu.gov.cz/datastat/data/VYBER/RSO02A01T1",
-      "retrieved": "2026-11-22"
+      "retrieved": "2026-11-23"
     }
   ],
   "data_note": "",
   "options": {
-    "facet": true
+    "facet": true,
+    "table": [
+      {
+        "field": "obyvatele",
+        "label": "Počet obyvatel",
+        "unit": "tis."
+      }
+    ]
   },
-  "last_updated": "2026-11-22",
+  "last_updated": "2026-11-23",
   "rows": 180
 }

@@ -2,12 +2,12 @@
   "id": "mzdy-cr",
   "data": "mzdy-cr.csv",
   "type": "line",
-  "title": "Průměrná mzda v ČR od roku 2000",
-  "subtitle": "Průměrná hrubá měsíční mzda v ČR, nominální i reálná v cenách roku 2020",
+  "title": "Průměrná mzda",
+  "subtitle": "Průměrná hrubá měsíční mzda",
   "tabs": [
     {
       "id": "realna",
-      "label": "Reálná (ceny z roku 2020)"
+      "label": "Reálná (ceny roku 2020)"
     },
     {
       "id": "nominalni",
@@ -41,16 +41,16 @@
       "name": "ČSÚ",
       "dataset": "Průměrné hrubé měsíční mzdy (čtvrtletní zjišťování)",
       "url": "https://data.csu.gov.cz/datastat/data/VYBER/MZDRT1?vSet=1&vSel=1",
-      "retrieved": "2026-11-22"
+      "retrieved": "2026-11-23"
     },
     {
       "name": "ČSÚ",
-      "dataset": "Míra inflace",
+      "dataset": "Míra inflace (CEN0101H)",
       "url": "https://data.csu.gov.cz/datastat/data/VYBER/CEN0101HT01",
-      "retrieved": "2026-11-22"
+      "retrieved": "2026-11-23"
     }
   ],
-  "data_note": "Reálné mzdy jsou přepočtené na ceny roku 2020.",
-  "last_updated": "2026-11-22",
+  "data_note": "Reálné mzdy jsou přepočtené na ceny roku 2020 (inflace podle ČSÚ).",
+  "last_updated": "2026-11-23",
   "rows": 26
 }

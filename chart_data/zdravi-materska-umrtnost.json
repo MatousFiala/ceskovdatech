@@ -2,7 +2,7 @@
   "id": "zdravi-materska-umrtnost",
   "data": "zdravi-materska-umrtnost.csv",
   "type": "line",
-  "title": "Mateřská úmrtnost v ČR od roku 1985",
+  "title": "Mateřská úmrtnost",
   "subtitle": "Počet žen zemřelých v souvislosti s těhotenstvím, porodem či šestinedělím na 100 000 živě narozených dětí, odhad",
   "aes": [
     {
@@ -14,7 +14,8 @@
     {
       "type": "y",
       "field": "umrtnost",
-      "label": "Mateřská úmrtnost"
+      "label": "Mateřská úmrtnost",
+      "unit": "na 100 000 živě narozených"
     }
   ],
   "source": [
@@ -22,10 +23,24 @@
       "name": "WHO",
       "dataset": "Maternal mortality ratio (per 100 000 live births), UN MMEIG estimates",
       "url": "https://www.who.int/data/gho/data/indicators/indicator-details/GHO/maternal-mortality-ratio-(per-100-000-live-births)",
-      "retrieved": "2026-11-22"
+      "retrieved": "2026-11-23"
     }
   ],
-  "data_note": "Modelový odhad -- případy jsou dnes v ČR vzácné a skutečné počty by vykazovaly značný statistický šum.",
-  "last_updated": "2026-11-22",
+  "data_note": "Modelový odhad – případy jsou dnes v Česku vzácné a skutečné počty by vykazovaly značný statistický šum.",
+  "options": {
+    "table": [
+      {
+        "field": "dolni",
+        "label": "Dolní odhad",
+        "unit": "na 100 000 živě narozených"
+      },
+      {
+        "field": "horni",
+        "label": "Horní odhad",
+        "unit": "na 100 000 živě narozených"
+      }
+    ]
+  },
+  "last_updated": "2026-11-23",
   "rows": 39
 }

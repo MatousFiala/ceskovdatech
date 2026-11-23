@@ -25,27 +25,14 @@ write_chart(
     df = zam,
     id = "nezamestnanost-cr",
     type = "line",
-    title = "Míra nezaměstnanosti v ČR od roku 1993",
-    subtitle = "Obecná [míra nezaměstnanosti::Podíl lidí v pracovní síle, kteří si hledají práci, ale v danou chvíli žádnou nemají. Nezapočítává ty, kteří pracovat nemohou nebo si práci nehledají], %",
+    title = "Míra nezaměstnanosti",
+    subtitle = "Obecná [míra nezaměstnanosti::Podíl lidí v pracovní síle, kteří si hledají práci, ale v danou chvíli žádnou nemají]",
     aes = list(
         list(type = "x", field = "year", label = "Rok", format = "year"),
         list(type = "y", field = "nezamestnanost", label = "Míra nezaměstnanosti", format = "percent")
     ),
     source = zam_source,
-    data_note = ""
-)
-
-write_chart(
-    df = zam,
-    id = "zamestnanost-cr",
-    type = "line",
-    title = "Míra zaměstnanosti v ČR od roku 1993",
-    subtitle = "Podíl všech obyvatel ČR, kteří aktivně pracují - exkluduje nezaměstnané a ekonomicky neaktivní (důchodce, děti)",
-    aes = list(
-        list(type = "x", field = "year", label = "Rok", format = "year"),
-        list(type = "y", field = "zamestnanost", label = "Míra zaměstnanosti", format = "percent")
-    ),
-    source = zam_source,
+    options = list(table = list(list(field = "zamestnanost", label = "Míra zaměstnanosti", format = "percent"))),
     data_note = ""
 )
 
@@ -60,10 +47,10 @@ write_chart(
     id = "nezamestnanost-kraje",
     type = "map",
     title = "Míra nezaměstnanosti v krajích",
-    subtitle = "Obecná [míra nezaměstnanosti::Podíl lidí v pracovní síle, kteří si hledají práci, ale v danou chvíli žádnou nemají. Nezapočítává ty, kteří pracovat nemohou nebo si práci nehledají], %",
+    subtitle = str_glue("Obecná [míra nezaměstnanosti::Podíl lidí v pracovní síle, kteří si hledají práci, ale v danou chvíli žádnou nemají] podle kraje v roce {max(nezam_kraje$year)}"),
     aes = list(
         list(type = "geometry", field = "kraj_kod", label = "Kraj", labeller = "kraj_nazev"),
-        list(type = "fill", field = "nezamestnanost", label = "Míra nezaměstnanosti", format = "percent")
+        list(type = "fill", field = "nezamestnanost", label = "Míra nezaměstnanosti", format = "percent", scheme = "reds")
     ),
     source = zam_source,
     data_note = ""
@@ -93,10 +80,10 @@ write_chart(
     df = mzdy_realne,
     id = "mzdy-cr",
     type = "line",
-    title = "Průměrná mzda v ČR od roku 2000",
-    subtitle = "Průměrná hrubá měsíční mzda v ČR, nominální i reálná v cenách roku 2020",
+    title = "Průměrná mzda",
+    subtitle = "Průměrná hrubá měsíční mzda",
     tabs = list(
-        list(id = "realna", label = "Reálná (ceny z roku 2020)"),
+        list(id = "realna", label = "Reálná (ceny roku 2020)"),
         list(id = "nominalni", label = "Nominální")
     ),
     aes = list(
@@ -105,10 +92,10 @@ write_chart(
         list(type = "y", field = "mzda_nominalni", label = "Průměrná nominální mzda", unit = "Kč", tab = "nominalni")
     ),
     source = c(mzdy_source, list(list(name = "ČSÚ",
-                                      dataset = "Míra inflace",
+                                      dataset = "Míra inflace (CEN0101H)",
                                       url = "https://data.csu.gov.cz/datastat/data/VYBER/CEN0101HT01",
                                       retrieved = format(Sys.Date())))),
-    data_note = "Reálné mzdy jsou přepočtené na ceny roku 2020."
+    data_note = "Reálné mzdy jsou přepočtené na ceny roku 2020 (inflace podle ČSÚ)."
 )
 
 # Průměrná mzda podle krajů (pracovištní metoda: podle místa pracoviště), poslední rok
@@ -122,13 +109,13 @@ write_chart(
     id = "mzdy-kraje",
     type = "map",
     title = "Průměrná mzda v krajích",
-    subtitle = str_glue("Průměrná hrubá měsíční mzda v roce {max(mzdy_kraje$year)} podle kraje, nominální"),
+    subtitle = str_glue("Průměrná nominální hrubá měsíční mzda podle kraje v roce {max(mzdy_kraje$year)}"),
     aes = list(
         list(type = "geometry", field = "kraj_kod", label = "Kraj", labeller = "kraj_nazev"),
-        list(type = "fill", field = "mzda", label = "Průměrná mzda", unit = "Kč")
+        list(type = "fill", field = "mzda", label = "Průměrná mzda", unit = "Kč", scheme = "greens")
     ),
     source = mzdy_source,
-    data_note = "Mzda na přepočtené počty zaměstnanců. Zaměstnanci jsou zařazeni podle místa pracoviště, nikoli podle bydliště nebo sídla zaměstnavatele."
+    data_note = "Mzda přepočtená na plné úvazky. Zaměstnanci jsou zařazeni podle místa pracoviště, nikoli podle bydliště nebo sídla zaměstnavatele."
 )
 
 # Podíl zaměstnanců podle sektoru (národní účty, sekce CZ-NACE sloučené do šesti sektorů)
@@ -151,8 +138,8 @@ write_chart(
     df = zam_sektory,
     id = "zamestnanci-sektory",
     type = "line",
-    title = "Zaměstnanci podle sektoru od roku 1993",
-    subtitle = "Procento zaměstnanců podle sektoru (bez [sebezaměstnaných::Podnikatelů a osob samostatně výdělečně činných]), %",
+    title = "Zaměstnanci podle sektoru",
+    subtitle = "Podíl zaměstnanců podle sektoru (bez [sebezaměstnaných::Podnikatelů a osob samostatně výdělečně činných])",
     aes = list(
         list(type = "x", field = "year", label = "Rok", format = "year"),
         list(type = "y", field = "podil", label = "Podíl zaměstnanců", format = "percent"),
@@ -163,18 +150,18 @@ write_chart(
                        url = "https://apl.czso.cz/pll/rocenka/rocenkavyber.makroek_pracov",
                        retrieved = format(Sys.Date()))),
     options = list(facet = TRUE),
-    data_note = "Podle sekcí CZ-NACE: průmysl = B–E (těžba, zpracovatelský průmysl, energetika, voda a odpady); obchod, doprava a pohostinství = G–I; veřejná správa, školství a zdravotnictví = O–Q; ostatní služby = J–N a R–T (IT, finance, nemovitosti, odborné a administrativní činnosti, kultura a další)."
+    data_note = "Průmysl: těžba, zpracovatelský průmysl, energetika, voda a odpady. Ostatní služby: IT, finance, nemovitosti, odborné a administrativní činnosti, kultura a další. Sekce CZ-NACE: průmysl B–E; obchod, doprava a pohostinství G–I; veřejná správa, školství a zdravotnictví O–Q; ostatní služby J–N a R–T."
 )
 
 # Míra nezaměstnanosti podle věku: pětileté skupiny ČSÚ sloučené do šesti.
 # Míry nejde prostě zprůměrovat, váží se velikostí pracovní síly (Eurostat, od 1997;
 # pro roky 1993–1996 se použijí váhy z roku 1997).
 vek_skupiny <- c(
-    "15 až 19" = "15–19 let", "20 až 24" = "20–24 let",
-    "25 až 29" = "25–34 let", "30 až 34" = "25–34 let",
-    "35 až 39" = "35–49 let", "40 až 44" = "35–49 let", "45 až 49" = "35–49 let",
-    "50 až 54" = "50–64 let", "55 až 59" = "50–64 let", "60 až 64" = "50–64 let",
-    "65 a více let" = "65 a více let"
+    "15 až 19" = "15–19", "20 až 24" = "20–24",
+    "25 až 29" = "25–34", "30 až 34" = "25–34",
+    "35 až 39" = "35–49", "40 až 44" = "35–49", "45 až 49" = "35–49",
+    "50 až 54" = "50–64", "55 až 59" = "50–64", "60 až 64" = "50–64",
+    "65 a více let" = "65+"
 )
 pracovni_sila <- read_csv("./data/eurostat_lfsa_agan.csv") |>
     filter(!is.na(values)) |> # první roky jsou v tabulce prázdné
@@ -197,8 +184,8 @@ write_chart(
     df = nezam_vek,
     id = "nezamestnanost-vek",
     type = "line",
-    title = "Míra nezaměstnanosti podle věku od roku 1993",
-    subtitle = "Obecná [míra nezaměstnanosti::Podíl lidí v pracovní síle, kteří si hledají práci, ale v danou chvíli žádnou nemají. Nezapočítává ty, kteří pracovat nemohou nebo si práci nehledají] podle věkových skupin, %",
+    title = "Míra nezaměstnanosti podle věku",
+    subtitle = "Obecná [míra nezaměstnanosti::Podíl lidí v pracovní síle, kteří si hledají práci, ale v danou chvíli žádnou nemají] podle věkových skupin",
     aes = list(
         list(type = "x", field = "year", label = "Rok", format = "year"),
         list(type = "y", field = "nezamestnanost", label = "Míra nezaměstnanosti", format = "percent"),
@@ -213,5 +200,5 @@ write_chart(
                        url = "https://ec.europa.eu/eurostat/databrowser/view/lfsa_agan/default/table",
                        retrieved = format(Sys.Date()))),
     options = list(facet = TRUE),
-    data_note = "Míry nezaměstnanosti jsou z ČSÚ za pětileté věkové skupiny. Skupiny 25–34, 35–49 a 50–64 let vznikly jejich sloučením, váženým velikostí pracovní síly podle Eurostatu; pro roky 1993–1996 jsou použity váhy z roku 1997, hodnoty za tyto roky jsou proto přibližné. Ve skupině 15–19 let je v pracovní síle jen málo lidí, většina ještě studuje."
+    data_note = "ČSÚ publikuje míry za pětileté skupiny; širší skupiny jsou jejich průměr vážený velikostí pracovní síly (Eurostat). Hodnoty 1993–1996 jsou přibližné. Ve skupině 15–19 let většina lidí studuje, v pracovní síle je jich málo."
 )

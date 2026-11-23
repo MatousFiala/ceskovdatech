@@ -2,8 +2,8 @@
   "id": "zdravi-nadeje-vek",
   "data": "zdravi-nadeje-vek.csv",
   "type": "line",
-  "title": "Naděje dožití podle věku v ČR od roku 1920",
-  "subtitle": "Podmíněná naděje dožití: kolika let se v průměru dožije člověk daného věku",
+  "title": "Naděje dožití podle věku",
+  "subtitle": "Očekávaný věk dožití podle dosaženého věku ([podmíněná naděje dožití::Pokud se člověk dožil daného věku, kolika let se v průměru dožije])",
   "aes": [
     {
       "type": "x",
@@ -14,14 +14,13 @@
     {
       "type": "y",
       "field": "vek_umrti",
-      "label": "Naděje dožití",
+      "label": "Očekávaný věk dožití",
       "unit": "let"
     },
     {
       "type": "colour",
       "field": "vek",
-      "label": "Ve věku",
-      "unit": "let"
+      "label": "Ve věku"
     }
   ],
   "source": [
@@ -29,7 +28,7 @@
       "name": "ČSÚ",
       "dataset": "Úmrtnostní tabulky za ČR",
       "url": "https://data.csu.gov.cz/datastat/data/VYBER/OBY04BCRT02",
-      "retrieved": "2026-11-22"
+      "retrieved": "2026-11-23"
     }
   ],
   "data_note": "Vážený průměr mužů a žen podle poměru pohlaví při narození (1 028 chlapců na 1 000 dívek). ČSÚ publikuje údaje jen zvlášť za muže a ženy.",
@@ -37,6 +36,6 @@
     "y_zero": false,
     "facet": true
   },
-  "last_updated": "2026-11-22",
+  "last_updated": "2026-11-23",
   "rows": 636
 }

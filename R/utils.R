@@ -49,6 +49,16 @@ write_chart <- function(df, id, type = c("line", "bar", "dot", "map", "pyramid")
         dir.create("chart_data")
     }
     if (!is.null(source$name)) source <- list(source) # a single source
+    # maps also credit their boundaries (licences of both require it): ORP from ČÚZK, kraje from Eurostat GISCO
+    if (type == "map") {
+        source <- c(source, list(if (identical(options$geo, "orp.geojson"))
+            list(name = "ČÚZK", dataset = "Hranice správních obvodů ORP (RÚIAN, přes balíček RCzechia)",
+                 url = "https://cuzk.gov.cz/ruian/", retrieved = format(Sys.Date()))
+        else
+            list(name = "Eurostat GISCO", dataset = "Hranice krajů (NUTS 2021) © EuroGeographics",
+                 url = "https://ec.europa.eu/eurostat/web/gisco/geodata/statistical-units/territorial-units-statistics",
+                 retrieved = format(Sys.Date()))))
+    }
     if (!is.null(tabs$id)) tabs <- list(tabs) # a single tab
     annotations <- options$annotations
     if (!is.null(annotations$x) || !is.null(annotations$y)) options$annotations <- annotations <- list(annotations) # a single one
@@ -74,8 +84,8 @@ write_chart <- function(df, id, type = c("line", "bar", "dot", "map", "pyramid")
               "An aesthetic has a tab that is not in tabs" = all(aes_tabs %in% c(tab_ids, NA)),
               "Line, bar and dot require x and y aesthetic, map geometry and fill, pyramid x, y, fill and frame (in every tab)" =
                   all(map_lgl(views, ~all(required %in% .x))),
-              "Tabs share the x aesthetic (line, bar, dot) or the geometry aesthetic (map): it cannot have a tab" =
-                  all(is.na(aes_tabs[aeses == required[1]])),
+              "Tabs share the geometry aesthetic (map) and a year x (the year slider): it cannot have a tab" =
+                  all(map_lgl(aes[aeses == required[1]], ~is.null(.x$tab) || (required[1] == "x" && !identical(.x$format, "year")))),
               "An aesthetic type is used twice (in the same tab)" = !any(map_lgl(views, ~anyDuplicated(.x) > 0)),
               "Annotations must be a list of lists, each with either x or y (line, bar and dot charts only)" =
                   is.null(annotations) || (type %in% c("line", "bar", "dot") && is.null(names(annotations)) &&

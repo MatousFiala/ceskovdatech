@@ -2,8 +2,8 @@
   "id": "vek-skupiny",
   "data": "vek-skupiny.csv",
   "type": "line",
-  "title": "Věková struktura obyvatel ČR od roku 1960 s projekcí do roku 2100",
-  "subtitle": "Skutečnost a projekce ČSÚ, miliony",
+  "title": "Věková struktura obyvatel",
+  "subtitle": "Počet obyvatel podle věkových skupin, skutečnost a projekce ČSÚ",
   "aes": [
     {
       "type": "x",
@@ -33,22 +33,22 @@
       "name": "Eurostat",
       "dataset": "Population on 1 January by age and sex (demo_pjan)",
       "url": "https://ec.europa.eu/eurostat/databrowser/view/demo_pjan/default/table",
-      "retrieved": "2026-11-22"
+      "retrieved": "2026-11-23"
     },
     {
       "name": "ČSÚ",
       "dataset": "Počet obyvatel podle pohlaví a jednotek věku k 31. 12.",
       "url": "https://data.csu.gov.cz/datastat/data/VYBER/OBY02BHVDT01",
-      "retrieved": "2026-11-22"
+      "retrieved": "2026-11-23"
     },
     {
       "name": "ČSÚ",
       "dataset": "Projektovaný počet obyvatel podle pohlaví a jednotek věku (projekce ČSÚ 2023)",
       "url": "https://data.csu.gov.cz/datastat/data/VYBER/OBY02PROJ1AT01",
-      "retrieved": "2026-11-22"
+      "retrieved": "2026-11-23"
     }
   ],
   "data_note": "Do roku 1999 data Eurostatu, poté ČSÚ. Budoucí údaje: střední varianta projekce ČSÚ z roku 2023.",
-  "last_updated": "2026-11-22",
+  "last_updated": "2026-11-23",
   "rows": 568
 }

@@ -2,8 +2,8 @@
   "id": "obyvatele-prirustek",
   "data": "obyvatele-prirustek.csv",
   "type": "bar",
-  "title": "Populační růst ČR od roku 1947",
-  "subtitle": "Růst obyvatelstva ČR rozdělený na [přirozený přírůstek::Živě narození minus zemřelí] a [čistou migraci::Přistěhovalí minus vystěhovalí], %",
+  "title": "Populační růst",
+  "subtitle": "Růst obyvatelstva rozdělený na [přirozený přírůstek::Živě narození minus zemřelí] a [čistou migraci::Přistěhovalí minus vystěhovalí]",
   "aes": [
     {
       "type": "x",
@@ -14,6 +14,7 @@
     {
       "type": "y",
       "field": "prirustek",
+      "label": "Přírůstek",
       "format": "percent"
     },
     {
@@ -25,12 +26,12 @@
   "source": [
     {
       "name": "ČSÚ",
-      "dataset": "Obyvatelstvo - dlouhodobé časové řady za Českou republiku",
+      "dataset": "Obyvatelstvo – dlouhodobé časové řady za Českou republiku",
       "url": "https://data.csu.gov.cz/datastat/data/VYBER/WOBYG",
-      "retrieved": "2026-11-22"
+      "retrieved": "2026-11-23"
     }
   ],
-  "data_note": "",
+  "data_note": "Na území dnešního Česka.",
   "options": {
     "annotations": [
       {
@@ -39,6 +40,6 @@
       }
     ]
   },
-  "last_updated": "2026-11-22",
+  "last_updated": "2026-11-23",
   "rows": 158
 }

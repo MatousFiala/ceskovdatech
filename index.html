@@ -1,8 +1,9 @@
 ---
 ---
-{% comment %} Every page in articles/, grouped by its topic, in the order of `order` {% endcomment %}
+{% comment %} Every page in articles/, by topic (in the order of `topics` in _config.yml), in the order of `order` {% endcomment %}
 {% assign articles = site.pages | where_exp: "p", "p.path contains 'articles/'" | sort: "order" %}
-{% assign topics = articles | group_by: "topic" %}
+{% comment %} Topic columns from _config.yml; without them (e.g. a `jekyll serve` started before they were added), one column per topic of the articles {% endcomment %}
+{% assign columns = site.topics %}{% if columns == nil or columns.size == 0 %}{% assign columns = articles | map: "topic" | uniq %}{% endif %}
 {% assign a_obyv = articles | where: "name", "obyvatelstvo.md" | first %}
 {% assign a_zdravi = articles | where: "name", "zdravi.md" | first %}
 {% assign a_chudoba = articles | where: "name", "chudoba_nerovnost.md" | first %}
@@ -12,7 +13,7 @@
     <div class="wrap hero-inner">
         <div class="hero-text">
             <h1 id="hero-title">Česko v&#160;číslech</h1>
-            <p class="hero-lede">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus, posuere velit aliquet. Donec ullamcorper nulla non metus auctor fringilla.</p>
+            <p class="hero-lede">Srozumitelná data o nejdůležitějších tématech české společnosti a ekonomiky.</p>
         </div>
         {% comment %} Drawn by assets/home.js; the links of the data views come from here {% endcomment %}
         <figure id="orp-map" aria-label="Mapa ORP, která se střídá mezi vlajkou a daty"
@@ -46,25 +47,26 @@
     <div class="wrap">
         <h2 id="temata-title" class="section-title">Témata</h2>
         <div class="topic-grid">
-            {% for topic in topics %}
+            {% for column in columns %}
+            <div class="topic-column">
+            {% for topic in column %}
+            {% assign items = articles | where: "topic", topic %}
             <div class="topic">
-                <div class="topic-head">{% include topic-icon.html topic=topic.name %}<h3>{{ topic.name | default: "Ostatní" }}</h3></div>
+                <div class="topic-head">{% include topic-icon.html topic=topic %}<h3>{{ topic }}</h3></div>
                 <ul>
-                    {% for article in topic.items %}
+                    {% for article in items %}
+                    {% comment %} status: tbd = an upcoming article: greyed out, no link {% endcomment %}
+                    {% if article.status == "tbd" %}
+                    <li class="topic-tbd" title="Připravujeme">{{ article.title }}</li>
+                    {% else %}
                     <li><a href="{{ article.url | relative_url }}">{{ article.title }}</a></li>
+                    {% endif %}
                     {% endfor %}
                 </ul>
             </div>
             {% endfor %}
-            <div class="topic topic-soon">
-                <div class="topic-head">{% include topic-icon.html topic="Připravujeme" %}<h3>Připravujeme</h3></div>
-                <ul>
-                    <li>Lorem ipsum dolor</li>
-                    <li>Sit amet consectetur</li>
-                    <li>Adipiscing elit</li>
-                    <li>Sed do eiusmod</li>
-                </ul>
             </div>
+            {% endfor %}
         </div>
     </div>
 </section>
@@ -73,12 +75,17 @@
     <div class="wrap about-inner">
         <h2 id="about-title" class="section-title">O projektu</h2>
         <div class="about-text">
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-            <p class="about-second">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            <p><b>Česko v číslech</b> má za cíl zpřístupňovat základní data o české ekonomice a společnosti. Zásoba základních faktů tvoří kontext potřebný pro kritické posouzení narativů a politik. Projekt směřuje k jakémusi socioekonomickému atlasu ČR.</p>
+            <p class="about-second">Upřednostňujeme oficiální datové zdroje, nejčastěji ČSÚ a otevřená data státních institucí. V mezinárodních srovnáních se nejvíce opíráme o Eurostat a nadnárodní organizace jako Světová banka nebo Mezinárodní měnový fond. Snažíme se reprodukovat co nejdelší časové řady, proto zdroje v některých případech kombinujeme.</p>
+            <p class="about-second">Grafy a texty jsou publikovány pod licencí <a href="https://creativecommons.org/licenses/by/4.0/deed.cs">CC BY 4.0</a>: obsah smíte šířit a upravovat, pokud viditelně zmíníte jeho původ a případné modifikace. Na zobrazovaná data se vztahují licence původních zdrojů, jejich další používání se tak řídí jejich podmínkami (zpravidla jsou však také volně šiřitelná, minimálně pro nekomerční účely).</p>
+            <p class="about-second">Obsah těchto stránek plánujeme aktualizovat a rozšiřovat: data jsou často užitečná, jen když jsou aktuální.</p>
+            <p class="about-second">Při tvorbě stránek byla použita umělá inteligence, zejména pro design webu a tvorbu vizualizací. Texty článků, obsah a popisky grafů jsou zásadně psané ručně.</p>
+            <p class="about-second">Projekt je inspirovaný britskou stránkou <a href="https://ukbynumbers.org/">UK by Numbers</a> vytvořenou Hannou Ritchie a mezinárodním projektem <a href="https://ourworldindata.org/">Our World in Data</a>. Jedná se o volnočasový projekt bez financování.</p>
+            <p class="about-second">Pokud narazíte na chybu nebo vás napadá jakýkoliv jiný feedback, můžete jej zaslat na adresu <a href="mailto:matousfiala@gmail.com">matousfiala@gmail.com</a>.</p>
             <dl class="about-facts">
-                <div><dt>Zdroje dat</dt><dd>Lorem ipsum, dolor sit amet, consectetur adipiscing</dd></div>
-                <div><dt>Licence</dt><dd>Grafy i data lze volně stáhnout a použít</dd></div>
-                <div><dt>Kód a data</dt><dd><a href="https://github.com/MatousFiala/ceskovdatech">github.com/MatousFiala/ceskovdatech</a></dd></div>
+                <div><dt>Licence</dt><dd><a href="https://creativecommons.org/licenses/by/4.0/deed.cs">CC BY 4.0</a></dd></div>
+                <div><dt>Kód</dt><dd><a href="https://github.com/MatousFiala/ceskovdatech">github.com/MatousFiala/ceskovdatech</a></dd></div>
+                <div><dt>Vytvořil</dt><dd>Matouš Fiala · <a href="https://matousfiala.cz">web</a> · <a href="https://www.linkedin.com/in/matou%C5%A1-fiala-a154a21b0/">LinkedIn</a></dd></div>
             </dl>
         </div>
     </div>

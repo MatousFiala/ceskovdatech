@@ -1,18 +1,26 @@
 ---
 layout: default
 ---
-{% comment %} The next article: the next one in the same topic, else the first of the next topic (in the order of the home page) {% endcomment %}
-{% assign articles = site.pages | where_exp: "p", "p.path contains 'articles/'" | sort: "order" %}
-{% assign topics = articles | group_by: "topic" %}
+{% comment %} The next article: the next one in the same topic, else the first of the next topic (in the order of the home page);
+   upcoming articles (status: tbd) are skipped {% endcomment %}
+{% assign articles = site.pages | where_exp: "p", "p.path contains 'articles/'" | where_exp: "p", "p.status != 'tbd'" | sort: "order" %}
+{% comment %} Topic columns from _config.yml; without them (e.g. a `jekyll serve` started before they were added), one column per topic of the articles {% endcomment %}
+{% assign columns = site.topics %}{% if columns == nil or columns.size == 0 %}{% assign columns = articles | map: "topic" | uniq %}{% endif %}
 {% assign ordered = "" | split: "" %}
-{% for topic in topics %}{% assign ordered = ordered | concat: topic.items %}{% endfor %}
+{% for column in columns %}{% for topic in column %}{% assign items = articles | where: "topic", topic %}{% assign ordered = ordered | concat: items %}{% endfor %}{% endfor %}
 {% assign next = nil %}
 {% for a in ordered %}{% if a.url == page.url %}{% assign i = forloop.index0 | plus: 1 %}{% assign next = ordered[i] %}{% endif %}{% endfor %}
 <p class="breadcrumb"><a href="{{ '/#temata' | relative_url }}">Všechna témata</a>{% if page.topic %}<span aria-hidden="true"> / </span>{{ page.topic }}{% endif %}</p>
 <h1>{{ page.title }}</h1>
-<p class="lede">{{ page.lede | default: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus, posuere velit aliquet." }}</p>
-<p class="article-meta">Aktualizováno 21. listopadu 2026 · Lorem ipsum dolor sit amet</p>
+{% if page.updated %}{% comment %} Date from the article's front matter (updated: YYYY-MM-DD), with a Czech month name {% endcomment %}
+{% assign months = "ledna,února,března,dubna,května,června,července,srpna,září,října,listopadu,prosince" | split: "," %}
+{% assign m = page.updated | date: "%-m" | minus: 1 %}
+<p class="article-meta">Aktualizováno {{ page.updated | date: "%-d" }}. {{ months[m] }} {{ page.updated | date: "%Y" }}</p>{% endif %}
+{% if page.status == "tbd" %}
+<p class="article-tbd">Tento článek připravujeme. Mezitím si můžete přečíst ostatní <a href="{{ '/#temata' | relative_url }}">témata</a>.</p>
+{% else %}
 {{ content }}
+{% endif %}
 <nav class="next-article" aria-label="Další článek">
     {% if next %}<a class="next-link" href="{{ next.url | relative_url }}"><span class="next-label">{% if next.topic == page.topic %}Další v tématu {{ page.topic }}{% else %}Další téma: {{ next.topic }}{% endif %}</span><span class="next-title">{{ next.title }} →</span></a>{% endif %}
     <a class="next-all" href="{{ '/#temata' | relative_url }}">Všechna témata</a>

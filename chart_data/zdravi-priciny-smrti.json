@@ -2,8 +2,19 @@
   "id": "zdravi-priciny-smrti",
   "data": "zdravi-priciny-smrti.csv",
   "type": "line",
-  "title": "Příčiny úmrtí v ČR od roku 2000",
-  "subtitle": "Podíl úmrtí podle vykázané příčiny, vlastní kategorizace",
+  "title": "Příčiny úmrtí",
+  "subtitle": "Úmrtí podle vykázané příčiny",
+  "tabs": [
+    {
+      "id": "podil",
+      "label": "Podíl na úmrtích"
+    },
+    {
+      "id": "pocet",
+      "label": "Počet úmrtí",
+      "type": "bar"
+    }
+  ],
   "aes": [
     {
       "type": "x",
@@ -14,13 +25,21 @@
     {
       "type": "y",
       "field": "podil",
-      "label": "Podíl",
-      "format": "percent"
+      "label": "Podíl na úmrtích",
+      "format": "percent",
+      "tab": "podil"
+    },
+    {
+      "type": "y",
+      "field": "zemreli",
+      "label": "Počet úmrtí",
+      "unit": "tis.",
+      "tab": "pocet"
     },
     {
       "type": "colour",
       "field": "pricina",
-      "label": "Příčina smrti"
+      "label": "Příčina úmrtí"
     }
   ],
   "source": [
@@ -28,13 +47,13 @@
       "name": "ČSÚ",
       "dataset": "Zemřelí podle pohlaví, pětiletých věkových skupin a zkráceného seznamu příčin smrti",
       "url": "https://data.csu.gov.cz/datastat/data/VYBER/OBY04CT01",
-      "retrieved": "2026-11-22"
+      "retrieved": "2026-11-23"
     }
   ],
-  "data_note": "Kategorizace příčin podle kódů MKN-10: srdce a cévy I00–I99, nádory C00–D48, infekce dýchací soustavy: chřipka a záněty plic (J09–J18) a covid-19 (U07, U10), ostatní infekční A00–B99, vnější příčiny V01–Y98. Ostatní nepřenosné nemoci zahrnují i chronické nemoci dýchací soustavy (např. CHOPN) a nepřesně určené příčiny (R00–R99).",
+  "data_note": "Vlastní kategorizace příčin. Ostatní nepřenosné nemoci zahrnují i chronické nemoci dýchací soustavy (např. CHOPN) a nepřesně určené příčiny. Kódy MKN-10: nemoci srdce a cév I00–I99; rakovina a jiné nádory C00–D48; infekce dýchací soustavy = chřipka a záněty plic (J09–J18) a covid-19 (U07, U10); ostatní přenosné nemoci A00–B99; vnější příčiny (úrazy, nehody, sebevraždy a násilí) V01–Y98; nepřesně určené příčiny R00–R99.",
   "options": {
     "facet": true
   },
-  "last_updated": "2026-11-22",
+  "last_updated": "2026-11-23",
   "rows": 150
 }

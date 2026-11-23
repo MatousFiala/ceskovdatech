@@ -2,8 +2,8 @@
   "id": "zdravi-rizika-gbd",
   "data": "zdravi-rizika-gbd.csv",
   "type": "bar",
-  "title": "Rizikové faktory v ČR",
-  "subtitle": "Počet úmrtí a ztracených [let zdravého života::DALY (disability-adjusted life years): roky ztracené předčasnou smrtí a roky prožité s nemocí či postižením, vážené jejich závažností. Pokud např. člověk s očekávanou délkou života 80 let zemře v 55 letech, ztratí 25 let] v roce 2023 připisovaných rizikovým faktorům, odhad. Ztracené roky zdůrazňují faktory, které zabíjejí v mladším věku",
+  "title": "Rizikové faktory",
+  "subtitle": "Počet úmrtí a ztracených [let života ve zdraví::DALY (disability-adjusted life years): roky ztracené předčasnou smrtí a roky prožité s nemocí či postižením, vážené jejich závažností. Pokud např. člověk s očekávanou délkou života 80 let zemře v 55 letech, ztratí 25 let] připisovaných rizikovým faktorům v roce 2023, odhad",
   "tabs": [
     {
       "id": "umrti",
@@ -11,7 +11,7 @@
     },
     {
       "id": "daly",
-      "label": "Ztracené roky zdravého života"
+      "label": "Ztracené roky života ve zdraví"
     }
   ],
   "aes": [
@@ -23,13 +23,13 @@
     {
       "type": "y",
       "field": "umrti",
-      "label": "Počet úmrtí",
+      "label": "Úmrtí",
       "tab": "umrti"
     },
     {
       "type": "y",
       "field": "daly",
-      "label": "Ztracené roky ve zdraví",
+      "label": "Ztracené roky života ve zdraví",
       "tab": "daly"
     },
     {
@@ -43,14 +43,14 @@
       "name": "IHME",
       "dataset": "Global Burden of Disease Study 2023 (GBD 2023) Results",
       "url": "https://vizhub.healthdata.org/gbd-results/",
-      "retrieved": "2026-11-22"
+      "retrieved": "2026-11-23"
     }
   ],
-  "data_note": "Rizikové faktory se překrývají -- např. obezita je často spojená s vysokým krevním tlakem.",
+  "data_note": "Ztracené roky zdůrazňují faktory, které zabíjejí v mladším věku. Rizikové faktory se překrývají – např. obezita je často spojená s vysokým krevním tlakem.",
   "options": {
     "horizontal": true,
     "sort": "desc"
   },
-  "last_updated": "2026-11-22",
+  "last_updated": "2026-11-23",
   "rows": 20
 }

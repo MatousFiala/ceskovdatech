@@ -10,9 +10,9 @@
   --sans: "Inter", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
   --wrapw: 960px;      /* page container */
   --gutter: 32px;
-  --colw: 688px;        /* article column: charts */
-  --textw: 576px;       /* article text */
-  --sidew: 184px;       /* side navigation of an article */
+  --textw: 660px;       /* article text */
+  --chartw: 800px;      /* width of the article column (charts) */
+  --sidew: 200px;       /* side navigation of an article */
 }
 
 * { box-sizing: border-box; }
@@ -93,17 +93,20 @@ a:hover { color: var(--hover); }
 .band > .wrap { padding-top: 32px; padding-bottom: 70.5px; }
 .section-title { margin: 0 0 22.5px; font-size: 24px; line-height: 1.15; font-weight: 700; letter-spacing: -0.02em; scroll-margin-top: 19px; }
 
-.topic-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(166.5px, 1fr)); gap: 38.5px 29px; }
-.topic { border-top: 1px solid var(--line); padding-top: 14.5px; min-width: 0; }
+/* four columns (set in `topics` of _config.yml), each a stack of topics, so short lists leave no gaps; two on tablets, one on phones */
+.topic-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); column-gap: 29px; }
+.topic { border-top: 1px solid var(--line); padding-top: 14.5px; min-width: 0; margin-bottom: 38.5px; }
+@media (max-width: 1000px) { .topic-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .topic-grid { grid-template-columns: 1fr; } }
 .topic-head { display: flex; align-items: center; gap: 8px; margin-bottom: 6.5px; color: var(--accent); }
 .topic-icon { display: block; flex: none; }
 .topic h3 { margin: 0; font-size: 13.5px; font-weight: 600; letter-spacing: -0.01em; color: var(--text-primary); }
 .topic ul { list-style: none; margin: 0; padding: 0; }
 .topic li { border-bottom: 1px solid var(--line); font-size: 13px; line-height: 1.4; }
 .topic li a { display: block; padding: 9px 0; text-decoration: none; }
-.topic-soon { border-top-color: var(--line); }
-.topic-soon .topic-head, .topic-soon h3, .topic-soon li { color: var(--text-muted); }
-.topic-soon li { padding: 9px 0; }
+/* upcoming articles (status: tbd): grey, no link */
+.topic li.topic-tbd { padding: 9px 0; color: var(--text-muted); cursor: default; }
+.article-tbd { color: var(--text-secondary); }
 
 .about { background: var(--bg-2); }
 .about > .wrap { padding-top: 57.5px; padding-bottom: 70.5px; }
@@ -119,51 +122,55 @@ a:hover { color: var(--hover); }
 .about-facts a { text-underline-offset: 3px; }
 
 /* ---------- article ---------- */
+/* the header and footer of an article are as wide as the article, so the logo lines up with the side menu */
+.is-article .site-header .wrap, .is-article .site-footer .wrap { max-width: 1160px; }
 .article-page {
-  max-width: 992px;
+  max-width: 1160px;
   padding-top: 38.5px; padding-bottom: 83px;
-  display: flex; align-items: flex-start; gap: 32px 51px;
+  display: flex; align-items: flex-start; gap: 32px 56px;
 }
-.article-page main { flex: 999 1 448px; min-width: 0; max-width: var(--colw); }
-/* text is narrower than the charts */
-.article-page main > :not(figure) { max-width: var(--textw); }
+/* the column is as wide as a chart; the text keeps its narrower measure, centred on the charts */
+.article-page main { flex: 999 1 448px; min-width: 0; max-width: var(--chartw); }
+.article-page main > :not(figure, .next-article) { max-width: var(--textw); margin-left: auto; margin-right: auto; }
+/* charts: 90 % of the column, centred like the text */
+.article-page main > figure.chart-card { width: 90%; margin-left: auto; margin-right: auto; }
 .article-page main h1 { margin: 0; font-size: clamp(29px, 3.68vw, 41.5px); line-height: 1.05; font-weight: 700; letter-spacing: -0.03em; }
-.article-page main h2 { margin: 45px 0 13px; font-size: 22.5px; line-height: 1.2; font-weight: 700; letter-spacing: -0.02em; scroll-margin-top: 19px; }
-.article-page main h3 { margin: 25.5px 0 6.5px; font-size: 16px; line-height: 1.3; font-weight: 600; scroll-margin-top: 19px; }
-.article-page main > :is(p, ul, ol, blockquote) { font-size: 14.5px; line-height: 1.65; margin-top: 0; margin-bottom: 16px; }
+.article-page main h2 { margin: 56px 0 16px; font-size: 25px; line-height: 1.2; font-weight: 700; letter-spacing: -0.02em; scroll-margin-top: 19px; }
+.article-page main h3 { margin: 32px 0 9px; font-size: 17.5px; line-height: 1.3; font-weight: 600; scroll-margin-top: 19px; }
+.article-page main > :is(p, ul, ol, blockquote) { font-size: 16px; line-height: 1.7; margin-top: 0; margin-bottom: 20px; }
 .article-page main strong { font-weight: 600; }
-.breadcrumb { margin: 0 0 14.5px; font-size: 11px; color: var(--text-muted); }
+.breadcrumb { margin: 0 0 18px; font-size: 13px; color: var(--text-muted); }
 .breadcrumb a { color: var(--text-muted); text-decoration: none; }
-.article-page main > .lede { margin: 17.5px 0 0; max-width: 36em; font-size: 17px; line-height: 1.5; color: var(--text-secondary); }
+.article-page main > .lede { margin-top: 17.5px; margin-bottom: 0; max-width: 36em; font-size: 18.5px; line-height: 1.5; color: var(--text-secondary); }
 .article-page main > .article-meta {
-  margin: 19px 0 0; padding: 9.5px 0;
+  margin-top: 22px; margin-bottom: 0; padding: 12px 0;
   border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
-  font-size: 11px; line-height: 1.55; color: var(--text-muted);
+  font-size: 12.5px; line-height: 1.55; color: var(--text-muted);
 }
 
 .article-page main > .next-article {
   max-width: none;
-  margin-top: 51px; padding-top: 16px; border-top: 1px solid var(--line);
+  margin-top: 60px; padding-top: 20px; border-top: 1px solid var(--line);
   display: flex; flex-wrap: wrap; justify-content: space-between; gap: 13px 25.5px;
 }
 .next-link { text-decoration: none; }
-.next-label { display: block; font-size: 10.5px; color: var(--text-muted); }
-.next-title { display: block; margin-top: 3px; font-size: 14.5px; font-weight: 600; }
-.next-all { align-self: flex-end; margin-left: auto; font-size: 11px; font-weight: 500; text-decoration: none; }
+.next-label { display: block; font-size: 12px; color: var(--text-muted); }
+.next-title { display: block; margin-top: 3px; font-size: 16px; font-weight: 600; }
+.next-all { align-self: flex-end; margin-left: auto; font-size: 13px; font-weight: 500; text-decoration: none; }
 
 /* ---------- side navigation of an article ---------- */
 .sidenav {
   flex: 0 1 var(--sidew); min-width: 160px;
   position: sticky; top: 0;
   max-height: 100vh; overflow-y: auto;
-  padding-top: 5px; padding-bottom: 19px;
+  padding-top: 3.5rem; padding-bottom: 19px; /* starts a little below the top of the article */
 }
-.sidenav-back { display: inline-block; margin-bottom: 16px; font-size: 11px; font-weight: 500; text-decoration: none; }
+.sidenav-back { display: inline-block; margin-bottom: 20px; font-size: 13px; font-weight: 500; text-decoration: none; }
 .sidenav-sections { list-style: none; margin: 0; padding: 0; border-left: 1px solid var(--line); }
 .sidenav-sections a {
-  display: block; padding: 5px 0 5px 11px; margin-left: -1px;
+  display: block; padding: 7px 0 7px 11px; margin-left: -1px;
   border-left: 2px solid transparent;
-  font-size: 11px; line-height: 1.4; color: var(--text-muted); text-decoration: none;
+  font-size: 13px; line-height: 1.4; color: var(--text-muted); text-decoration: none;
 }
 .sidenav-sections .sub a { padding-left: 21px; }
 .sidenav-sections a:hover { color: var(--text-primary); }
@@ -179,34 +186,40 @@ a:hover { color: var(--hover); }
 
 @media (max-width: 1000px) {
   .article-page { display: block; }
+  /* no side menu: text and charts share one column */
+  .article-page main > :not(figure, .next-article) { max-width: none; margin-left: 0; }
+  .article-page main > figure.chart-card { width: auto; }
   .sidenav { position: static; max-height: none; padding: 0; }
   .sidenav-sections { display: none; }
 }
 
 /* ---------- chart card ---------- */
-.chart-card { margin: 38.5px 0 45px; padding-top: 14.5px; border-top: 1px solid var(--line); position: relative; }
-.chart-head { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 9.5px 25.5px; margin-bottom: 8px; }
+.chart-card { margin: 52px 0 60px; padding-top: 20px; border-top: 1px solid var(--line); position: relative; }
+.chart-head { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 12px 25.5px; margin-bottom: 18px; }
 .chart-head > div:first-child { flex: 1 1 304px; min-width: 0; }
-.chart-title { margin: 0; font-size: 16px; line-height: 1.3; font-weight: 600; letter-spacing: -0.01em; }
-.chart-subtitle { margin: 3px 0 0; font-size: 12px; line-height: 1.5; color: var(--text-secondary); }
+/* .chart-card raises the specificity above `.article-page main h3`, whose top margin pushed the title below the buttons */
+.chart-card .chart-title { margin: 0; font-size: 16px; line-height: 1.3; font-weight: 600; letter-spacing: -0.01em; }
+.chart-subtitle { margin: 4px 0 0; font-size: 12.5px; line-height: 1.5; color: var(--text-secondary); }
 
-/* switches (Graf / Tabulka, tabs, Rozdělit): underlined words, no boxes */
-.chart-controls { display: flex; flex: none; flex-wrap: wrap; gap: 0 14.5px; align-items: flex-start; }
-.chart-tabs, .chart-switch { display: flex; flex-wrap: wrap; gap: 0 14.5px; }
+/* switches (Graf / Tabulka, tabs, Rozdělit): buttons joined into a bordered group, the pressed one filled */
+.chart-controls { display: flex; flex: none; flex-wrap: wrap; gap: 6px 8px; align-items: flex-start; }
+.chart-tabs, .chart-switch { display: inline-flex; flex-wrap: wrap; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
 .chart-tabs[hidden], .chart-switch[hidden] { display: none; }
-.chart-switch { margin: 3px 0 8px; }
+.chart-switch { margin: 0 0 18px; }
 .chart-tab {
-  min-height: 29px; padding: 0 2px;
-  font: inherit; font-size: 11px; font-weight: 400;
-  background: none; border: 0; border-bottom: 2px solid transparent;
-  color: var(--text-muted); cursor: pointer;
+  padding: 5px 11px;
+  font: inherit; font-size: 12px; font-weight: 400;
+  background: none; border: 0;
+  color: var(--text-secondary); cursor: pointer;
 }
-.chart-tab:hover { color: var(--text-primary); }
-.chart-tab[aria-pressed="true"] { border-bottom-color: var(--text-primary); color: var(--text-primary); font-weight: 600; }
+/* dividers on the left and top of every button; those on the outer edge are cut off by the group, so wrapped rows get one too */
+.chart-tab { box-shadow: -1px 0 0 var(--line), 0 -1px 0 var(--line); }
+.chart-tab:hover { color: var(--text-primary); background: var(--bg-2); }
+.chart-tab[aria-pressed="true"] { background: var(--bg-2); color: var(--text-primary); font-weight: 600; }
 /* facet toggle (options$facet): one small chart per series */
 .chart-facet-toggle { display: inline-flex; align-items: center; gap: 5px; }
 .chart-facet-toggle svg { fill: currentColor; }
-.chart-facets { display: grid; row-gap: 14.5px; }
+.chart-facets { display: grid; row-gap: 22px; }
 /* the panel under the pointer on top, so its tooltip is not covered by the next panel */
 .chart-facets > svg { position: relative; }
 .chart-facets > svg:hover { z-index: 1; }
@@ -214,21 +227,23 @@ a:hover { color: var(--hover); }
 .chart-body { min-height: 96px; }
 .chart-body figure { margin: 0; }
 .chart-body svg { max-width: 100%; }
-.chart-body [aria-label="tip"] { font-size: 10.5px; }
+.chart-body [aria-label="tip"] { font-size: 11.5px; }
 .chart-body [aria-label="tip"] > path:first-child, .chart-body [aria-label="tip"] path { fill: var(--bg); stroke: var(--line); }
 
-.chart-legend { display: flex; flex-wrap: wrap; gap: 5px 14.5px; margin: 11px 0 8px; font-size: 10.5px; color: var(--text-secondary); }
+/* Plot's own colour legends (its default is 10 px, with no specificity) */
+.chart-body [class*="-swatches"] { font-size: 11.5px; color: var(--text-secondary); margin-bottom: 14px; }
+.chart-legend { display: flex; flex-wrap: wrap; gap: 8px 16px; margin: 0 0 14px; font-size: 11.5px; color: var(--text-secondary); }
 .chart-legend-item { display: inline-flex; align-items: center; gap: 5px; }
 
 .chart-table-wrap { max-height: 336px; overflow: auto; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
-.chart-table { width: 100%; border-collapse: collapse; font-size: 11px; font-variant-numeric: tabular-nums; }
-.chart-table th, .chart-table td { padding: 5px 9.5px; text-align: left; border-bottom: 1px solid var(--line); }
+.chart-table { width: 100%; border-collapse: collapse; font-size: 12px; font-variant-numeric: tabular-nums; }
+.chart-table th, .chart-table td { padding: 7px 10px; text-align: left; border-bottom: 1px solid var(--line); }
 .chart-table th { position: sticky; top: 0; background: var(--bg-2); font-weight: 600; }
 .chart-table .num { text-align: right; }
 .chart-table tbody tr:last-child td { border-bottom: 0; }
 
 /* year slider: two range inputs on one track, only their handles take the pointer */
-.chart-timeline { display: flex; align-items: center; gap: 8px; margin-top: 8px; font-size: 10.5px; }
+.chart-timeline { display: flex; align-items: center; gap: 8px; margin-top: 16px; font-size: 11px; }
 .timeline-year { flex: none; min-width: 2.6em; text-align: center; font-weight: 500; font-variant-numeric: tabular-nums; }
 .timeline-track { position: relative; flex: 1; min-width: 0; height: 22.5px; }
 .timeline-track::before, .timeline-fill { content: ""; position: absolute; top: 10.5px; height: 2px; }
@@ -273,7 +288,7 @@ a:hover { color: var(--hover); }
   background: var(--bg); color: var(--text-secondary);
   border: 1px solid var(--line);
   box-shadow: 0 1px 0 var(--line);
-  font-size: 10.5px; line-height: 1.5;
+  font-size: 11.5px; line-height: 1.5;
 }
 .chart-note:hover .chart-note-tip, .chart-note:focus-within .chart-note-tip { display: block; }
 
@@ -285,13 +300,13 @@ a:hover { color: var(--hover); }
 
 .chart-footer {
   display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6.5px 19px;
-  margin-top: 9.5px; padding-top: 8px; border-top: 1px solid var(--line);
-  font-size: 10.5px; color: var(--text-muted);
+  margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--line);
+  font-size: 11.5px; color: var(--text-muted);
 }
 .chart-actions { display: flex; gap: 16px; }
 .chart-action { font: inherit; background: none; border: 0; padding: 0; color: var(--text-primary); cursor: pointer; text-decoration: underline; text-underline-offset: 2.5px; }
 .chart-action:hover { color: var(--hover); }
-.chart-error { padding: 13px; background: var(--bg-2); border: 1px solid var(--line); color: var(--text-secondary); font-size: 11px; }
+.chart-error { padding: 13px; background: var(--bg-2); border: 1px solid var(--line); color: var(--text-secondary); font-size: 12px; }
 
 @media (max-width: 560px) {
   :root { --gutter: 13px; }
@@ -299,7 +314,7 @@ a:hover { color: var(--hover); }
   .hero h1 { font-size: 36px; }
   .band > .wrap, .about > .wrap { padding-top: 38.5px; padding-bottom: 51px; }
   .about-facts > div { grid-template-columns: 1fr; gap: 2px; }
-  .chart-title { font-size: 14.5px; }
-  .article-page main h2 { font-size: 19px; }
-  .article-page main > p { font-size: 13.5px; }
+  .chart-card .chart-title { font-size: 14.5px; }
+  .article-page main h2 { font-size: 21px; }
+  .article-page main > p { font-size: 15px; }
 }

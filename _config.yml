@@ -1,14 +1,28 @@
 # Jekyll settings. GitHub Pages builds the site on every push; nothing is built locally.
 title: Česko v číslech
+description: Srozumitelná data o nejdůležitějších tématech české společnosti a ekonomiky.
+
+# Topics of the home page: one list per column, each top to bottom (an article's `topic` must be one of them).
+# The same order (column by column) is used for the "next article" links
+topics:
+  - [Obyvatelstvo, Ekonomika]
+  - [Společnost]
+  - [Veřejné finance]
+  - [Energetika a životní prostředí]
 lang: cs
+
+# The site's address: `url` for absolute links, `domain` for the address printed on exported charts
+# (`jekyll serve` replaces `url` with localhost, `domain` stays). CNAME sets the same domain for GitHub Pages
+url: https://ceskovcislech.org
+domain: ceskovcislech.org
 markdown: kramdown
 
 # Not part of the website (chart_data/, geo/ and assets/ are, and are copied as they are)
-exclude: [R, data, run_all.R, README.md]
+exclude: [R, data, run_all.R, README.md, TECHNICAL.md, png_export]
 
 # Layouts are chosen by folder, so pages only need a title
 defaults:
   - scope: { path: "" }
     values: { layout: default }
   - scope: { path: "articles" }
-    values: { layout: article }
+    values: { layout: article, permalink: "/:basename" } # articles/hdp_rust.md -> ceskovcislech.org/hdp_rust

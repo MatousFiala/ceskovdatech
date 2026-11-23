@@ -2,12 +2,12 @@
   "id": "rozpocet-prijmy",
   "data": "rozpocet-prijmy.csv",
   "type": "bar",
-  "title": "Příjmy státního rozpočtu od roku 2010",
-  "subtitle": "Příjmy státního rozpočtu podle kategorie, miliardy Kč",
+  "title": "Příjmy státního rozpočtu",
+  "subtitle": "Příjmy státního rozpočtu podle kategorie. Zdravotní pojištění je významnou složkou veřejných příjmů, proudí však mimo státní rozpočet.",
   "tabs": [
     {
       "id": "realne",
-      "label": "Reálné (ceny z roku 2020)"
+      "label": "Reálné (ceny roku 2020)"
     },
     {
       "id": "nominalni",
@@ -23,17 +23,17 @@
     },
     {
       "type": "y",
-      "field": "mld",
-      "label": "Nominální příjem",
+      "field": "mld_2020",
+      "label": "Reálné příjmy",
       "unit": "mld. Kč",
-      "tab": "nominalni"
+      "tab": "realne"
     },
     {
       "type": "y",
-      "field": "mld_2020",
-      "label": "Reálný příjem",
+      "field": "mld",
+      "label": "Nominální příjmy",
       "unit": "mld. Kč",
-      "tab": "realne"
+      "tab": "nominalni"
     },
     {
       "type": "fill",
@@ -43,22 +43,22 @@
   ],
   "source": [
     {
-      "name": "Monitor státní pokladny (MF ČR)",
-      "dataset": "Plnění rozpočtu ústředně řízených organizací, kapitoly státního rozpočtu",
+      "name": "MF ČR",
+      "dataset": "Monitor státní pokladny – Plnění rozpočtu ústředně řízených organizací, kapitoly státního rozpočtu",
       "url": "https://monitor.statnipokladna.gov.cz/",
-      "retrieved": "2026-11-22"
+      "retrieved": "2026-11-23"
     },
     {
       "name": "ČSÚ",
       "dataset": "Míra inflace (CEN0101H)",
       "url": "https://data.csu.gov.cz/datastat/data/VYBER/CEN0101HT01",
-      "retrieved": "2026-11-22"
+      "retrieved": "2026-11-23"
     }
   ],
-  "data_note": "Reálné částky jsou přepočtené na ceny roku 2020. Do sociálního pojištění se nepočítá zdravotní pojištění -- to plyne mimo státní rozpočet přímo zdravotním pojišťovnám. Přijaté transfery jsou převážně dotace z EU.",
+  "data_note": "Reálné částky jsou přepočtené na ceny roku 2020 (inflace podle ČSÚ). Do sociálního pojištění se nepočítá zdravotní pojištění – to plyne mimo státní rozpočet přímo zdravotním pojišťovnám. Přijaté transfery jsou převážně dotace z EU.",
   "options": {
     "facet": true
   },
-  "last_updated": "2026-11-22",
+  "last_updated": "2026-11-23",
   "rows": 64
 }

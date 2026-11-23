@@ -2,8 +2,8 @@
   "id": "nerovnost-jmeni-kvintily",
   "data": "nerovnost-jmeni-kvintily.csv",
   "type": "bar",
-  "title": "Nerovnost v majetku českých domácností",
-  "subtitle": "Majetek podle [kvintilu::Domácnosti seřazené od nejchudší po nejbohatší a rozdělené do pěti stejně velkých skupin] majetku domácnosti v roce 2024",
+  "title": "Nerovnost v majetku domácností",
+  "subtitle": "Čistý majetek domácností podle [pětiny::Domácnosti seřazené od nejchudší po nejbohatší a rozdělené do pěti stejně velkých skupin] majetku v roce 2024",
   "tabs": [
     {
       "id": "prumer",
@@ -11,14 +11,14 @@
     },
     {
       "id": "podil",
-      "label": "Podíl na majetku"
+      "label": "Podíl na majetku v Česku"
     }
   ],
   "aes": [
     {
       "type": "x",
       "field": "kvintil",
-      "label": "Kvintil"
+      "label": "Majetková pětina"
     },
     {
       "type": "y",
@@ -30,7 +30,7 @@
     {
       "type": "y",
       "field": "podil",
-      "label": "Podíl na majetku v ČR",
+      "label": "Podíl na majetku v Česku",
       "format": "percent",
       "tab": "podil"
     }
@@ -40,10 +40,10 @@
       "name": "ČSÚ",
       "dataset": "Finanční situace domácností 2022 až 2024, tab. 12: Čisté jmění domácností ČR podle kvintilů čistého jmění",
       "url": "https://csu.gov.cz/produkty/financni-situace-domacnosti-2022-az-2024-",
-      "retrieved": "2026-11-22"
+      "retrieved": "2026-11-23"
     }
   ],
-  "data_note": "Čistý majetek (tj. po odečtení dluhů). Podíl na celkovém majetku všech domácností je spočítán z průměrů.",
-  "last_updated": "2026-11-22",
+  "data_note": "Čistý majetek (tj. po odečtení dluhů). Podíl je dopočten z průměrného majetku v každé pětině (pětiny jsou stejně velké).",
+  "last_updated": "2026-11-23",
   "rows": 5
 }

@@ -10,9 +10,9 @@ eurostat_source <- function(id, dataset) {
          retrieved = format(Sys.Date()))
 }
 other_source <- function(name, dataset, url) list(name = name, dataset = dataset, url = url, retrieved = format(Sys.Date()))
-monitor_source <- other_source("Monitor státní pokladny (MF ČR)", "Plnění rozpočtu ústředně řízených organizací, kapitoly státního rozpočtu",
+monitor_source <- other_source("MF ČR", "Monitor státní pokladny – Plnění rozpočtu ústředně řízených organizací, kapitoly státního rozpočtu",
                                "https://monitor.statnipokladna.gov.cz/")
-imf_source <- other_source("MMF", "Fiscal Monitor a World Economic Outlook (DataMapper)", "https://www.imf.org/external/datamapper/")
+imf_source <- other_source("MMF", "Fiscal Monitor and World Economic Outlook (DataMapper)", "https://www.imf.org/external/datamapper/")
 
 imf <- read_csv("./data/imf_datamapper.csv")
 rok_srovnani <- 2025 # poslední rok se skutečnými údaji Eurostatu
@@ -36,8 +36,8 @@ write_chart(
     df = velikost,
     id = "rozpocet-velikost",
     type = "line",
-    title = "Výdaje a příjmy veřejného sektoru v ČR od roku 1995", # "Výdaje a příjmy veřejného sektoru v ČR od roku 1995"
-    subtitle = "Výdaje a příjmy státu, samospráv a zdravotních pojišťoven, % HDP", # "Výdaje a příjmy vládního sektoru (stát, kraje a obce, zdravotní pojišťovny) jako podíl na HDP"
+    title = "Výdaje a příjmy veřejného sektoru", # "Výdaje a příjmy veřejného sektoru v ČR od roku 1995"
+    subtitle = "Výdaje a příjmy [veřejného sektoru::Stát, kraje, obce, zdravotní pojišťovny a další veřejné instituce] v poměru k HDP", # "Výdaje a příjmy vládního sektoru (stát, kraje a obce, zdravotní pojišťovny) jako podíl na HDP"
     aes = list(
         list(type = "x", field = "year", label = "Rok", format = "year"),
         list(type = "y", field = "podil", label = "% HDP", format = "percent"),
@@ -70,8 +70,8 @@ write_chart(
     df = srovnani_vydaje,
     id = "rozpocet-velikost-srovnani",
     type = "bar",
-    title = "Srovnání velikosti veřejného sektoru s vybranými zeměmi", # str_glue("Velikost veřejného sektoru ve srovnání se světem v roce {rok_srovnani}")
-    subtitle = str_glue("Výdaje státu, samospráv a dalších veřejných institucí v roce {max(srovnani_vydaje$year)}, % HDP"), # "Výdaje vládního sektoru jako podíl na HDP"
+    title = "Velikost veřejného sektoru ve srovnání s vybranými zeměmi", # str_glue("Velikost veřejného sektoru ve srovnání se světem v roce {rok_srovnani}")
+    subtitle = str_glue("Výdaje [veřejného sektoru::Stát, kraje, obce, zdravotní pojišťovny a další veřejné instituce] v poměru k HDP v roce {max(srovnani_vydaje$year)}"), # "Výdaje vládního sektoru jako podíl na HDP"
     aes = list(
         list(type = "x", field = "zeme", label = "Země"),
         list(type = "y", field = "vydaje", label = "Výdaje (% HDP)", format = "percent"),
@@ -107,7 +107,7 @@ realne <- function(df) {
     stopifnot("Chybí inflace za některý rok" = !anyNA(out$mld_2020))
     out
 }
-tabs_ceny <- list(list(id = "realne", label = "Reálné (ceny z roku 2020)"), list(id = "nominalni", label = "Nominální"))
+tabs_ceny <- list(list(id = "realne", label = "Reálné (ceny roku 2020)"), list(id = "nominalni", label = "Nominální"))
 inflace_source <- other_source("ČSÚ", "Míra inflace (CEN0101H)", "https://data.csu.gov.cz/datastat/data/VYBER/CEN0101HT01")
 inflace_wb_source <- other_source("Světová banka", "Inflation, consumer prices (FP.CPI.TOTL.ZG)",
                                   "https://data.worldbank.org/indicator/FP.CPI.TOTL.ZG?locations=CZ")
@@ -134,17 +134,17 @@ write_chart(
     df = prijmy_vydaje,
     id = "rozpocet-prijmy-vydaje",
     type = "bar",
-    title = "Příjmy a výdaje státního rozpočtu od roku 2010", # "Příjmy a výdaje státního rozpočtu od roku 2010"
-    subtitle = "Výdaje a jejich krytí příjmy a schodkem, nominální i očištěné od inflace, miliardy Kč", # "Výdaje (nahoře) jsou kryté příjmy a schodkem, tedy novým dluhem (dole), v miliardách Kč"
+    title = "Příjmy a výdaje státního rozpočtu", # "Příjmy a výdaje státního rozpočtu od roku 2010"
+    subtitle = "Výdaje státního rozpočtu a jejich krytí příjmy a schodkem", # "Výdaje (nahoře) jsou kryté příjmy a schodkem, tedy novým dluhem (dole), v miliardách Kč"
     aes = list(
         list(type = "x", field = "year", label = "Rok", format = "year"),
-        list(type = "y", field = "mld", label = "Nominální částka", unit = "mld. Kč", tab = "nominalni"),
         list(type = "y", field = "mld_2020", label = "Reálná částka", unit = "mld. Kč", tab = "realne"),
+        list(type = "y", field = "mld", label = "Nominální částka", unit = "mld. Kč", tab = "nominalni"),
         list(type = "fill", field = "polozka", label = "Položka")
     ),
     source = list(monitor_source, inflace_source),
     tabs = tabs_ceny,
-    data_note = "Reálné částky jsou přepočtené na ceny roku 2020. Příjmy a schodek jsou z účetního pohledu pod osou -- z příjmových a dluhových účtů odcházejí peníze na financování výdajů." # "Skutečné příjmy a výdaje kapitol státního rozpočtu (bez státních fondů, krajů, obcí a zdravotních pojišťoven), v běžných cenách nebo přepočtené na ceny roku 2020 podle míry inflace. Příjmy a schodek jsou pod osou, aby bylo vidět, že dohromady pokrývají výdaje."
+    data_note = "Výdaje jsou nad osou, zdroje jejich krytí (příjmy a schodek) pod ní. Reálné částky jsou přepočtené na ceny roku 2020 (inflace podle ČSÚ)." # "Skutečné příjmy a výdaje kapitol státního rozpočtu (bez státních fondů, krajů, obcí a zdravotních pojišťoven), v běžných cenách nebo přepočtené na ceny roku 2020 podle míry inflace. Příjmy a schodek jsou pod osou, aby bylo vidět, že dohromady pokrývají výdaje."
 )
 
 # (3b) Saldo státního rozpočtu (Monitor) v mld. Kč (běžné ceny a ceny roku 2020) a v % nominálního HDP (Eurostat).
@@ -163,16 +163,16 @@ write_chart(
     id = "rozpocet-schodek",
     type = "bar",
     title = "Schodek státního rozpočtu", # "Schodek státního rozpočtu"
-    subtitle = "Rozdíl mezi příjmy a výdaji státního rozpočtu", # "Saldo státního rozpočtu v miliardách Kč"
+    subtitle = "Saldo státního rozpočtu, tedy rozdíl mezi příjmy a výdaji; záporné saldo je schodek, kladné přebytek", # "Saldo státního rozpočtu v miliardách Kč"
     tabs = c(tabs_ceny, list(list(id = "hdp", label = "% HDP"))),
     aes = list(
         list(type = "x", field = "year", label = "Rok", format = "year"),
-        list(type = "y", field = "mld_2020", label = "Schodek v cenách roku 2020", unit = "mld. Kč", tab = "realne"),
-        list(type = "y", field = "mld", label = "Schodek", unit = "mld. Kč", tab = "nominalni"),
-        list(type = "y", field = "podil", label = "Schodek (% HDP)", format = "percent", tab = "hdp")
+        list(type = "y", field = "mld_2020", label = "Reálné saldo", unit = "mld. Kč", tab = "realne"),
+        list(type = "y", field = "mld", label = "Nominální saldo", unit = "mld. Kč", tab = "nominalni"),
+        list(type = "y", field = "podil", label = "Saldo (% HDP)", format = "percent", tab = "hdp")
     ),
     source = list(monitor_source, inflace_source, eurostat_source("gov_10dd_edpt1", "Government deficit/surplus, debt and associated data")),
-    data_note = "Schodek z Monitoru státní pokladny (MF ČR), HDP z dat Eurostatu. Reálné částky jsou přepočtené na ceny roku 2020." # "Saldo = příjmy − výdaje; schodek je pod nulou. Státní rozpočet: kapitoly státního rozpočtu podle Monitoru státní pokladny, od roku 2010, v běžných cenách nebo přepočtené na ceny roku 2020 podle míry inflace; podíl na nominálním HDP (Eurostat)."
+    data_note = "Saldo z Monitoru státní pokladny (MF ČR), HDP z dat Eurostatu. Reálné částky jsou přepočtené na ceny roku 2020 (inflace podle ČSÚ)." # "Saldo = příjmy − výdaje; schodek je pod nulou. Státní rozpočet: kapitoly státního rozpočtu podle Monitoru státní pokladny, od roku 2010, v běžných cenách nebo přepočtené na ceny roku 2020 podle míry inflace; podíl na nominálním HDP (Eurostat)."
 )
 
 # (4) Hrubé kategorie příjmů podle druhového třídění: daně (seskupení 11–15, 17), pojistné (16), přijaté transfery (41–42,
@@ -194,28 +194,28 @@ write_chart(
     df = kategorie_prijmu,
     id = "rozpocet-prijmy",
     type = "bar",
-    title = "Příjmy státního rozpočtu od roku 2010", # "Z čeho stát žije: příjmy státního rozpočtu"
-    subtitle = "Příjmy státního rozpočtu podle kategorie, miliardy Kč", # "Příjmy státního rozpočtu podle druhu, v miliardách Kč"
+    title = "Příjmy státního rozpočtu", # "Z čeho stát žije: příjmy státního rozpočtu"
+    subtitle = "Příjmy státního rozpočtu podle kategorie. Zdravotní pojištění je významnou složkou veřejných příjmů, proudí však mimo státní rozpočet.", # "Příjmy státního rozpočtu podle druhu, v miliardách Kč"
     aes = list(
         list(type = "x", field = "year", label = "Rok", format = "year"),
-        list(type = "y", field = "mld", label = "Nominální příjem", unit = "mld. Kč", tab = "nominalni"),
-        list(type = "y", field = "mld_2020", label = "Reálný příjem", unit = "mld. Kč", tab = "realne"),
+        list(type = "y", field = "mld_2020", label = "Reálné příjmy", unit = "mld. Kč", tab = "realne"),
+        list(type = "y", field = "mld", label = "Nominální příjmy", unit = "mld. Kč", tab = "nominalni"),
         list(type = "fill", field = "kategorie", label = "Druh příjmu")
     ),
     source = list(monitor_source, inflace_source),
     tabs = tabs_ceny,
     options = list(facet = TRUE),
-    data_note = "Reálné částky jsou přepočtené na ceny roku 2020. Do sociálního pojištění se nepočítá zdravotní pojištění -- to plyne mimo státní rozpočet přímo zdravotním pojišťovnám. Přijaté transfery jsou převážně dotace z EU." # "V běžných cenách nebo přepočtené na ceny roku 2020 podle míry inflace. Druhové třídění rozpočtové skladby. Daně: daně z příjmů, DPH, spotřební, majetkové a další daně. Sociální pojištění: důchodové, nemocenské a příspěvek na politiku zaměstnanosti; zdravotní pojištění jde zdravotním pojišťovnám, ne do státního rozpočtu. Přijaté transfery: hlavně peníze z rozpočtu EU. Ostatní: nedaňové a kapitálové příjmy (poplatky, dividendy, prodej majetku). Část daní (sdílené daně) jde krajům a obcím a v rozpočtu státu není."
+    data_note = "Reálné částky jsou přepočtené na ceny roku 2020 (inflace podle ČSÚ). Do sociálního pojištění se nepočítá zdravotní pojištění – to plyne mimo státní rozpočet přímo zdravotním pojišťovnám. Přijaté transfery jsou převážně dotace z EU." # "V běžných cenách nebo přepočtené na ceny roku 2020 podle míry inflace. Druhové třídění rozpočtové skladby. Daně: daně z příjmů, DPH, spotřební, majetkové a další daně. Sociální pojištění: důchodové, nemocenské a příspěvek na politiku zaměstnanosti; zdravotní pojištění jde zdravotním pojišťovnám, ne do státního rozpočtu. Přijaté transfery: hlavně peníze z rozpočtu EU. Ostatní: nedaňové a kapitálové příjmy (poplatky, dividendy, prodej majetku). Část daní (sdílené daně) jde krajům a obcím a v rozpočtu státu není."
 )
 
 # (5) Hrubé kategorie výdajů podle odvětvového třídění (skupiny paragrafů)
-skupiny <- c(`1` = "Hospodářství a infrastruktura", `2` = "Hospodářství a infrastruktura", `3` = "Služby", `4` = "Důchody a sociální transfery",
+skupiny <- c(`1` = "Hospodářství a doprava", `2` = "Hospodářství a doprava", `3` = "Služby", `4` = "Důchody a sociální transfery",
              `5` = "Bezpečnost státu", `6` = "Veřejná správa")
 kategorie_vydaju <- monitor |>
     filter(druh == "vydaje", skupina != 0) |>
     mutate(skupina = skupiny[as.character(skupina)]) |>
     summarise(mld = round(sum(mld), 1), .by = c(rok, skupina)) |>
-    transmute(year = rok, skupina = factor(skupina, c("Důchody a sociální transfery", "Služby", "Hospodářství a infrastruktura",
+    transmute(year = rok, skupina = factor(skupina, c("Důchody a sociální transfery", "Služby", "Hospodářství a doprava",
                                                       "Bezpečnost státu", "Veřejná správa")), mld) |>
     mutate(podil = round(mld / sum(mld), 4), .by = year) |>
     arrange(year, skupina) |>
@@ -226,19 +226,19 @@ write_chart(
     df = kategorie_vydaju,
     id = "rozpocet-vydaje",
     type = "bar",
-    title = "Výdaje státního rozpočtu od roku 2010", # "Na co stát utrácí: výdaje státního rozpočtu"
-    subtitle = "Výdaje státního rozpočtu podle kategorie, miliardy Kč", # "Výdaje státního rozpočtu podle oblasti, v miliardách Kč"
+    title = "Výdaje státního rozpočtu", # "Na co stát utrácí: výdaje státního rozpočtu"
+    subtitle = "Výdaje státního rozpočtu podle kategorie", # "Výdaje státního rozpočtu podle oblasti, v miliardách Kč"
     aes = list(
         list(type = "x", field = "year", label = "Rok", format = "year"),
-        list(type = "y", field = "mld", label = "Nominální výdaje", unit = "mld. Kč", tab = "nominalni"),
         list(type = "y", field = "mld_2020", label = "Reálné výdaje", unit = "mld. Kč", tab = "realne"),
-        list(type = "y", field = "podil", label = "Podíl na výdajích", format = "percent", tab = "podil"),
+        list(type = "y", field = "mld", label = "Nominální výdaje", unit = "mld. Kč", tab = "nominalni"),
+        list(type = "y", field = "podil", label = "% výdajů", format = "percent", tab = "podil"),
         list(type = "fill", field = "skupina", label = "Kategorie")
     ),
     source = list(monitor_source, inflace_source),
     tabs = c(tabs_ceny, list(list(id = "podil", label = "% výdajů"))),
     options = list(facet = TRUE),
-    data_note = "Reálné částky jsou přepočtené na ceny roku 2020. Důchody a sociální transfery: veškeré důchody, sociální dávky a příspěvky. Služby: vzdělávání, zdravotnictví, kultura, bydlení, životní prostředí. Hospodářství: doprava, zemědělství, průmysl, energetika, výzkum. Bezpečnost: obrana, bezpečnostní složky. Veřejná správa: státní a místní správa, obsluha dluhu, transfery samosprávám." # "V běžných cenách nebo přepočtené na ceny roku 2020 podle míry inflace. Odvětvové třídění rozpočtové skladby. Důchody a sociální transfery: důchody, dávky, podpora v nezaměstnanosti, politika zaměstnanosti. Služby: vzdělávání (včetně platů učitelů placených přes kraje), zdravotnictví (včetně plateb za státní pojištěnce), kultura, bydlení, životní prostředí. Hospodářství a infrastruktura: doprava, zemědělství, průmysl, energetika, výzkum. Bezpečnost: obrana, policie, hasiči, soudy, vězeňství. Veřejná správa: státní a místní správa, úroky ze státního dluhu, transfery obcím a krajům."
+    data_note = "Důchody a sociální transfery: veškeré důchody, sociální dávky a příspěvky. Služby: vzdělávání, zdravotnictví, kultura, bydlení, životní prostředí. Hospodářství a doprava: doprava, zemědělství, průmysl, energetika, výzkum. Bezpečnost státu: obrana, bezpečnostní složky. Veřejná správa: státní a místní správa, obsluha dluhu, transfery samosprávám. Reálné částky jsou přepočtené na ceny roku 2020 (inflace podle ČSÚ)." # "V běžných cenách nebo přepočtené na ceny roku 2020 podle míry inflace. Odvětvové třídění rozpočtové skladby. Důchody a sociální transfery: důchody, dávky, podpora v nezaměstnanosti, politika zaměstnanosti. Služby: vzdělávání (včetně platů učitelů placených přes kraje), zdravotnictví (včetně plateb za státní pojištěnce), kultura, bydlení, životní prostředí. Hospodářství a doprava: doprava, zemědělství, průmysl, energetika, výzkum. Bezpečnost: obrana, policie, hasiči, soudy, vězeňství. Veřejná správa: státní a místní správa, úroky ze státního dluhu, transfery obcím a krajům."
 )
 
 # (5b) Podrobné výdaje v posledním roce: oddíly paragrafů (první dvě číslice), dávky (oddíl 41) po pododdílech;
@@ -252,7 +252,7 @@ oblasti_vydaju <- c(
     `411` = "Důchody", `412` = "Nemocenské dávky", `413` = "Státní sociální podpora",
     `414` = "Státní sociální podpora", `415` = "Výsluhy vojáků a policistů",
     `416` = "Úrazové pojištění", `417` = "Pomoc v hmotné nouzi", `418` = "Dávky pro zdravotně postižené",
-    `419` = "Příspěvek na péči",
+    `419` = "Příspěvky na péči aj.",
     `42` = "Politika zaměstnanosti", `43` = "Sociální služby",
     `51` = "Obrana", `52` = "Krizová připravenost", `53` = "Policie a veřejný pořádek",
     `54` = "Soudy a vězeňství", `55` = "Hasiči a záchranný systém",
@@ -290,16 +290,16 @@ write_chart(
         list(type = "y", field = "podil", label = "% výdajů", format = "percent", tab = "podil"),
         list(type = "fill", field = "skupina", label = "Kategorie")
     ),
-    tabs = list(list(id = "mld", label = "Nominální"), list(id = "podil", label = "% výdajů")),
+    tabs = list(list(id = "mld", label = "mld. Kč"), list(id = "podil", label = "% výdajů")),
     source = monitor_source,
     options = list(horizontal = TRUE, sort = "desc", sort_last = "Ostatní", facet = TRUE, facet_columns = 2),
-    data_note = str_glue("Ostatní: ostatní činnosti veřejné správy a oblasti, které mají každá méně než 0,5 % výdajů ({str_flatten_comma(str_to_lower(setdiff(ostatni_vydaje, 'Ostatní činnosti')))}). Vzdělávání zahrnuje i platy učitelů v regionálním školství, které stát posílá přes kraje. Zdravotnictví zahrnuje i platbu státu do zdravotního pojištění za státní pojištěnce (děti, studenty, důchodce a další). Příspěvek na péči zahrnuje i státní příspěvky na penzijní spoření a další drobné dávky sociálního zabezpečení.") # str_glue("Výdaje kapitol státního rozpočtu v roce {rok_vydaje} podle oddílů odvětvového třídění rozpočtové skladby; sociální dávky podle pododdílů. Vzdělávání zahrnuje platy učitelů, které stát posílá přes kraje. Zdravotnictví zahrnuje platbu za státní pojištěnce (děti, důchodce aj.). Úroky z dluhu a finanční operace: hlavně úroky ze státního dluhu. Státní sociální podpora zahrnuje i dávky pěstounské péče. Výsluhy: zvláštní sociální dávky vojáků, policistů a dalších sborů. Příspěvek na péči aj.: příspěvek na péči a ostatní dávky sociálního zabezpečení.")
+    data_note = str_glue("Vzdělávání zahrnuje i platy učitelů v regionálním školství, které stát posílá přes kraje. Zdravotnictví zahrnuje i platbu státu do zdravotního pojištění za státní pojištěnce (děti, studenty, důchodce a další). Příspěvky na péči aj. zahrnují i státní příspěvky na penzijní spoření a další drobné dávky sociálního zabezpečení. Ostatní: ostatní činnosti veřejné správy a oblasti, které mají každá méně než 0,5 % výdajů ({str_flatten_comma(str_to_lower(setdiff(ostatni_vydaje, 'Ostatní činnosti')))}).") # str_glue("Výdaje kapitol státního rozpočtu v roce {rok_vydaje} podle oddílů odvětvového třídění rozpočtové skladby; sociální dávky podle pododdílů. Vzdělávání zahrnuje platy učitelů, které stát posílá přes kraje. Zdravotnictví zahrnuje platbu za státní pojištěnce (děti, důchodce aj.). Úroky z dluhu a finanční operace: hlavně úroky ze státního dluhu. Státní sociální podpora zahrnuje i dávky pěstounské péče. Výsluhy: zvláštní sociální dávky vojáků, policistů a dalších sborů. Příspěvek na péči aj.: příspěvek na péči a ostatní dávky sociálního zabezpečení.")
 )
 
 # (5c) Mezinárodní srovnání skladby výdajů celého vládního sektoru podle funkcí (COFOG), % výdajů a % HDP; obdoba srovnání
 # skladby daní (08_dane.R), stejné země, navíc EU27 a průměr OECD. Kategorie zhruba odpovídají skupinám v (5)
 oblasti_cofog <- c(GF10 = "Důchody a sociální transfery", GF07 = "Zdravotnictví", GF09 = "Vzdělávání", GF04 = "Hospodářství a doprava",
-            GF01 = "Veřejná správa", GF02 = "Obrana a bezpečnost", GF03 = "Obrana a bezpečnost",
+            GF01 = "Veřejná správa", GF02 = "Bezpečnost státu", GF03 = "Bezpečnost státu",
             GF05 = "Ostatní", GF06 = "Ostatní", GF08 = "Ostatní")
 zeme_vydaje <- c(CZE = "Česko", DEU = "Německo", AUT = "Rakousko", SVK = "Slovensko", POL = "Polsko", FRA = "Francie",
                  GBR = "Spojené království", SWE = "Švédsko", DNK = "Dánsko", FIN = "Finsko", NOR = "Norsko", USA = "USA",
@@ -333,8 +333,8 @@ write_chart(
     df = skladba_vydaju,
     id = "rozpocet-vydaje-srovnani",
     type = "bar",
-    title = "Srovnání skladby výdajů s vybranými zeměmi OECD", # str_glue("Na co státy utrácejí, rok {rok_cofog}")
-    subtitle = str_glue("Výdaje vládního sektoru podle oblasti v roce {max(skladba_vydaju$year)}"), # "Podíl jednotlivých oblastí na výdajích státu, krajů, obcí a zdravotních pojišťoven"
+    title = "Skladba výdajů ve srovnání s vybranými zeměmi", # str_glue("Na co státy utrácejí, rok {rok_cofog}")
+    subtitle = str_glue("Výdaje [veřejného sektoru::Stát, kraje, obce, zdravotní pojišťovny a další veřejné instituce] podle oblasti v roce {max(skladba_vydaju$year)}"), # "Podíl jednotlivých oblastí na výdajích státu, krajů, obcí a zdravotních pojišťoven"
     aes = list(
         list(type = "x", field = "zeme", label = "Země"),
         list(type = "y", field = "podil", label = "% výdajů", format = "percent", tab = "podil"),
@@ -348,7 +348,7 @@ write_chart(
                   other_source("OECD", "Gross domestic product (Table 1)",
                                "https://data-explorer.oecd.org/?df[ds]=dsDisseminateFinalDMZ&df[id]=DSD_NAMAIN10%40DF_TABLE1_EXPENDITURE&df[ag]=OECD.SDD.NAD")),
     options = list(horizontal = TRUE, facet = TRUE),
-    data_note = str_glue("Výdaje celého vládního sektoru (stát, kraje, obce, zdravotní pojišťovny a další) podle mezinárodní klasifikace funkcí vlády (COFOG), proto se skladba liší od státního rozpočtu. Důchody a sociální transfery odpovídají oblasti sociální ochrany v COFOG: oproti stejnojmenné kategorii státního rozpočtu zahrnují i sociální služby a dávky placené kraji a obcemi (domovy pro seniory, pečovatelská služba), nejen výdaje státu. Veřejná správa zahrnuje i úroky z dluhu. Obrana a bezpečnost: armáda, policie, hasiči, soudy, vězeňství. Ostatní: životní prostředí, bydlení, kultura a sport. EU: souhrn 27 členských zemí. Průměr OECD: nevážený průměr {length(clenove_oecd)} z 38 členských zemí OECD, které mají data za rok {rok_cofog}.") # návrh
+    data_note = str_glue("Výdaje celého veřejného sektoru (stát, kraje, obce, zdravotní pojišťovny a další) podle mezinárodní klasifikace COFOG, proto se skladba liší od státního rozpočtu. Důchody a sociální transfery zahrnují i sociální služby a dávky krajů a obcí (např. domovy pro seniory). Veřejná správa zahrnuje i úroky z dluhu. Bezpečnost státu: armáda, policie, hasiči, soudy, vězeňství. Ostatní: životní prostředí, bydlení, kultura a sport. EU: souhrn 27 členských zemí. Průměr OECD: nevážený průměr {length(clenove_oecd)} z 38 členských zemí OECD, které mají data za rok {rok_cofog}.") # návrh
 )
 
 # ---------- (6) Dluh vládního sektoru: Kč a % HDP, s projekcí MMF ----------
@@ -375,22 +375,21 @@ write_chart(
     df = dluh,
     id = "rozpocet-dluh",
     type = "line",
-    title = "Veřejný dluh ČR s projekcí do roku 2031", # "Veřejný dluh ČR od roku 1995 s projekcí do roku 2031"
-    subtitle = "Hrubý dluh státu, samospráv a zdravotních pojišťoven", # "Hrubý dluh vládního sektoru v miliardách Kč a jako podíl na HDP"
-    # výjimka z pořadí reálné > nominální > %: dluh se posuzuje hlavně jako podíl na HDP (kritérium 60 %, srovnání zemí)
-    tabs = list(list(id = "podil", label = "% HDP"), list(id = "realne", label = "Reálné (ceny z roku 2020)"),
-                list(id = "kc", label = "Nominální")),
+    title = "Veřejný dluh", # "Veřejný dluh ČR od roku 1995 s projekcí do roku 2031"
+    subtitle = "Hrubý dluh [veřejného sektoru::Stát, kraje, obce, zdravotní pojišťovny a další veřejné instituce], skutečnost a projekce MMF", # "Hrubý dluh vládního sektoru v miliardách Kč a jako podíl na HDP"
+    tabs = list(list(id = "realne", label = "Reálné (ceny roku 2020)"), list(id = "kc", label = "Nominální"),
+                list(id = "podil", label = "% HDP")),
     aes = list(
         list(type = "x", field = "year", label = "Rok", format = "year"),
+        list(type = "y", field = "mld_2020", label = "Reálný dluh", unit = "mld. Kč", tab = "realne"),
+        list(type = "y", field = "mld", label = "Nominální dluh", unit = "mld. Kč", tab = "kc"),
         list(type = "y", field = "podil", label = "Dluh (% HDP)", format = "percent", tab = "podil"),
-        list(type = "y", field = "mld_2020", label = "Dluh v cenách roku 2020", unit = "mld. Kč", tab = "realne"),
-        list(type = "y", field = "mld", label = "Dluh", unit = "mld. Kč", tab = "kc"),
         list(type = "linetype", field = "data", label = "Údaj")
     ),
     source = list(eurostat_source("gov_10dd_edpt1", "Government deficit/surplus, debt and associated data"),
                   other_source("MMF", "World Economic Outlook, October 2026 (SDMX API)", "https://data.imf.org/"),
                   inflace_source, inflace_wb_source),
-    options = list(annotations = list(list(y = 0.6, tab = "podil", label = "Maastrichtské kritérium fiskální stability"))),
+    options = list(annotations = list(list(y = 0.6, tab = "podil", label = "Maastrichtské kritérium (60 % HDP)"))),
     data_note = "Skutečnost z dat Eurostatu, projekce MMF. Reálné částky jsou přepočtené na ceny roku 2020 (inflace podle ČSÚ, před rokem 1997 podle Světové banky, v letech projekce odhad MMF)." # str_glue("Hrubý (maastrichtský) dluh vládního sektoru: stát, kraje a obce, zdravotní pojišťovny. Státní dluh v užším smyslu (dluh státního rozpočtu) je o něco nižší. Do roku {rok_dluh} Eurostat, poté projekce MMF (World Economic Outlook, říjen 2026).")
 )
 
@@ -430,17 +429,17 @@ write_chart(
     df = srovnani_dluh,
     id = "rozpocet-dluh-srovnani",
     type = "bar",
-    title = "Srovnání veřejného dluhu s vybranými zeměmi", # str_glue("Veřejný dluh ve srovnání se světem v roce {rok_srovnani}")
-    subtitle = str_glue("Hrubý dluh státu, samospráv a dalších veřejných institucí v roce {max(srovnani_dluh$year)} a jeho změna od roku {rok_rust}, % HDP"), # "Hrubý dluh vládního sektoru jako podíl na HDP; Japonsko a Turecko mají nejvyšší a nejnižší dluh v OECD"
-    tabs = list(list(id = "dluh", label = "Výše dluhu"), list(id = "zmena", label = str_glue("Změna od roku {rok_rust}"))),
+    title = "Veřejný dluh ve srovnání s vybranými zeměmi", # str_glue("Veřejný dluh ve srovnání se světem v roce {rok_srovnani}")
+    subtitle = str_glue("Hrubý dluh [veřejného sektoru::Stát, kraje, obce, zdravotní pojišťovny a další veřejné instituce] v poměru k HDP v roce {max(srovnani_dluh$year)} a jeho změna od roku {rok_rust}"), # "Hrubý dluh vládního sektoru jako podíl na HDP; Japonsko a Turecko mají nejvyšší a nejnižší dluh v OECD"
+    tabs = list(list(id = "dluh", label = "Dluh (% HDP)"), list(id = "zmena", label = str_glue("Změna dluhu od roku {rok_rust}"))),
     aes = list(
         list(type = "x", field = "zeme", label = "Země"),
         list(type = "y", field = "dluh", label = "Dluh (% HDP)", format = "percent", tab = "dluh"),
-        list(type = "y", field = "zmena", label = "Změna dluhu", format = "percent", unit = "p. b.", tab = "zmena"),
+        list(type = "y", field = "zmena", label = str_glue("Změna dluhu od roku {rok_rust}"), format = "percent", unit = "p. b.", tab = "zmena"),
         list(type = "highlight", field = "cesko")
     ),
     source = list(eurostat_source("gov_10dd_edpt1", "Government deficit/surplus, debt and associated data"), imf_source),
     options = list(horizontal = TRUE, sort = "desc",
-                   annotations = list(list(y = 0.6, tab = "dluh", label = "Maastrichtské kritérium fiskální stability"))),
+                   annotations = list(list(y = 0.6, tab = "dluh", label = "Maastrichtské kritérium (60 % HDP)"))),
     data_note = str_glue("Evropské země a EU z dat Eurostatu, ostatní z dat MMF. Svět: průměr z dat MMF vážený podle HDP. Změna: rozdíl podílu dluhu na HDP mezi lety {rok_rust} a {rok_srovnani} v procentních bodech.") # str_glue("Hrubý dluh vládního sektoru v roce {rok_srovnani}. Evropské země (bez Norska) a EU: Eurostat; ostatní: MMF (World Economic Outlook, část hodnot jsou odhady MMF; svět je průměr vážený HDP).")
 )

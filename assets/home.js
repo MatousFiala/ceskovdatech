@@ -1,6 +1,6 @@
 // Home page: the ORP hex map that turns from the flag into data and back (d3 transitions).
 // Geometry: assets/orp-hex.json (206 hexes, kraj borders, outline); data: the ORP map charts in chart_data/.
-import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7.9.0/+esm";
+const { d3 } = window; // assets/vendor/d3.min.js, loaded in _layouts/default.html
 
 const figure = document.querySelector("#orp-map");
 const ROOT = new URL("..", import.meta.url);

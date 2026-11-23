@@ -2,8 +2,8 @@
   "id": "hdp-srovnani-casova-rada",
   "data": "hdp-srovnani-casova-rada.csv",
   "type": "line",
-  "title": "Vývoj HDP na osobu ve srovnání s vybranými zeměmi",
-  "subtitle": "HDP na osobu podle [parity kupní síly::Přepočet, který zohledňuje, že si za stejnou částku lze v různých zemích pořídit různé množství zboží a služeb], očištěné od inflace, přepočteno na koruny",
+  "title": "Vývoj HDP na obyvatele ve srovnání s vybranými zeměmi",
+  "subtitle": "HDP na obyvatele podle [parity kupní síly::Přepočet, který zohledňuje, že si za stejnou částku lze v různých zemích pořídit různé množství zboží a služeb], očištěné od inflace",
   "aes": [
     {
       "type": "x",
@@ -14,14 +14,14 @@
     {
       "type": "y",
       "field": "gdp_pc_ppp",
-      "label": "HDP PPP na osobu",
+      "label": "HDP (PPP) na obyvatele",
       "format": "number",
       "unit": "Kč"
     },
     {
       "type": "colour",
       "field": "country",
-      "label": "Území"
+      "label": "Země"
     },
     {
       "type": "highlight",
@@ -30,13 +30,13 @@
   ],
   "source": [
     {
-      "name": "World Bank",
+      "name": "Světová banka",
       "dataset": "World Development Indicators",
       "url": "https://databank.worldbank.org/source/world-development-indicators",
-      "retrieved": "2026-11-22"
+      "retrieved": "2026-11-23"
     }
   ],
-  "data_note": "Mezinárodní dolary v cenách roku 2021 (Světová banka), pro představu přepočtené na koruny v poměru 1 $ = 12,07 Kč.",
-  "last_updated": "2026-11-22",
+  "data_note": "Mezinárodní dolary v cenách roku 2021 (Světová banka), pro představu přepočtené na koruny v poměru $1 PPP = 12,07 Kč.",
+  "last_updated": "2026-11-23",
   "rows": 216
 }

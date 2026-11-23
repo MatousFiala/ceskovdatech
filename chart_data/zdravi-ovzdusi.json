@@ -2,8 +2,8 @@
   "id": "zdravi-ovzdusi",
   "data": "zdravi-ovzdusi.csv",
   "type": "line",
-  "title": "Znečištění vzduchu v ČR od roku 1998",
-  "subtitle": "Koncentrace škodlivých prachových částic (PM2.5) ve vzduchu, satelitní odhad",
+  "title": "Znečištění ovzduší",
+  "subtitle": "Koncentrace škodlivých prachových částic (PM2.5) v ovzduší, odhad",
   "aes": [
     {
       "type": "x",
@@ -20,13 +20,13 @@
   ],
   "source": [
     {
-      "name": "SatPM, Washington University in St. Louis",
-      "dataset": "Outdoor air pollution exposure, population-weighted PM2.5 (via Our World in Data)",
+      "name": "Washington University",
+      "dataset": "Outdoor air pollution exposure, population-weighted PM2.5, SatPM (via Our World in Data)",
       "url": "https://ourworldindata.org/grapher/pm25-air-pollution",
-      "retrieved": "2026-11-22"
+      "retrieved": "2026-11-23"
     }
   ],
-  "data_note": "Průměrná roční koncentrace částic PM2.5, prostorové odhady na území ČR vážené podle hustoty obyvatel.",
+  "data_note": "Satelitní odhad průměrné roční koncentrace částic PM2.5 na území Česka, vážený podle hustoty obyvatel.",
   "options": {
     "annotations": [
       {
@@ -35,6 +35,6 @@
       }
     ]
   },
-  "last_updated": "2026-11-22",
+  "last_updated": "2026-11-23",
   "rows": 27
 }

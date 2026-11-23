@@ -3,17 +3,34 @@
   "data": "dane-klin-mzda.csv",
   "type": "bar",
   "title": "Zdanění práce podle výše mzdy",
-  "subtitle": "Daň z příjmů a odvody jako podíl na [nákladech práce::Vše, co zaměstnavatel platí za zaměstnance: hrubá mzda a odvody] v roce 2025, daňové sazby v různých násobcích průměrné mzdy",
+  "subtitle": "Daň z příjmů a odvody jako podíl na [nákladech práce::Vše, co zaměstnavatel platí za zaměstnance: hrubá mzda a odvody] při mzdě od 50 % do 250 % průměrné mzdy v roce 2025. Odvody zaměstnavatele se nepočítají do hrubé mzdy, jedná se však stále o danění práce.",
+  "tabs": [
+    {
+      "id": "kc",
+      "label": "Mzda"
+    },
+    {
+      "id": "procenta",
+      "label": "% průměrné mzdy"
+    }
+  ],
   "aes": [
     {
       "type": "x",
+      "field": "mzda_kc",
+      "label": "Mzda",
+      "tab": "kc"
+    },
+    {
+      "type": "x",
       "field": "mzda",
-      "label": "Mzda (% průměrné mzdy)"
+      "label": "% průměrné mzdy",
+      "tab": "procenta"
     },
     {
       "type": "y",
       "field": "podil",
-      "label": "Celková daňová sazba",
+      "label": "Celková sazba",
       "format": "percent"
     },
     {
@@ -27,10 +44,10 @@
       "name": "OECD",
       "dataset": "Taxing Wages",
       "url": "https://www.oecd.org/en/topics/sub-issues/tax-policy/taxing-wages.html",
-      "retrieved": "2026-11-22"
+      "retrieved": "2026-11-23"
     }
   ],
   "data_note": "Náklady práce = hrubá mzda + odvody placené zaměstnavatelem. Počítá se se svobodným pracovníkem bez dětí.",
-  "last_updated": "2026-11-22",
+  "last_updated": "2026-11-23",
   "rows": 21
 }

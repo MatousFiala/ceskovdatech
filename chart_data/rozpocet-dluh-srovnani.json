@@ -2,16 +2,16 @@
   "id": "rozpocet-dluh-srovnani",
   "data": "rozpocet-dluh-srovnani.csv",
   "type": "bar",
-  "title": "Srovnání veřejného dluhu s vybranými zeměmi",
-  "subtitle": "Hrubý dluh státu, samospráv a dalších veřejných institucí v roce 2025 a jeho změna od roku 2020, % HDP",
+  "title": "Veřejný dluh ve srovnání s vybranými zeměmi",
+  "subtitle": "Hrubý dluh [veřejného sektoru::Stát, kraje, obce, zdravotní pojišťovny a další veřejné instituce] v poměru k HDP v roce 2025 a jeho změna od roku 2020",
   "tabs": [
     {
       "id": "dluh",
-      "label": "Výše dluhu"
+      "label": "Dluh (% HDP)"
     },
     {
       "id": "zmena",
-      "label": "Změna od roku 2020"
+      "label": "Změna dluhu od roku 2020"
     }
   ],
   "aes": [
@@ -30,7 +30,7 @@
     {
       "type": "y",
       "field": "zmena",
-      "label": "Změna dluhu",
+      "label": "Změna dluhu od roku 2020",
       "format": "percent",
       "unit": "p. b.",
       "tab": "zmena"
@@ -45,13 +45,13 @@
       "name": "Eurostat",
       "dataset": "Government deficit/surplus, debt and associated data (gov_10dd_edpt1)",
       "url": "https://ec.europa.eu/eurostat/databrowser/view/gov_10dd_edpt1/default/table",
-      "retrieved": "2026-11-22"
+      "retrieved": "2026-11-23"
     },
     {
       "name": "MMF",
-      "dataset": "Fiscal Monitor a World Economic Outlook (DataMapper)",
+      "dataset": "Fiscal Monitor and World Economic Outlook (DataMapper)",
       "url": "https://www.imf.org/external/datamapper/",
-      "retrieved": "2026-11-22"
+      "retrieved": "2026-11-23"
     }
   ],
   "data_note": "Evropské země a EU z dat Eurostatu, ostatní z dat MMF. Svět: průměr z dat MMF vážený podle HDP. Změna: rozdíl podílu dluhu na HDP mezi lety 2020 a 2025 v procentních bodech.",
@@ -62,10 +62,10 @@
       {
         "y": 0.6,
         "tab": "dluh",
-        "label": "Maastrichtské kritérium fiskální stability"
+        "label": "Maastrichtské kritérium (60 % HDP)"
       }
     ]
   },
-  "last_updated": "2026-11-22",
+  "last_updated": "2026-11-23",
   "rows": 16
 }
