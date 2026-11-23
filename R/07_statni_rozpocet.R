@@ -140,7 +140,8 @@ write_chart(
         list(type = "x", field = "year", label = "Rok", format = "year"),
         list(type = "y", field = "mld_2020", label = "Reálná částka", unit = "mld. Kč", tab = "realne"),
         list(type = "y", field = "mld", label = "Nominální částka", unit = "mld. Kč", tab = "nominalni"),
-        list(type = "fill", field = "polozka", label = "Položka")
+        list(type = "fill", field = "polozka", label = "Položka",
+             colours = list("Příjmy" = "#2F6DB5", "Výdaje" = "#eb6834", "Schodek" = "#D7141A", "Přebytek" = "#1E9E77"))
     ),
     source = list(monitor_source, inflace_source),
     tabs = tabs_ceny,

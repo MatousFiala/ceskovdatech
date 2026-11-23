@@ -10,11 +10,11 @@ updated: 2026-11-21
 
 Český daňový systém se opírá hlavně o odvody (sociální a zdravotní pojištění), které tvoří téměř polovinu daňových příjmů. Zbytek svého provozu stát financuje zdaněním spotřeby (DPH, spotřební daně), zisků firem (DPPO) a příjmů osob (DPFO). Majetkové daně jsou v Česku okrajové.
 
-V letech 2020 a 2021 se daně snížily. Zrušení daně z nabytí nemovitých věcí v roce 2020 snížilo výnos majetkových daní zhruba na polovinu. Zrušení superhrubé mzdy v roce 2021 snížilo výnos DPFO téměř o třetinu. Reálný výnos spotřebních daní klesal, protože tyto daně nejsou v Česku automaticky [valorizované::automaticky zvyšované jako kompenzace za inflaci a růst mezd] a jejich reálnou výši výrazně snížila rychlá inflace po roce 2022.
+V letech 2020 a 2021 se daně snížily. Zrušení superhrubé mzdy v roce 2021 snížilo výnos DPFO téměř o třetinu. Zrušení daně z nabytí nemovitých věcí v roce 2020 snížilo výnos majetkových daní zhruba na polovinu. Reálný výnos spotřebních daní klesal, protože tyto daně nejsou v Česku automaticky [valorizované::zvyšované jako kompenzace za inflaci a růst mezd] a jejich reálnou výši výrazně snížila rychlá inflace po roce 2022.
 
 <figure data-chart="dane-vyber"></figure>
 
-Český daňový systém je ve srovnání s jinými zeměmi OECD poměrně odlišný. Česko má nejvyšší podíl odvodů v celém OECD, naopak podíl DPFO je nejnižší mezi evropskými členy OECD. Majetkové daně jsou v Česku desetkrát menší než v průměru OECD.
+Český daňový systém je ve srovnání s jinými zeměmi OECD poměrně odlišný. Česko má nejvyšší podíl odvodů v celém OECD, naopak podíl DPFO je nejnižší mezi evropskými členy OECD. Majetkové daně jsou v Česku desetkrát menší, než je průměr OECD.
 
 <figure data-chart="dane-skladba-srovnani"></figure>
 

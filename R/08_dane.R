@@ -144,15 +144,15 @@ write_chart(
     id = "dane-klin-mzda",
     type = "bar",
     title = "Zdanění práce podle výše mzdy", # "Kolik ze mzdy si vezme stát"
-    subtitle = str_glue("Daň z příjmů a odvody jako podíl na [nákladech práce::Vše, co zaměstnavatel platí za zaměstnance: hrubá mzda a odvody] při mzdě od 50 % do 250 % průměrné mzdy v roce {max(klin_mzda$year)}. Odvody zaměstnavatele se nepočítají do hrubé mzdy, jedná se však stále o danění práce."), # "Daň z příjmů a pojistné jako podíl na celkových nákladech zaměstnavatele"
+    subtitle = str_glue("Daň z příjmů a odvody jako podíl na [nákladech práce::Vše, co zaměstnavatel platí za zaměstnance: hrubá mzda a odvody] při hrubé mzdě od 50 % do 250 % průměrné mzdy v roce {max(klin_mzda$year)}. Odvody zaměstnavatele jsou nad rámec hrubé mzdy, jedná se však stále o danění práce."), # "Daň z příjmů a pojistné jako podíl na celkových nákladech zaměstnavatele"
     aes = list(
-        list(type = "x", field = "mzda_kc", label = "Mzda", tab = "kc"),
+        list(type = "x", field = "mzda_kc", label = "Hrubá mzda", tab = "kc"),
         list(type = "x", field = "mzda", label = "% průměrné mzdy", tab = "procenta"),
         list(type = "y", field = "podil", label = "Celková sazba", format = "percent"),
         list(type = "fill", field = "slozka", label = "Složka")
     ),
     source = oecd_tw_source,
-    tabs = list(list(id = "kc", label = "Mzda"), list(id = "procenta", label = "% průměrné mzdy")),
+    tabs = list(list(id = "kc", label = "Hrubá mzda"), list(id = "procenta", label = "% průměrné mzdy")),
     data_note = str_glue("Náklady práce = hrubá mzda + odvody placené zaměstnavatelem. Počítá se se svobodným pracovníkem bez dětí.") # návrh
 )
 

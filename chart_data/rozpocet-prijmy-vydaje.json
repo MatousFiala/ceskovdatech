@@ -38,7 +38,13 @@
     {
       "type": "fill",
       "field": "polozka",
-      "label": "Položka"
+      "label": "Položka",
+      "colours": {
+        "Příjmy": "#2F6DB5",
+        "Výdaje": "#eb6834",
+        "Schodek": "#D7141A",
+        "Přebytek": "#1E9E77"
+      }
     }
   ],
   "source": [

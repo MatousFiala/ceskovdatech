@@ -3,11 +3,11 @@
   "data": "dane-klin-mzda.csv",
   "type": "bar",
   "title": "Zdanění práce podle výše mzdy",
-  "subtitle": "Daň z příjmů a odvody jako podíl na [nákladech práce::Vše, co zaměstnavatel platí za zaměstnance: hrubá mzda a odvody] při mzdě od 50 % do 250 % průměrné mzdy v roce 2025. Odvody zaměstnavatele se nepočítají do hrubé mzdy, jedná se však stále o danění práce.",
+  "subtitle": "Daň z příjmů a odvody jako podíl na [nákladech práce::Vše, co zaměstnavatel platí za zaměstnance: hrubá mzda a odvody] při hrubé mzdě od 50 % do 250 % průměrné mzdy v roce 2025. Odvody zaměstnavatele jsou nad rámec hrubé mzdy, jedná se však stále o danění práce.",
   "tabs": [
     {
       "id": "kc",
-      "label": "Mzda"
+      "label": "Hrubá mzda"
     },
     {
       "id": "procenta",
@@ -18,7 +18,7 @@
     {
       "type": "x",
       "field": "mzda_kc",
-      "label": "Mzda",
+      "label": "Hrubá mzda",
       "tab": "kc"
     },
     {

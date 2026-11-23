@@ -52,7 +52,7 @@ Při rozkladu na menší položky dominují důchody, které tvoří téměř t�
 
 V mezinárodním srovnání vydává Česko relativně velkou část výdajů na zdravotnictví, naopak na důchody a sociální transfery a na veřejnou správu vydává podstatně menší část než EU. Na vzdělávání a bezpečnost připadá podobný podíl výdajů jako v EU, vzhledem k menšímu státu je to ale v poměru k HDP méně.
 
-*Pozn.: srovnání zahrnuje výdaje všech veřejných rozpočtů, ne jen státního rozpočtu.*
+*Pozn.: srovnání zahrnuje výdaje všech veřejných rozpočtů, ne jen státního rozpočtu. Část výdajů na zdravotnictví – zdravotní pojištění – v Česku proudí mimo státní rozpočet, což vysvětluje rozdíl v této oblasti oproti předchozímu grafu.*
 
 <figure data-chart="rozpocet-vydaje-srovnani"></figure>
 

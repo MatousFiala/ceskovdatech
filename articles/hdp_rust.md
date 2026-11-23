@@ -12,7 +12,7 @@ updated: 2026-11-21
 
 <figure data-chart="hdp-realne"></figure>
 
-**HDP na obyvatele** se často používá jako měřítko blahobytu: v ekonomice s vyšším HDP na obyvatele mají lidé obvykle lepší materiální zajištění. Nejedná se o úplné měřítko – nezachycuje například nerovnosti mezi obyvateli –, vyšší HDP na obyvatele ale koreluje s dalšími pozitivními ukazateli, jako je delší naděje dožití, větší spokojenost se životem nebo nižší míra chudoby.
+**HDP na obyvatele** se často používá jako měřítko blahobytu: v ekonomice s vyšším HDP na obyvatele mají lidé obvykle lepší materiální zajištění. Nejedná se o úplné měřítko – nezachycuje například nerovnosti mezi obyvateli –, vyšší HDP na obyvatele ale koreluje s dalšími pozitivními ukazateli, jako je delší naděje dožití, větší spokojenost se životem nebo nižší míra absolutní chudoby.
 
 Z odhadu historického vývoje je zřejmé, že se **materiální životní úroveň rychle zvyšovala**: od konce druhé světové války vzrostl ekonomický výstup na obyvatele téměř pětinásobně, ve srovnání se stavem před 200 lety dokonce osmnáctinásobně.
 

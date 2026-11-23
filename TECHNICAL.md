@@ -203,6 +203,8 @@ aes = list(
 | `height` | all | chart height in px |
 | `annotations` | line, bar, dot | reference lines, see below |
 
+A `colour` or `fill` aesthetic can fix the colour of each series with `colours`, e.g. `list(type = "fill", field = "polozka", colours = list("Příjmy" = "#2F6DB5", "Výdaje" = "#eb6834"))`; series not listed take the palette colour of their position. Facet panels use the same colours.
+
 On a map, `scheme`, `reverse`, `midpoint` and `fill_domain` can also be set on a `fill` aesthetic, where they override `options`. That gives each tab its own colour scale, e.g. `list(type = "fill", field = "exekuce", tab = "exekuce", scheme = "oranges")`.
 
 `annotations` draws dashed reference lines with a label along them: `list(x = ...)` is a vertical line at a value of `x` (for bars, one of the categories), `list(y = ...)` a horizontal line at a value of `y`. A vertical line has vertical text, a horizontal one horizontal text above its right end. `dash = FALSE` makes the line solid; `label` is optional. `align` = `"top"` (default), `"centre"` or `"bottom"` places the label along a vertical line; for a horizontal line it puts the label above, on or below the line. Lines outside the years chosen with the slider are not drawn. With `tab = "..."` a line is drawn only in that tab.

@@ -24,7 +24,7 @@ Nezaměstnanost bývá často soustředěná v určitých regionech: pokud se re
 
 ## Kolik lidé dostávají zaplaceno?
 
-Mzdy se v Česku dlouhodobě zvyšují – a to i v reálném vyjádření, tedy očištěné od inflace. Nominální mzdy sice rostly i po covidu, jejich kupní síla ale stagnuje: průměrná reálná mzda byla v roce 2025 stále nižší než v roce 2021. Jedním z důvodů je vysoká inflace v důsledku pandemie covidu a energetické krize. Nominální mzdy často nedokážou na inflaci rychle reagovat, protože se sjednávají na delší dobu dopředu.
+Mzdy se v Česku dlouhodobě zvyšují – a to i v reálném vyjádření, tedy očištěné od inflace. Nominální mzdy sice rostly i po covidu, jejich kupní síla ale stagnuje: průměrná reálná mzda byla v roce 2025 stále nižší než v roce 2021. Jedním z důvodů je vysoká inflace v důsledku pandemie covidu a energetické krize. Nominální mzdy často nedokážou na inflaci rychle reagovat. V ekonomii se označují za „lepkavé“: zvyšují se pomalu vyjednáváním mezi zaměstnanci a zaměstnavateli a jsou často fixované v dlouhodobějších smlouvách.
 
 <figure data-chart="mzdy-cr"></figure>
 

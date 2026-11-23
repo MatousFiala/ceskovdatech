@@ -52,11 +52,17 @@ function fitTicks(a, values, o, avail, zero = true) {
   if (lo == null) return 2;
   if (!o.y_domain && zero) [lo, hi] = [Math.min(0, lo), Math.max(0, hi)];
   measure.font = `13px ${FONT}`;
+  // at least two ticks: a count of 1 can step past the end of the data (0–716 → step 1000) and leave only 0,
+  // i.e. no labels and no grid at all
+  let fallback = null;
   for (let n = Math.max(2, Math.floor(avail / 60)); n >= 1; n--) {
     const ticks = d3.ticks(lo, hi, n);
+    if (ticks.length < 2) continue;
+    fallback = ticks;
     const widest = d3.max(ticks, (t) => measure.measureText(tickOf(a)(t)).width) ?? 0;
-    if (ticks.length * (widest + 16) <= avail || n === 1) return ticks;
+    if (ticks.length * (widest + 16) <= avail) return ticks;
   }
+  return fallback ?? d3.ticks(lo, hi, 2);
 }
 
 // Left margin that fits the widest tick label of a value axis
@@ -146,8 +152,12 @@ function colourScale(data, a, o, hi) {
     all = [...all.filter(whole), ...all.filter((v) => !whole(v))];
   }
   const domain = o.highlight ? all.filter((v) => [o.highlight].flat().includes(v)) : all;
-  return { domain, range: gradient(o, domain.length) ?? PALETTE, unknown: MUTED, legend: all.length > 1 && shown(a) };
+  const range = a.colours ? domain.map((v, i) => seriesColour(a, v, i)) : gradient(o, domain.length) ?? PALETTE;
+  return { domain, range, unknown: MUTED, legend: all.length > 1 && shown(a) };
 }
+
+// fixed colours of a colour/fill aesthetic (colours = list(Příjmy = "#2F6DB5", …)), else the palette in order
+const seriesColour = (a, v, i) => a?.colours?.[v] ?? PALETTE[i % PALETTE.length];
 
 // options.colour_scheme (e.g. "blues"): ordered series in shades of one colour, light to dark in data order;
 // the lightest shades are left out, so that every series stays visible on white
@@ -569,7 +579,7 @@ const TYPES = { line: lineChart, bar: barChart, dot: dotChart, map: mapChart, py
 // small chart per series, three across (two on narrow screens or for four series). Each panel has its own y scale
 // (it is there to show each series' trend); options.facet_scale = "shared" puts every panel on the same scale,
 // so sizes can be compared. Each panel's title gives the series and its latest value.
-const facetAes = (spec, A) => (spec.type === "bar" ? A.fill : spec.type === "line" || spec.type === "dot" ? A.colour : null);
+const facetAes = (spec, A) => (spec.type === "bar" ? A.fill ?? A.colour : spec.type === "line" || spec.type === "dot" ? A.colour : null);
 // A one-hue scheme ("reds", "blues"…) starts almost white, which vanishes into the page: on maps it starts at a
 // visible tint instead (the palest 20 % of the scheme is skipped)
 const ONE_HUE = ["blues", "greens", "greys", "oranges", "purples", "reds"];
@@ -609,7 +619,7 @@ function facetChart(spec, data, A, o, width, all) {
     const rowLabel = (c) => { measure.font = `13px ${FONT}`; return clip(String(c), labelW - 12); };
     const panels = series.map((s, i) => {
       const rows = data.filter((d) => d[key] === s);
-      const colour = PALETTE[i % PALETTE.length];
+      const colour = seriesColour(by, s, i);
       measure.font = `600 13.5px ${FONT}`;
       const head = clip(String(s), pw - 4);
       const dom = shared ?? extent(rows);
@@ -640,7 +650,7 @@ function facetChart(spec, data, A, o, width, all) {
     const last = rows.length ? rows.reduce((a, b) => (b[x] > a[x] ? b : a)) : null;
     measure.font = `600 13.5px ${FONT}`;
     const head = clip(String(s), pw - 4); // the series name only (its latest value is in the tooltip)
-    const colour = PALETTE[i % PALETTE.length];
+    const colour = seriesColour(by, s, i);
     const dom = shared ?? extent(rows);
     // ticks with the unit; the left margin below fits the widest one
     const yTick = tickOf(A.y);
@@ -1008,7 +1018,7 @@ export async function renderChart(el, id = el.dataset.chart) {
           table.hidden = i !== 1;
         },
       }, name));
-    const switcher = tabList.length > 1 && h("div", { class: "chart-switch", role: "group", "aria-label": "Zobrazený ukazatel" },
+    const switcher = tabList.length > 1 && h("div", { class: tabList.length > 3 ? "chart-switch chart-switch-many" : "chart-switch", role: "group", "aria-label": "Zobrazený ukazatel" },
       tabList.map((t) => h("button", {
         class: "chart-tab", type: "button", "aria-pressed": String(t.id === tab),
         onclick: (e) => {

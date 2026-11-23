@@ -206,6 +206,10 @@ a:hover { color: var(--hover); }
 .chart-tabs, .chart-switch { display: inline-flex; flex-wrap: wrap; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
 .chart-tabs[hidden], .chart-switch[hidden] { display: none; }
 .chart-switch { margin: 0 0 18px; }
+/* many (long) tabs, e.g. the ISV map: separate pills that wrap cleanly instead of one broken segmented bar */
+.chart-switch-many { gap: 6px; border: 0; border-radius: 0; overflow: visible; }
+.chart-switch-many .chart-tab { border: 1px solid var(--line); border-radius: 999px; box-shadow: none; padding: 4px 12px; }
+.chart-switch-many .chart-tab[aria-pressed="true"] { border-color: var(--text-secondary); }
 .chart-tab {
   padding: 5px 11px;
   font: inherit; font-size: 12px; font-weight: 400;

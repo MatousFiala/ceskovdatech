@@ -14,7 +14,7 @@ Počet lidí v relativní chudobě – definované jako příjem pod 60 % mediá
 
 <figure data-chart="chudoba"></figure>
 
-Evropské šetření o příjmech a životních podmínkách domácností (EU-SILC) sleduje široké spektrum ukazatelů spojených s nedostatkem základních potřeb, a nabízí tak širší pojetí chudoby. U většiny z nich je znát klesající trend se zřetelným zhoršením během krize po roce 2008 a v období rychlé inflace po roce 2022.
+Evropské šetření o příjmech a životních podmínkách domácností (EU-SILC) sleduje široké spektrum ukazatelů spojených s nedostatkem základních potřeb, a nabízí tak detailnější porozumění chudobě. U většiny z nich je znát klesající trend se zřetelným zhoršením během krize po roce 2008 a v období rychlé inflace po roce 2022.
 
 <figure data-chart="chudoba-ukazatele"></figure>
 
