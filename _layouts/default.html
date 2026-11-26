@@ -15,10 +15,11 @@
         {% comment %} Inter is served from this site (assets/fonts/), not from Google: no visitor data goes to a third party {% endcomment %}
         <link rel="preload" href="{{ '/assets/fonts/inter-latin.woff2' | relative_url }}" as="font" type="font/woff2" crossorigin>
         <link rel="stylesheet" href="{{ '/assets/fonts/inter.css' | relative_url }}">
+        <link rel="stylesheet" href="{{ '/lib/charta/js/charts.css' | relative_url }}">
         <link rel="stylesheet" href="{{ '/assets/site.css' | relative_url }}">
-        {% comment %} Libraries served from this site, no CDN (licences in assets/vendor/); they run before the modules below {% endcomment %}
-        <script src="{{ '/assets/vendor/d3.min.js' | relative_url }}"></script>
-        <script src="{{ '/assets/vendor/plot.umd.min.js' | relative_url }}"></script>
+        {% comment %} Libraries served from this site, no CDN (licences in lib/charta/js/vendor/); they run before the modules below {% endcomment %}
+        <script src="{{ '/lib/charta/js/vendor/d3.min.js' | relative_url }}"></script>
+        <script src="{{ '/lib/charta/js/vendor/plot.umd.min.js' | relative_url }}"></script>
         <script type="module" src="{{ '/assets/charts.js' | relative_url }}"></script>
         <script type="module" src="{{ '/assets/nav.js' | relative_url }}"></script>
     </head>

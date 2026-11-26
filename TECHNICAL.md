@@ -20,7 +20,7 @@ How the site is built: data, chart specifications, the website. For what the pro
 ## Data
 `Rscript run_all.R` (from the project root) downloads the newest data into `data/`, one CSV per source dataset. Each script in `R/` can also be run on its own. Data is saved raw; derived series (e.g. real GDP per capita) are computed later, at the chart stage.
 
-Needs the R packages `tidyverse`, `czso2`, `eurostat`, `WDI` and `statnipokladna`.
+Needs the R packages `tidyverse`, `czso2`, `eurostat`, `WDI`, `statnipokladna` and `charta` (from `lib/charta/r`, see [Charts](#charts)).
 
 | Chart | Script | File in `data/` |
 |---|---|---|
@@ -84,8 +84,8 @@ The site is built by Jekyll; GitHub Pages does that on every push (Settings → 
 |---|---|
 | `_config.yml` | site title and description, `topics` (the topics of the home page: one list per column), files and folders left out of the site, default layouts |
 | `_layouts/default.html` | the shared `<head>`, header (logo, links to Témata and O projektu) and footer of every page |
-| `assets/site.css` | the whole look (light only): colours, layout; the chart cards built by `charts.js` |
-| `assets/vendor/` | d3 7.9.0 (`d3.min.js`) and Observable Plot 0.6.17 (`plot.umd.min.js`), loaded as plain scripts in `default.html` before the modules, which read them from `window`; to update, replace the files with newer builds from npm |
+| `assets/site.css` | the whole look (light only): colours (CSS variables, also used by the chart cards), layout |
+| `lib/charta/` | the chart library (submodule, see [Charts](#charts)): `js/charts.js`, `js/charts.css` and `js/vendor/` with d3 7.9.0 and Observable Plot 0.6.17, loaded as plain scripts in `default.html` before the modules, which read them from `window` |
 | `assets/fonts/` | Inter (variable, Latin and Latin Extended), served from this site rather than Google Fonts so that no visitor data goes to a third party; `inter.css` declares it, `OFL.txt` is its licence. The PNG export embeds the same files |
 | `assets/img/` | logo: `*-hlavicka-*` (wordmark, used in the header: `svetla` = for a light background) and `*-znacka-*` (the mark alone, also in the PNG export of charts); `favicon.svg` is a square copy of the mark whose outlines turn light in a dark browser theme |
 | `_layouts/article.html` | breadcrumb, title, the update line (from `updated`) and the link to the next article (wraps `default`); an article with `status: tbd` shows only a notice |
@@ -115,108 +115,13 @@ The site runs on its own domain, `ceskovcislech.org` (`CNAME`, `url` and `domain
 Preview locally with `jekyll serve` in the project root (install once with `sudo apt install jekyll`), then open `http://localhost:4000`. Opening the files directly or with `python3 -m http.server` no longer works, because the pages need their layout.
 
 ## Charts
-`write_chart()` in `R/utils.R` writes `chart_data/{id}.json` + `.csv`; `assets/charts.js` (Observable Plot 0.6.17 + d3 7.9.0, served from `assets/vendor/` with their ISC licences; no build step, no CDN) turns them into chart cards. Anywhere in a page or article:
+The charts come from **Charta**, a separate library in `lib/charta` (a git submodule, [github.com/MatousFiala/charta](https://github.com/MatousFiala/charta)). Its [README](lib/charta/README.md) documents chart types, aesthetics, options, tabs, annotations and the PNG export.
+
+- **R:** `write_chart()` comes from the `charta` R package. `R/utils.R` loads it, together with tidyverse and jsonlite, for the scripts in `R/`. `R/geo.R` calls `write_geo()` for the map boundaries in `geo/`.
+- **Browser:** `assets/charts.js` is this site's wrapper. It calls `configure()` with the site root (where `chart_data/` and `geo/` live), the logo of the PNG export and the page address, and then `renderAll()`. Anywhere in a page or article:
 
 ```html
 <figure data-chart="hdp-realne"></figure>
 ```
 
-Chart types and their aesthetics (`labeller` = column shown to the reader instead of `field`):
-
-| `type` | required `aes` | optional `aes` |
-|---|---|---|
-| `line` | `x`, `y` | `colour`, `linetype`, `highlight` |
-| `bar` | `x` (category), `y` | `fill` (or `colour`), `highlight` |
-| `dot` | `x` (category: one row each, in data order, first on top), `y` | `colour` (one point per series, joined by a grey line), `highlight` |
-| `map` | `geometry` (region code), `fill` | `highlight` |
-| `pyramid` | `x` (age), `y` (count), `fill` (the two sides, first value on the left), `frame` (year) | `linetype` |
-
-A `pyramid` shows one value of `frame` at a time, chosen with a slider. It starts at `options$frame`, otherwise at the last frame of the first `linetype` value (the last actual year before a projection). Rows whose `linetype` is not the first value are drawn pale and the value is written next to the year, e.g. "2050 · Projekce ČSÚ". `options$reference` draws that frame as an outline over the others, to compare with.
-
-In a line, bar or dot chart with tabs, each tab draws only the rows that have its `y`, so tabs can also use different rows of the CSV (e.g. one `colour` column per tab, left empty in the other tab's rows).
-
-A projection on a line chart is a `linetype` (e.g. `Skutečnost` / `Projekce ČSÚ`): repeat the last actual year in the projection rows so that the dashed line starts where the solid one ends.
-
-Each aesthetic can have a `format` and a `unit`. A short unit is shown on the axis ticks and in tooltips (`1 000 mld. Kč`); a long one (over 8 characters, e.g. `na 100 000 obyvatel`) goes to the axis title instead, so that it does not crowd every tick.
-
-| `format` | 2005 is shown as | note |
-|---|---|---|
-| `number` | 2 005 | default for numeric columns |
-| `year` | 2005 | on `x` of a line or bar chart it also adds the year slider |
-| `percent` | 200 500 % | for shares (0.25 → 25 %); the unit defaults to `%` |
-
-`highlight` points to a TRUE/FALSE column and makes the TRUE rows stand out. It is never shown in a legend or tooltip and needs no label. How it looks depends on what is free:
-
-| chart | no `colour`/`fill` | with `colour`/`fill` |
-|---|---|---|
-| `line` | highlighted line in colour, the rest grey | highlighted line thicker, the rest thin and paler |
-| `bar` | highlighted bar in colour, the rest grey | bold category label (also in facet panels) |
-| `dot` | highlighted points in colour, the rest grey | bold category label |
-| `map` | — | dark outline around highlighted regions |
-
-For a line chart without `colour`, lines are told apart by `linetype` and `highlight` only, so several countries need a `colour` aesthetic too.
-
-An aesthetic with `show = FALSE` is still drawn, but gets no legend (for `x`/`y` no axis title) and no row in the data tooltip, e.g. a `linetype` that only tells two sources apart.
-
-In `title` and `subtitle`, and in the text of an article, `[word::tooltip]` underlines the word and shows the tooltip on hover, focus or tap: `"HDP v [paritě kupní síly::Přepočet podle cenových hladin]"`. Elsewhere (axis labels, data note, PNG) only the word is kept.
-
-`source` is a list of sources, each `list(name, dataset, url, retrieved)`. A map gets its boundaries added automatically (ČÚZK for SO ORP, Eurostat GISCO © EuroGeographics for kraje), as their licences require. Sources with the same `name` are shown together, one numbered link per dataset: "Zdroje: ČSÚ (1, 2), Maddison". `data_note` is shown in a tooltip next to the sources.
-
-`tabs` puts a switch into the chart that swaps aesthetics, e.g. between two measures. It is a list of `list(id, label)`; an aesthetic with `tab = "id"` is drawn only in that tab, one without `tab` in every tab. All tabs of a map share `geometry`, and a year `x` is shared too (it drives the year slider); any other `x` can have a `tab`, e.g. wages in Kč in one tab and in % of the average wage in another. The first tab is shown first, and the table and CSV keep all columns. A tab of a line, bar or dot chart can draw as another of these types: `list(id = "progrese", label = "Progrese", type = "bar")`.
-
-```r
-tabs = list(list(id = "realna", label = "Reálná"), list(id = "nominalni", label = "Nominální")),
-aes = list(
-    list(type = "x", field = "year", label = "Rok", format = "year"),
-    list(type = "y", field = "mzda_realna", label = "Reálná mzda", unit = "Kč", tab = "realna"),
-    list(type = "y", field = "mzda_nominalni", label = "Nominální mzda", unit = "Kč", tab = "nominalni")
-)
-```
-
-`options = list(...)` in `write_chart()`, all optional:
-
-| option | applies to | meaning |
-|---|---|---|
-| `y_zero` | line, dot | start the value axis at zero (default `TRUE` on line, `FALSE` on dot) |
-| `y_log` | line | logarithmic y axis |
-| `y_domain` | line, bar, dot | fixed axis range, e.g. `c(0, 10)`; bars are cut off at its lower end (an axis that does not start at zero) |
-| `highlight` | line, bar | series drawn in colour, the rest in grey |
-| `colour_scheme` | line, bar, dot | ordered series (e.g. wage levels) in shades of one colour, light to dark in data order: any d3 scheme with one hue, e.g. `"blues"`, `"greens"`, `"purples"` |
-| `horizontal` | bar | horizontal bars (default: when there are more than 6 text categories) |
-| `stack` | bar | `FALSE` puts `fill` groups side by side instead of stacking |
-| `totals` | bar | stacked bars: a dark tick at each bar's net total (negative parts subtracted) |
-| `sort` | bar | `"desc"` or `"asc"` by value |
-| `sort_last` | bar, dot | categories kept at the end of a sorted chart (and of each facet panel), e.g. `"Ostatní"` |
-| `sort_by` | dot | a value of the `colour` column: rows ordered by that series (lowest on top; highest with `sort = "desc"`), again in each tab |
-| `range` | dot | `c(from, point, to)`, three values of the `colour` column: each row (each year, when `x` is a year) becomes a line from `from` to `to` with end caps and a point at `point`; highlighted rows in colour, the rest grey; the tooltip lists every series |
-| `timeline` | line, bar | `FALSE` hides the year slider |
-| `frame`, `reference` | pyramid | first frame shown; a frame drawn as an outline over the others |
-| `filter_latest` | all | name of a time column; only its newest period is drawn |
-| `scheme`, `reverse` | map | colour scheme (default `"blues"`; any Observable Plot scheme, or a list of colours, e.g. `c("#d6453d", "#ffffff", "#2e9a4f")`) and its direction. One-hue schemes (`blues`, `greens`, `greys`, `oranges`, `purples`, `reds`) skip their palest 20 %, so low values do not vanish into the page; the maps use these, darker = more |
-| `midpoint` | map | two-sided colour scale around this value, e.g. `0` for a change (default scheme `"rdylgn"`) |
-| `fill_domain` | map | fixed range of the colour scale, e.g. `c(-0.15, 0.15)`; values outside get the end colours |
-| `geo`, `geo_key` | map | file in `geo/` (default `kraje.geojson`) and the feature property matched to `geometry` (default `NUTS_ID`) |
-| `projection` | map | default `"mercator"` |
-| `facet` | line, bar, dot | `TRUE` adds a toggle that splits the chart into one small chart per series (by `colour` on a line or dot chart, by `fill` on a bar chart), three across; each panel is titled with its series name. Bars over categories (e.g. countries) and dot charts become horizontal bars in each panel, sorted highest first |
-| `facet_columns` | line, bar, dot | at most this many panels across (default 3) |
-| `facet_scale` | line, bar, dot | `"independent"` (default): each panel its own y axis, to show each series' trend; `"shared"`: every panel on the same axis, so sizes can be compared |
-| `height` | all | chart height in px |
-| `annotations` | line, bar, dot | reference lines, see below |
-
-A `colour` or `fill` aesthetic can fix the colour of each series with `colours`, e.g. `list(type = "fill", field = "polozka", colours = list("Příjmy" = "#2F6DB5", "Výdaje" = "#eb6834"))`; series not listed take the palette colour of their position. Facet panels use the same colours.
-
-On a map, `scheme`, `reverse`, `midpoint` and `fill_domain` can also be set on a `fill` aesthetic, where they override `options`. That gives each tab its own colour scale, e.g. `list(type = "fill", field = "exekuce", tab = "exekuce", scheme = "oranges")`.
-
-`annotations` draws dashed reference lines with a label along them: `list(x = ...)` is a vertical line at a value of `x` (for bars, one of the categories), `list(y = ...)` a horizontal line at a value of `y`. A vertical line has vertical text, a horizontal one horizontal text above its right end. `dash = FALSE` makes the line solid; `label` is optional. `align` = `"top"` (default), `"centre"` or `"bottom"` places the label along a vertical line; for a horizontal line it puts the label above, on or below the line. Lines outside the years chosen with the slider are not drawn. With `tab = "..."` a line is drawn only in that tab.
-
-```r
-options = list(annotations = list(
-    list(x = 2008, label = "Finanční krize"),
-    list(x = 2020, label = "Covid"),
-    list(y = 0.05, label = "Cíl", dash = FALSE, align = "bottom")
-))
-```
-
-`Rscript R/geo.R` downloads the kraje boundaries (Eurostat GISCO) into `geo/kraje.geojson`; its `NUTS_ID` equals the ČSÚ kraj code (`CZ010`, …). It also writes `geo/orp.geojson` (správní obvody ORP from the `RCzechia` package, simplified; needs `sf`), used with `options = list(geo = "orp.geojson", geo_key = "KOD_ORP")`; `KOD_ORP` equals the ČSÚ ORP code, Praha is `1000`.
-
-**PNG export.** "Stáhnout PNG" draws the chart again off screen at a fixed width (760 px, at 2× resolution), so an export has the same proportions whatever the screen it came from. Title, subtitle (with the current tab) and sources wrap onto several lines; legends and facet panels are included, and the chart text uses the embedded Inter.
+After cloning, run `git submodule update --init`. Install the R package from the submodule with `remotes::install_local("lib/charta/r")`, and run that again after you update it. To update Charta, run `git submodule update --remote lib/charta`, then commit the new submodule commit. GitHub Pages checks out the submodule itself.

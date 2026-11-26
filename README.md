@@ -17,7 +17,7 @@ Texts and charts are licensed under [CC BY 4.0](https://creativecommons.org/lice
 
 The data keep the licences of their original sources, which are mostly free to reuse as well. Exceptions: charts based on WHO and IHME (Global Burden of Disease) data may be used for non-commercial purposes only.
 
-Map boundaries: SO ORP © ČÚZK (via the `RCzechia` package); kraje © EuroGeographics (Eurostat GISCO). The Inter typeface is licensed under the SIL Open Font License (`assets/fonts/OFL.txt`); d3 and Observable Plot under the ISC licence (`assets/vendor/`). Everything is served from this site: no CDN, no tracking.
+Map boundaries: SO ORP © ČÚZK (via the `RCzechia` package); kraje © EuroGeographics (Eurostat GISCO). The Inter typeface is licensed under the SIL Open Font License (`assets/fonts/OFL.txt`); d3 and Observable Plot under the ISC licence (`lib/charta/js/vendor/`). Everything is served from this site: no CDN, no tracking.
 
 ## Contact
 Errors and feedback: [matousfiala@gmail.com](mailto:matousfiala@gmail.com).

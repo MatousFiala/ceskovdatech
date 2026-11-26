@@ -18,7 +18,7 @@ domain: ceskovcislech.org
 markdown: kramdown
 
 # Not part of the website (chart_data/, geo/ and assets/ are, and are copied as they are)
-exclude: [R, data, run_all.R, README.md, TECHNICAL.md, png_export]
+exclude: [R, data, run_all.R, README.md, TECHNICAL.md, png_export, lib/charta/r, lib/charta/README.md, lib/charta/LICENSE]
 
 # Layouts are chosen by folder, so pages only need a title
 defaults:
